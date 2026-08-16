@@ -1,0 +1,11 @@
+D:/New folder/ki3/PBL2/build/CMakeFiles/tutorfinder_core.dir
+D:/New folder/ki3/PBL2/build/CMakeFiles/backend_tests.dir
+D:/New folder/ki3/PBL2/build/CMakeFiles/PBL2App.dir
+D:/New folder/ki3/PBL2/build/CMakeFiles/edit_cache.dir
+D:/New folder/ki3/PBL2/build/CMakeFiles/rebuild_cache.dir
+D:/New folder/ki3/PBL2/build/CMakeFiles/tutorfinder_core_autogen_timestamp_deps.dir
+D:/New folder/ki3/PBL2/build/CMakeFiles/tutorfinder_core_autogen.dir
+D:/New folder/ki3/PBL2/build/CMakeFiles/backend_tests_autogen_timestamp_deps.dir
+D:/New folder/ki3/PBL2/build/CMakeFiles/backend_tests_autogen.dir
+D:/New folder/ki3/PBL2/build/CMakeFiles/PBL2App_autogen_timestamp_deps.dir
+D:/New folder/ki3/PBL2/build/CMakeFiles/PBL2App_autogen.dir

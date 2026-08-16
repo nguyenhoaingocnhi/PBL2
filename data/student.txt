@@ -1,0 +1,3 @@
+SV001|Nguyen Minh Anh|0905123456|anh@gmail.com|Hai Chau|Nam|10/05/2010|10|Toan,Ly|T2,T4,T6|Trung Binh|Khong|200000|Can gia su kien nhan|false
+SV002|Tran Van Bao|0905222333|bao@gmail.com|Thanh Khe|Nu|12/11/2011|11|Ly,Hoa|T3,T5|Gioi|Khong|250000|Muon giao vien co kinh nghiem|false
+SV003|Le Thi Lan|0905333444|lan@gmail.com|Lien Chieu|Nu|08/07/2012|12|Toan,Van|T2,T5,T7|Trung Binh|Co|300000|Yeu cau gioi tinh nu|false

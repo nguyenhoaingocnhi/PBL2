@@ -1,0 +1,8 @@
+set(__QT_DEPLOY_TARGET_tutorfinder_core_FILE D:/New folder/ki3/PBL2/build/libtutorfinder_core.a)
+set(__QT_DEPLOY_TARGET_tutorfinder_core_TYPE STATIC_LIBRARY)
+set(__QT_DEPLOY_TARGET_backend_tests_FILE D:/New folder/ki3/PBL2/build/backend_tests.exe)
+set(__QT_DEPLOY_TARGET_backend_tests_TYPE EXECUTABLE)
+set(__QT_DEPLOY_TARGET_backend_tests_RUNTIME_DLLS )
+set(__QT_DEPLOY_TARGET_PBL2App_FILE D:/New folder/ki3/PBL2/build/PBL2App.exe)
+set(__QT_DEPLOY_TARGET_PBL2App_TYPE EXECUTABLE)
+set(__QT_DEPLOY_TARGET_PBL2App_RUNTIME_DLLS C:/msys64/ucrt64/bin/Qt6Widgets.dll;C:/msys64/ucrt64/bin/Qt6Gui.dll;C:/msys64/ucrt64/bin/Qt6Core.dll)
