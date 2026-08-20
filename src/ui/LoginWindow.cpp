@@ -10,6 +10,10 @@
 #include <QMessageBox>
 #include <QFrame>
 #include <QPixmap>
+#include <QCoreApplication>
+#include <QFileInfo>
+#include <QPainter>
+#include <QPainterPath>
 
 LoginWindow::LoginWindow(QWidget* parent)
     : QWidget(parent),
@@ -17,7 +21,7 @@ LoginWindow::LoginWindow(QWidget* parent)
       passwordEdit(new QLineEdit(this)),
       rememberCheck(new QCheckBox(this))
 {
-    setWindowTitle(QString::fromUtf8("Đăng nhập - Trung tâm gia sư"));
+    setWindowTitle(QString::fromUtf8("Đăng Nhập - Trung tâm gia sư"));
     resize(700, 650);
     setMinimumSize(600, 600);
 
@@ -48,33 +52,78 @@ LoginWindow::LoginWindow(QWidget* parent)
     logo->setAlignment(Qt::AlignCenter);
     logo->setFixedSize(300, 90);
 
-    QPixmap logoPixmap("assets/logo.png");
+    const QStringList logoCandidates = {
+        QCoreApplication::applicationDirPath() + "/../assets/logo.png",
+        QCoreApplication::applicationDirPath() + "/assets/logo.png",
+        QStringLiteral("assets/logo.png"),
+        QCoreApplication::applicationDirPath() + "/../assets/logo.svg",
+        QCoreApplication::applicationDirPath() + "/assets/logo.svg",
+        QStringLiteral("assets/logo.svg")
+    };
+
+    QPixmap logoPixmap;
+    for (const QString& logoPath : logoCandidates) {
+        if (QFileInfo::exists(logoPath) && logoPixmap.load(logoPath)) {
+            break;
+        }
+    }
 
     if (logoPixmap.isNull())
     {
-        logo->setText("TUTORFLOW");
+        logoPixmap = QPixmap(900, 320);
+        logoPixmap.fill(Qt::transparent);
 
-        logo->setStyleSheet(R"(
-            QLabel {
-                color: #24558A;
-                background: transparent;
-                border: none;
-                font-size: 26px;
-                font-weight: 700;
-            }
-        )");
+        QPainter painter(&logoPixmap);
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setPen(QPen(QColor("#0b4ca8"), 18, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+
+        QPainterPath cap;
+        cap.moveTo(32, 92);
+        cap.lineTo(256, 12);
+        cap.lineTo(512, 92);
+        cap.lineTo(256, 174);
+        cap.closeSubpath();
+        painter.drawPath(cap);
+
+        QPainterPath book;
+        book.moveTo(58, 112);
+        book.lineTo(58, 246);
+        book.quadTo(58, 278, 90, 278);
+        book.lineTo(422, 278);
+        book.quadTo(454, 278, 454, 246);
+        book.lineTo(454, 112);
+        book.moveTo(256, 174);
+        book.lineTo(256, 292);
+        book.moveTo(256, 292);
+        book.quadTo(190, 234, 82, 234);
+        book.moveTo(256, 292);
+        book.quadTo(322, 234, 430, 234);
+        painter.drawPath(book);
+
+        QPainterPath tassel;
+        tassel.moveTo(332, 82);
+        tassel.lineTo(332, 190);
+        tassel.lineTo(316, 246);
+        painter.drawPath(tassel);
+
+        painter.setBrush(QColor("#0b4ca8"));
+        painter.drawEllipse(QPointF(256, 54), 18, 18);
+        painter.drawEllipse(QPointF(332, 190), 15, 15);
+
+        painter.setPen(QColor("#0b4ca8"));
+        painter.setFont(QFont("Segoe UI", 74, QFont::Bold));
+        painter.drawText(QPointF(560, 184), "TUTORFLOW");
+        painter.end();
     }
-    else
-    {
-        logo->setPixmap(
-            logoPixmap.scaled(
-                300,
-                90,
-                Qt::KeepAspectRatio,
-                Qt::SmoothTransformation
-            )
-        );
-    }
+
+    logo->setPixmap(
+        logoPixmap.scaled(
+            300,
+            90,
+            Qt::KeepAspectRatio,
+            Qt::SmoothTransformation
+        )
+    );
 
     auto* logoRow = new QHBoxLayout();
     logoRow->setContentsMargins(0, 0, 0, 0);
@@ -107,7 +156,7 @@ LoginWindow::LoginWindow(QWidget* parent)
 
     auto* subtitle = new QLabel(
         QString::fromUtf8(
-            "Hệ thống quản lý và tìm kiếm gia sư"
+            "Hệ Thống Quản Lý và Tìm Kiếm Gia Sư"
         ),
         card
     );
@@ -249,7 +298,7 @@ LoginWindow::LoginWindow(QWidget* parent)
     rememberRow->addStretch();
 
     auto* forgotPassword = new QLabel(
-        QString::fromUtf8("Quên mật khẩu?"),
+        QString::fromUtf8("Quên mật khẩu"),
         card
     );
 
@@ -362,7 +411,7 @@ void LoginWindow::onLoginClicked()
     {
         QMessageBox::warning(
             this,
-            QString::fromUtf8("Đăng nhập"),
+            QString::fromUtf8("Đăng Nhập"),
             QString::fromUtf8(
                 "Vui lòng nhập tên đăng nhập và mật khẩu!"
             )

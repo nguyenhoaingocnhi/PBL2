@@ -1,0 +1,16 @@
+build/
+.vscode/
+.idea/
+*.gch
+*.o
+*.obj
+*.exe
+*.dll
+*.a
+*.ninja
+.ninja_deps
+.ninja_log
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
