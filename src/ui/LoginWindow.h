@@ -5,8 +5,10 @@
 #include <QLineEdit>
 #include <QCheckBox>
 
-class LoginWindow : public QWidget {
+class LoginWindow : public QWidget
+{
     Q_OBJECT
+
 public:
     explicit LoginWindow(QWidget* parent = nullptr);
 
