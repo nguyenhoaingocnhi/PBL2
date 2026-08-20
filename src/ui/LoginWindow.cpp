@@ -1,7 +1,5 @@
 #include "LoginWindow.h"
-
 #include "MainWindow.h"
-#include "repositories/FileManager.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -11,82 +9,107 @@
 #include <QCheckBox>
 #include <QMessageBox>
 #include <QFrame>
+#include <QPixmap>
 
 LoginWindow::LoginWindow(QWidget* parent)
     : QWidget(parent),
       usernameEdit(new QLineEdit(this)),
       passwordEdit(new QLineEdit(this)),
-      rememberCheck(new QCheckBox("Ghi nhớ đăng nhập", this))
+      rememberCheck(new QCheckBox(this))
 {
-    setWindowTitle("Dang nhap - Trung tam gia su");
-    resize(850, 750);
-    setMinimumSize(650, 650);
+    setWindowTitle(QString::fromUtf8("Đăng nhập - Trung tâm gia sư"));
+    resize(700, 650);
+    setMinimumSize(600, 600);
 
     setStyleSheet(R"(
         LoginWindow {
-            background-color: #f3f5f9;
+            background-color: #F4F5F7;
+            font-family: "Segoe UI", Arial, sans-serif;
         }
     )");
 
-    auto* loginCard = new QFrame(this);
-    loginCard->setObjectName("loginCard");
-    loginCard->setFixedWidth(430);
+    auto* card = new QFrame(this);
+    card->setObjectName("loginCard");
+    card->setFixedWidth(400);
 
-    loginCard->setStyleSheet(R"(
+    card->setStyleSheet(R"(
         QFrame#loginCard {
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0;
+            background-color: #FCFCFD;
+            border: 1px solid #E3E6EA;
             border-radius: 12px;
         }
     )");
 
-    auto* layout = new QVBoxLayout(loginCard);
-    layout->setContentsMargins(38, 34, 38, 30);
-    layout->setSpacing(10);
+    auto* layout = new QVBoxLayout(card);
+    layout->setContentsMargins(38, 30, 38, 30);
+    layout->setSpacing(0);
 
-    auto* logoBox = new QLabel("TF", loginCard);
-    logoBox->setAlignment(Qt::AlignCenter);
-    logoBox->setFixedSize(74, 74);
+    auto* logo = new QLabel(card);
+    logo->setAlignment(Qt::AlignCenter);
+    logo->setFixedSize(300, 90);
 
-    logoBox->setStyleSheet(R"(
-        QLabel {
-            background-color: #ffffff;
-            color: #1f5f97;
-            border: 2px solid #1f5f97;
-            border-radius: 10px;
-            font-family: Arial;
-            font-size: 24px;
-            font-weight: bold;
-        }
-    )");
+    QPixmap logoPixmap("assets/logo.png");
 
-    auto* logoLayout = new QHBoxLayout();
-    logoLayout->setContentsMargins(0, 0, 0, 0);
-    logoLayout->addStretch();
-    logoLayout->addWidget(logoBox);
-    logoLayout->addStretch();
+    if (logoPixmap.isNull())
+    {
+        logo->setText("TUTORFLOW");
 
-    layout->addLayout(logoLayout);
-    layout->addSpacing(8);
+        logo->setStyleSheet(R"(
+            QLabel {
+                color: #24558A;
+                background: transparent;
+                border: none;
+                font-size: 26px;
+                font-weight: 700;
+            }
+        )");
+    }
+    else
+    {
+        logo->setPixmap(
+            logoPixmap.scaled(
+                300,
+                90,
+                Qt::KeepAspectRatio,
+                Qt::SmoothTransformation
+            )
+        );
+    }
 
-    auto* title = new QLabel("TRUNG TAM GIA SU", loginCard);
+    auto* logoRow = new QHBoxLayout();
+    logoRow->setContentsMargins(0, 0, 0, 0);
+
+    logoRow->addStretch();
+    logoRow->addWidget(logo);
+    logoRow->addStretch();
+
+    layout->addLayout(logoRow);
+    layout->addSpacing(15);
+
+    auto* title = new QLabel(
+        QString::fromUtf8("TRUNG TÂM GIA SƯ"),
+        card
+    );
+
     title->setAlignment(Qt::AlignCenter);
 
     title->setStyleSheet(R"(
         QLabel {
             background: transparent;
-            color: #1f2937;
-            font-family: Arial;
-            font-size: 23px;
-            font-weight: bold;
+            color: #2B313B;
+            font-size: 22px;
+            font-weight: 700;
         }
     )");
 
     layout->addWidget(title);
+    layout->addSpacing(7);
 
     auto* subtitle = new QLabel(
-        "He thong quan ly va tim kiem gia su",
-        loginCard
+        QString::fromUtf8(
+            "Hệ thống quản lý và tìm kiếm gia sư"
+        ),
+        card
     );
 
     subtitle->setAlignment(Qt::AlignCenter);
@@ -94,126 +117,140 @@ LoginWindow::LoginWindow(QWidget* parent)
     subtitle->setStyleSheet(R"(
         QLabel {
             background: transparent;
-            color: #64748b;
-            font-family: Arial;
-            font-size: 14px;
+            color: #667085;
+            font-size: 13px;
         }
     )");
 
     layout->addWidget(subtitle);
-    layout->addSpacing(18);
+    layout->addSpacing(25);
 
     auto* usernameLabel = new QLabel(
-        "Ten dang nhap",
-        loginCard
+        QString::fromUtf8("Tên đăng nhập"),
+        card
     );
 
     usernameLabel->setStyleSheet(R"(
         QLabel {
             background: transparent;
-            color: #374151;
-            font-family: Arial;
+            color: #343A45;
             font-size: 12px;
-            font-weight: bold;
+            font-weight: 600;
         }
     )");
 
     layout->addWidget(usernameLabel);
+    layout->addSpacing(7);
 
-    usernameEdit->setPlaceholderText("Nhap ten dang nhap");
-    usernameEdit->setFixedHeight(42);
+    usernameEdit->setPlaceholderText(
+        QString::fromUtf8("Nhập tên đăng nhập")
+    );
+
+    usernameEdit->setFixedHeight(40);
 
     usernameEdit->setStyleSheet(R"(
         QLineEdit {
-            background-color: white;
-            color: #374151;
-            border: 1px solid #d1d5db;
-            border-radius: 4px;
-            padding-left: 12px;
-            padding-right: 12px;
-            font-family: Arial;
-            font-size: 14px;
+            background-color: #FFFFFF;
+            color: #344054;
+            border: 1px solid #CDD2D8;
+            border-radius: 3px;
+            padding: 0px 12px;
+            font-size: 13px;
+        }
+
+        QLineEdit::placeholder {
+            color: #98A2B3;
         }
 
         QLineEdit:focus {
-            border: 2px solid #1f5f97;
+            border: 1px solid #2C638F;
         }
     )");
 
     layout->addWidget(usernameEdit);
-    layout->addSpacing(8);
+    layout->addSpacing(17);
 
     auto* passwordLabel = new QLabel(
-        "Mat khau",
-        loginCard
+        QString::fromUtf8("Mật khẩu"),
+        card
     );
 
     passwordLabel->setStyleSheet(R"(
         QLabel {
             background: transparent;
-            color: #374151;
-            font-family: Arial;
+            color: #343A45;
             font-size: 12px;
-            font-weight: bold;
+            font-weight: 600;
         }
     )");
 
     layout->addWidget(passwordLabel);
+    layout->addSpacing(7);
 
-    passwordEdit->setPlaceholderText("Nhap mat khau");
+    passwordEdit->setPlaceholderText(
+        QString::fromUtf8("Nhập mật khẩu")
+    );
+
     passwordEdit->setEchoMode(QLineEdit::Password);
-    passwordEdit->setFixedHeight(42);
+    passwordEdit->setFixedHeight(40);
 
     passwordEdit->setStyleSheet(R"(
         QLineEdit {
-            background-color: white;
-            color: #374151;
-            border: 1px solid #d1d5db;
-            border-radius: 4px;
-            padding-left: 12px;
-            padding-right: 12px;
-            font-family: Arial;
-            font-size: 14px;
+            background-color: #FFFFFF;
+            color: #344054;
+            border: 1px solid #CDD2D8;
+            border-radius: 3px;
+            padding: 0px 12px;
+            font-size: 13px;
+        }
+
+        QLineEdit::placeholder {
+            color: #98A2B3;
         }
 
         QLineEdit:focus {
-            border: 2px solid #1f5f97;
+            border: 1px solid #2C638F;
         }
     )");
 
     layout->addWidget(passwordEdit);
+    layout->addSpacing(10);
 
-    auto* rememberRow = new QHBoxLayout();
-    rememberRow->setContentsMargins(0, 6, 0, 6);
+    rememberCheck->setText(
+        QString::fromUtf8("Ghi nhớ đăng nhập")
+    );
 
     rememberCheck->setStyleSheet(R"(
         QCheckBox {
             background: transparent;
-            color: #475569;
-            font-family: Arial;
-            font-size: 13px;
+            color: #667085;
+            font-size: 12px;
+            spacing: 7px;
         }
 
         QCheckBox::indicator {
-            width: 14px;
-            height: 14px;
-            border: 1px solid #cbd5e1;
+            width: 13px;
+            height: 13px;
+            border: 1px solid #D0D5DD;
             border-radius: 2px;
-            background: white;
+            background-color: #FFFFFF;
         }
 
         QCheckBox::indicator:checked {
-            background-color: #1f5f97;
-            border: 1px solid #1f5f97;
+            background-color: #285E8E;
+            border: 1px solid #285E8E;
         }
     )");
+
+    auto* rememberRow = new QHBoxLayout();
+    rememberRow->setContentsMargins(0, 0, 0, 0);
 
     rememberRow->addWidget(rememberCheck);
     rememberRow->addStretch();
 
     auto* forgotPassword = new QLabel(
-        "Quen mat khau?",
-        loginCard
+        QString::fromUtf8("Quên mật khẩu?"),
+        card
     );
 
     forgotPassword->setCursor(Qt::PointingHandCursor);
@@ -221,55 +258,56 @@ LoginWindow::LoginWindow(QWidget* parent)
     forgotPassword->setStyleSheet(R"(
         QLabel {
             background: transparent;
-            color: #1f5f97;
-            font-family: Arial;
+            color: #285E8E;
             font-size: 12px;
+            font-weight: 500;
         }
 
         QLabel:hover {
-            text-decoration: underline;
+            color: #1F4F78;
         }
     )");
 
     rememberRow->addWidget(forgotPassword);
 
     layout->addLayout(rememberRow);
-    layout->addSpacing(10);
+    layout->addSpacing(23);
 
     auto* loginButton = new QPushButton(
-        "DANG NHAP",
-        loginCard
+        QString::fromUtf8("ĐĂNG NHẬP"),
+        card
     );
 
-    loginButton->setFixedHeight(44);
+    loginButton->setFixedHeight(42);
     loginButton->setCursor(Qt::PointingHandCursor);
 
     loginButton->setStyleSheet(R"(
         QPushButton {
-            background-color: #1f5f97;
-            color: white;
+            background-color: #28629A;
+            color: #FFFFFF;
             border: none;
-            border-radius: 4px;
-            font-family: Arial;
+            border-radius: 2px;
             font-size: 14px;
-            font-weight: bold;
+            font-weight: 700;
         }
 
         QPushButton:hover {
-            background-color: #174b78;
+            background-color: #20537F;
         }
 
         QPushButton:pressed {
-            background-color: #123b5e;
+            background-color: #194366;
         }
     )");
 
     layout->addWidget(loginButton);
-    layout->addSpacing(30);
+    layout->addSpacing(40);
 
     auto* info = new QLabel(
-        "Chi danh cho quan tri vien va nhan vien trung tam.",
-        loginCard
+        QString::fromUtf8(
+            "Chỉ dành cho quản trị viên và nhân viên trung tâm."
+        ),
+        card
     );
 
     info->setAlignment(Qt::AlignCenter);
@@ -278,19 +316,23 @@ LoginWindow::LoginWindow(QWidget* parent)
     info->setStyleSheet(R"(
         QLabel {
             background: transparent;
-            color: #7c8797;
-            font-family: Arial;
-            font-size: 12px;
+            color: #7B8492;
+            font-size: 11px;
         }
     )");
 
     layout->addWidget(info);
 
     auto* wrapper = new QVBoxLayout(this);
+
     wrapper->setContentsMargins(0, 0, 0, 0);
 
     wrapper->addStretch();
-    wrapper->addWidget(loginCard, 0, Qt::AlignCenter);
+    wrapper->addWidget(
+        card,
+        0,
+        Qt::AlignCenter
+    );
     wrapper->addStretch();
 
     connect(
@@ -310,29 +352,34 @@ LoginWindow::LoginWindow(QWidget* parent)
 
 void LoginWindow::onLoginClicked()
 {
-    const QString username = usernameEdit->text().trimmed();
-    const QString password = passwordEdit->text();
+    const QString username =
+        usernameEdit->text().trimmed();
+
+    const QString password =
+        passwordEdit->text();
 
     if (username.isEmpty() || password.isEmpty())
     {
         QMessageBox::warning(
             this,
-            "Dang nhap",
-            "Vui long nhap ten dang nhap va mat khau!"
+            QString::fromUtf8("Đăng nhập"),
+            QString::fromUtf8(
+                "Vui lòng nhập tên đăng nhập và mật khẩu!"
+            )
         );
 
         return;
     }
 
     if (
-        FileManager::validateAdminLogin(
-            username.toStdString(),
-            password.toStdString()
-        )
+        username == "admin" &&
+        password == "123456"
     )
     {
         auto* mainWindow = new MainWindow();
+
         mainWindow->show();
+
         close();
 
         return;
@@ -340,7 +387,9 @@ void LoginWindow::onLoginClicked()
 
     QMessageBox::warning(
         this,
-        "Dang nhap",
-        "Ten dang nhap hoac mat khau khong dung!"
+        QString::fromUtf8("Đăng nhập"),
+        QString::fromUtf8(
+            "Tên đăng nhập hoặc mật khẩu không đúng!"
+        )
     );
 }
