@@ -46,7 +46,7 @@ build cmake_object_order_depends_target_tutorfinder_core: phony || tutorfinder_c
 
 build CMakeFiles/tutorfinder_core.dir/tutorfinder_core_autogen/mocs_compilation.cpp.obj: CXX_COMPILER__tutorfinder_core_unscanned_ D$:/New$ folder/ki3/PBL2/build/tutorfinder_core_autogen/mocs_compilation.cpp || cmake_object_order_depends_target_tutorfinder_core
   DEP_FILE = CMakeFiles\tutorfinder_core.dir\tutorfinder_core_autogen\mocs_compilation.cpp.obj.d
-  FLAGS = -std=c++17
+  FLAGS = -std=c++17 -finput-charset=UTF-8 -fexec-charset=UTF-8
   INCLUDES = -I"D:/New folder/ki3/PBL2/build/tutorfinder_core_autogen/include" -I"D:/New folder/ki3/PBL2/src" -I"D:/New folder/ki3/PBL2/src/entities" -I"D:/New folder/ki3/PBL2/src/structures" -I"D:/New folder/ki3/PBL2/src/services" -I"D:/New folder/ki3/PBL2/src/repositories"
   OBJECT_DIR = CMakeFiles\tutorfinder_core.dir
   OBJECT_FILE_DIR = CMakeFiles\tutorfinder_core.dir\tutorfinder_core_autogen
@@ -54,7 +54,7 @@ build CMakeFiles/tutorfinder_core.dir/tutorfinder_core_autogen/mocs_compilation.
 
 build CMakeFiles/tutorfinder_core.dir/src/entities/Person.cpp.obj: CXX_COMPILER__tutorfinder_core_unscanned_ D$:/New$ folder/ki3/PBL2/src/entities/Person.cpp || cmake_object_order_depends_target_tutorfinder_core
   DEP_FILE = CMakeFiles\tutorfinder_core.dir\src\entities\Person.cpp.obj.d
-  FLAGS = -std=c++17
+  FLAGS = -std=c++17 -finput-charset=UTF-8 -fexec-charset=UTF-8
   INCLUDES = -I"D:/New folder/ki3/PBL2/build/tutorfinder_core_autogen/include" -I"D:/New folder/ki3/PBL2/src" -I"D:/New folder/ki3/PBL2/src/entities" -I"D:/New folder/ki3/PBL2/src/structures" -I"D:/New folder/ki3/PBL2/src/services" -I"D:/New folder/ki3/PBL2/src/repositories"
   OBJECT_DIR = CMakeFiles\tutorfinder_core.dir
   OBJECT_FILE_DIR = CMakeFiles\tutorfinder_core.dir\src\entities
@@ -62,7 +62,7 @@ build CMakeFiles/tutorfinder_core.dir/src/entities/Person.cpp.obj: CXX_COMPILER_
 
 build CMakeFiles/tutorfinder_core.dir/src/entities/Student.cpp.obj: CXX_COMPILER__tutorfinder_core_unscanned_ D$:/New$ folder/ki3/PBL2/src/entities/Student.cpp || cmake_object_order_depends_target_tutorfinder_core
   DEP_FILE = CMakeFiles\tutorfinder_core.dir\src\entities\Student.cpp.obj.d
-  FLAGS = -std=c++17
+  FLAGS = -std=c++17 -finput-charset=UTF-8 -fexec-charset=UTF-8
   INCLUDES = -I"D:/New folder/ki3/PBL2/build/tutorfinder_core_autogen/include" -I"D:/New folder/ki3/PBL2/src" -I"D:/New folder/ki3/PBL2/src/entities" -I"D:/New folder/ki3/PBL2/src/structures" -I"D:/New folder/ki3/PBL2/src/services" -I"D:/New folder/ki3/PBL2/src/repositories"
   OBJECT_DIR = CMakeFiles\tutorfinder_core.dir
   OBJECT_FILE_DIR = CMakeFiles\tutorfinder_core.dir\src\entities
@@ -70,7 +70,7 @@ build CMakeFiles/tutorfinder_core.dir/src/entities/Student.cpp.obj: CXX_COMPILER
 
 build CMakeFiles/tutorfinder_core.dir/src/entities/Tutor.cpp.obj: CXX_COMPILER__tutorfinder_core_unscanned_ D$:/New$ folder/ki3/PBL2/src/entities/Tutor.cpp || cmake_object_order_depends_target_tutorfinder_core
   DEP_FILE = CMakeFiles\tutorfinder_core.dir\src\entities\Tutor.cpp.obj.d
-  FLAGS = -std=c++17
+  FLAGS = -std=c++17 -finput-charset=UTF-8 -fexec-charset=UTF-8
   INCLUDES = -I"D:/New folder/ki3/PBL2/build/tutorfinder_core_autogen/include" -I"D:/New folder/ki3/PBL2/src" -I"D:/New folder/ki3/PBL2/src/entities" -I"D:/New folder/ki3/PBL2/src/structures" -I"D:/New folder/ki3/PBL2/src/services" -I"D:/New folder/ki3/PBL2/src/repositories"
   OBJECT_DIR = CMakeFiles\tutorfinder_core.dir
   OBJECT_FILE_DIR = CMakeFiles\tutorfinder_core.dir\src\entities
@@ -78,7 +78,7 @@ build CMakeFiles/tutorfinder_core.dir/src/entities/Tutor.cpp.obj: CXX_COMPILER__
 
 build CMakeFiles/tutorfinder_core.dir/src/entities/TutoringClass.cpp.obj: CXX_COMPILER__tutorfinder_core_unscanned_ D$:/New$ folder/ki3/PBL2/src/entities/TutoringClass.cpp || cmake_object_order_depends_target_tutorfinder_core
   DEP_FILE = CMakeFiles\tutorfinder_core.dir\src\entities\TutoringClass.cpp.obj.d
-  FLAGS = -std=c++17
+  FLAGS = -std=c++17 -finput-charset=UTF-8 -fexec-charset=UTF-8
   INCLUDES = -I"D:/New folder/ki3/PBL2/build/tutorfinder_core_autogen/include" -I"D:/New folder/ki3/PBL2/src" -I"D:/New folder/ki3/PBL2/src/entities" -I"D:/New folder/ki3/PBL2/src/structures" -I"D:/New folder/ki3/PBL2/src/services" -I"D:/New folder/ki3/PBL2/src/repositories"
   OBJECT_DIR = CMakeFiles\tutorfinder_core.dir
   OBJECT_FILE_DIR = CMakeFiles\tutorfinder_core.dir\src\entities
@@ -86,7 +86,7 @@ build CMakeFiles/tutorfinder_core.dir/src/entities/TutoringClass.cpp.obj: CXX_CO
 
 build CMakeFiles/tutorfinder_core.dir/src/entities/Contract.cpp.obj: CXX_COMPILER__tutorfinder_core_unscanned_ D$:/New$ folder/ki3/PBL2/src/entities/Contract.cpp || cmake_object_order_depends_target_tutorfinder_core
   DEP_FILE = CMakeFiles\tutorfinder_core.dir\src\entities\Contract.cpp.obj.d
-  FLAGS = -std=c++17
+  FLAGS = -std=c++17 -finput-charset=UTF-8 -fexec-charset=UTF-8
   INCLUDES = -I"D:/New folder/ki3/PBL2/build/tutorfinder_core_autogen/include" -I"D:/New folder/ki3/PBL2/src" -I"D:/New folder/ki3/PBL2/src/entities" -I"D:/New folder/ki3/PBL2/src/structures" -I"D:/New folder/ki3/PBL2/src/services" -I"D:/New folder/ki3/PBL2/src/repositories"
   OBJECT_DIR = CMakeFiles\tutorfinder_core.dir
   OBJECT_FILE_DIR = CMakeFiles\tutorfinder_core.dir\src\entities
@@ -94,7 +94,7 @@ build CMakeFiles/tutorfinder_core.dir/src/entities/Contract.cpp.obj: CXX_COMPILE
 
 build CMakeFiles/tutorfinder_core.dir/src/structures/Vector.cpp.obj: CXX_COMPILER__tutorfinder_core_unscanned_ D$:/New$ folder/ki3/PBL2/src/structures/Vector.cpp || cmake_object_order_depends_target_tutorfinder_core
   DEP_FILE = CMakeFiles\tutorfinder_core.dir\src\structures\Vector.cpp.obj.d
-  FLAGS = -std=c++17
+  FLAGS = -std=c++17 -finput-charset=UTF-8 -fexec-charset=UTF-8
   INCLUDES = -I"D:/New folder/ki3/PBL2/build/tutorfinder_core_autogen/include" -I"D:/New folder/ki3/PBL2/src" -I"D:/New folder/ki3/PBL2/src/entities" -I"D:/New folder/ki3/PBL2/src/structures" -I"D:/New folder/ki3/PBL2/src/services" -I"D:/New folder/ki3/PBL2/src/repositories"
   OBJECT_DIR = CMakeFiles\tutorfinder_core.dir
   OBJECT_FILE_DIR = CMakeFiles\tutorfinder_core.dir\src\structures
@@ -102,7 +102,7 @@ build CMakeFiles/tutorfinder_core.dir/src/structures/Vector.cpp.obj: CXX_COMPILE
 
 build CMakeFiles/tutorfinder_core.dir/src/services/MatchingService.cpp.obj: CXX_COMPILER__tutorfinder_core_unscanned_ D$:/New$ folder/ki3/PBL2/src/services/MatchingService.cpp || cmake_object_order_depends_target_tutorfinder_core
   DEP_FILE = CMakeFiles\tutorfinder_core.dir\src\services\MatchingService.cpp.obj.d
-  FLAGS = -std=c++17
+  FLAGS = -std=c++17 -finput-charset=UTF-8 -fexec-charset=UTF-8
   INCLUDES = -I"D:/New folder/ki3/PBL2/build/tutorfinder_core_autogen/include" -I"D:/New folder/ki3/PBL2/src" -I"D:/New folder/ki3/PBL2/src/entities" -I"D:/New folder/ki3/PBL2/src/structures" -I"D:/New folder/ki3/PBL2/src/services" -I"D:/New folder/ki3/PBL2/src/repositories"
   OBJECT_DIR = CMakeFiles\tutorfinder_core.dir
   OBJECT_FILE_DIR = CMakeFiles\tutorfinder_core.dir\src\services
@@ -110,7 +110,7 @@ build CMakeFiles/tutorfinder_core.dir/src/services/MatchingService.cpp.obj: CXX_
 
 build CMakeFiles/tutorfinder_core.dir/src/repositories/FileManager.cpp.obj: CXX_COMPILER__tutorfinder_core_unscanned_ D$:/New$ folder/ki3/PBL2/src/repositories/FileManager.cpp || cmake_object_order_depends_target_tutorfinder_core
   DEP_FILE = CMakeFiles\tutorfinder_core.dir\src\repositories\FileManager.cpp.obj.d
-  FLAGS = -std=c++17
+  FLAGS = -std=c++17 -finput-charset=UTF-8 -fexec-charset=UTF-8
   INCLUDES = -I"D:/New folder/ki3/PBL2/build/tutorfinder_core_autogen/include" -I"D:/New folder/ki3/PBL2/src" -I"D:/New folder/ki3/PBL2/src/entities" -I"D:/New folder/ki3/PBL2/src/structures" -I"D:/New folder/ki3/PBL2/src/services" -I"D:/New folder/ki3/PBL2/src/repositories"
   OBJECT_DIR = CMakeFiles\tutorfinder_core.dir
   OBJECT_FILE_DIR = CMakeFiles\tutorfinder_core.dir\src\repositories
@@ -143,7 +143,7 @@ build cmake_object_order_depends_target_backend_tests: phony || backend_tests_au
 
 build CMakeFiles/backend_tests.dir/backend_tests_autogen/mocs_compilation.cpp.obj: CXX_COMPILER__backend_tests_unscanned_ D$:/New$ folder/ki3/PBL2/build/backend_tests_autogen/mocs_compilation.cpp || cmake_object_order_depends_target_backend_tests
   DEP_FILE = CMakeFiles\backend_tests.dir\backend_tests_autogen\mocs_compilation.cpp.obj.d
-  FLAGS = -std=c++17
+  FLAGS = -std=c++17 -finput-charset=UTF-8 -fexec-charset=UTF-8
   INCLUDES = -I"D:/New folder/ki3/PBL2/build/backend_tests_autogen/include" -I"D:/New folder/ki3/PBL2/src" -I"D:/New folder/ki3/PBL2/src/entities" -I"D:/New folder/ki3/PBL2/src/structures" -I"D:/New folder/ki3/PBL2/src/services" -I"D:/New folder/ki3/PBL2/src/repositories"
   OBJECT_DIR = CMakeFiles\backend_tests.dir
   OBJECT_FILE_DIR = CMakeFiles\backend_tests.dir\backend_tests_autogen
@@ -151,7 +151,7 @@ build CMakeFiles/backend_tests.dir/backend_tests_autogen/mocs_compilation.cpp.ob
 
 build CMakeFiles/backend_tests.dir/tests/backend_test.cpp.obj: CXX_COMPILER__backend_tests_unscanned_ D$:/New$ folder/ki3/PBL2/tests/backend_test.cpp || cmake_object_order_depends_target_backend_tests
   DEP_FILE = CMakeFiles\backend_tests.dir\tests\backend_test.cpp.obj.d
-  FLAGS = -std=c++17
+  FLAGS = -std=c++17 -finput-charset=UTF-8 -fexec-charset=UTF-8
   INCLUDES = -I"D:/New folder/ki3/PBL2/build/backend_tests_autogen/include" -I"D:/New folder/ki3/PBL2/src" -I"D:/New folder/ki3/PBL2/src/entities" -I"D:/New folder/ki3/PBL2/src/structures" -I"D:/New folder/ki3/PBL2/src/services" -I"D:/New folder/ki3/PBL2/src/repositories"
   OBJECT_DIR = CMakeFiles\backend_tests.dir
   OBJECT_FILE_DIR = CMakeFiles\backend_tests.dir\tests
@@ -187,7 +187,7 @@ build cmake_object_order_depends_target_PBL2App: phony || PBL2App_autogen PBL2Ap
 build CMakeFiles/PBL2App.dir/PBL2App_autogen/mocs_compilation.cpp.obj: CXX_COMPILER__PBL2App_unscanned_ D$:/New$ folder/ki3/PBL2/build/PBL2App_autogen/mocs_compilation.cpp || cmake_object_order_depends_target_PBL2App
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\PBL2App.dir\PBL2App_autogen\mocs_compilation.cpp.obj.d
-  FLAGS = -std=c++17
+  FLAGS = -std=c++17 -finput-charset=UTF-8 -fexec-charset=UTF-8
   INCLUDES = -I"D:/New folder/ki3/PBL2/build/PBL2App_autogen/include" -I"D:/New folder/ki3/PBL2/src" -I"D:/New folder/ki3/PBL2/src/ui" -I"D:/New folder/ki3/PBL2/src/entities" -I"D:/New folder/ki3/PBL2/src/structures" -I"D:/New folder/ki3/PBL2/src/services" -I"D:/New folder/ki3/PBL2/src/repositories" -isystem C:/msys64/ucrt64/include/qt6/QtWidgets -isystem C:/msys64/ucrt64/include/qt6 -isystem C:/msys64/ucrt64/include/qt6/QtCore -isystem C:/msys64/ucrt64/share/qt6/mkspecs/win32-g++ -isystem C:/msys64/ucrt64/include/qt6/QtGui
   OBJECT_DIR = CMakeFiles\PBL2App.dir
   OBJECT_FILE_DIR = CMakeFiles\PBL2App.dir\PBL2App_autogen
@@ -196,7 +196,7 @@ build CMakeFiles/PBL2App.dir/PBL2App_autogen/mocs_compilation.cpp.obj: CXX_COMPI
 build CMakeFiles/PBL2App.dir/src/main.cpp.obj: CXX_COMPILER__PBL2App_unscanned_ D$:/New$ folder/ki3/PBL2/src/main.cpp || cmake_object_order_depends_target_PBL2App
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\PBL2App.dir\src\main.cpp.obj.d
-  FLAGS = -std=c++17
+  FLAGS = -std=c++17 -finput-charset=UTF-8 -fexec-charset=UTF-8
   INCLUDES = -I"D:/New folder/ki3/PBL2/build/PBL2App_autogen/include" -I"D:/New folder/ki3/PBL2/src" -I"D:/New folder/ki3/PBL2/src/ui" -I"D:/New folder/ki3/PBL2/src/entities" -I"D:/New folder/ki3/PBL2/src/structures" -I"D:/New folder/ki3/PBL2/src/services" -I"D:/New folder/ki3/PBL2/src/repositories" -isystem C:/msys64/ucrt64/include/qt6/QtWidgets -isystem C:/msys64/ucrt64/include/qt6 -isystem C:/msys64/ucrt64/include/qt6/QtCore -isystem C:/msys64/ucrt64/share/qt6/mkspecs/win32-g++ -isystem C:/msys64/ucrt64/include/qt6/QtGui
   OBJECT_DIR = CMakeFiles\PBL2App.dir
   OBJECT_FILE_DIR = CMakeFiles\PBL2App.dir\src
@@ -205,7 +205,7 @@ build CMakeFiles/PBL2App.dir/src/main.cpp.obj: CXX_COMPILER__PBL2App_unscanned_ 
 build CMakeFiles/PBL2App.dir/src/ui/LoginWindow.cpp.obj: CXX_COMPILER__PBL2App_unscanned_ D$:/New$ folder/ki3/PBL2/src/ui/LoginWindow.cpp || cmake_object_order_depends_target_PBL2App
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\PBL2App.dir\src\ui\LoginWindow.cpp.obj.d
-  FLAGS = -std=c++17
+  FLAGS = -std=c++17 -finput-charset=UTF-8 -fexec-charset=UTF-8
   INCLUDES = -I"D:/New folder/ki3/PBL2/build/PBL2App_autogen/include" -I"D:/New folder/ki3/PBL2/src" -I"D:/New folder/ki3/PBL2/src/ui" -I"D:/New folder/ki3/PBL2/src/entities" -I"D:/New folder/ki3/PBL2/src/structures" -I"D:/New folder/ki3/PBL2/src/services" -I"D:/New folder/ki3/PBL2/src/repositories" -isystem C:/msys64/ucrt64/include/qt6/QtWidgets -isystem C:/msys64/ucrt64/include/qt6 -isystem C:/msys64/ucrt64/include/qt6/QtCore -isystem C:/msys64/ucrt64/share/qt6/mkspecs/win32-g++ -isystem C:/msys64/ucrt64/include/qt6/QtGui
   OBJECT_DIR = CMakeFiles\PBL2App.dir
   OBJECT_FILE_DIR = CMakeFiles\PBL2App.dir\src\ui
@@ -214,7 +214,7 @@ build CMakeFiles/PBL2App.dir/src/ui/LoginWindow.cpp.obj: CXX_COMPILER__PBL2App_u
 build CMakeFiles/PBL2App.dir/src/ui/MainWindow.cpp.obj: CXX_COMPILER__PBL2App_unscanned_ D$:/New$ folder/ki3/PBL2/src/ui/MainWindow.cpp || cmake_object_order_depends_target_PBL2App
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\PBL2App.dir\src\ui\MainWindow.cpp.obj.d
-  FLAGS = -std=c++17
+  FLAGS = -std=c++17 -finput-charset=UTF-8 -fexec-charset=UTF-8
   INCLUDES = -I"D:/New folder/ki3/PBL2/build/PBL2App_autogen/include" -I"D:/New folder/ki3/PBL2/src" -I"D:/New folder/ki3/PBL2/src/ui" -I"D:/New folder/ki3/PBL2/src/entities" -I"D:/New folder/ki3/PBL2/src/structures" -I"D:/New folder/ki3/PBL2/src/services" -I"D:/New folder/ki3/PBL2/src/repositories" -isystem C:/msys64/ucrt64/include/qt6/QtWidgets -isystem C:/msys64/ucrt64/include/qt6 -isystem C:/msys64/ucrt64/include/qt6/QtCore -isystem C:/msys64/ucrt64/share/qt6/mkspecs/win32-g++ -isystem C:/msys64/ucrt64/include/qt6/QtGui
   OBJECT_DIR = CMakeFiles\PBL2App.dir
   OBJECT_FILE_DIR = CMakeFiles\PBL2App.dir\src\ui
