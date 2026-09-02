@@ -11,156 +11,239 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QProgressBar>
-#include <QPainter>
-#include <QPen>
 #include <QPushButton>
-#include <QScrollArea>
 #include <QSizePolicy>
 #include <QStackedWidget>
 #include <QStringList>
 #include <QTableWidget>
 #include <QTableWidgetItem>
-#include <QVariant>
 #include <QVBoxLayout>
 #include <QWidget>
 
 namespace {
 
-QLabel* makeLabel(const QString& text, const QString& style = QString()) {
-    auto* label = new QLabel(text);
-    if (!style.isEmpty()) {
-        label->setStyleSheet(style);
+const QString NAVY = "#071426";
+const QString NAVY_2 = "#0D1D33";
+const QString BLUE = "#1677D2";
+const QString BLUE_2 = "#3B9AF2";
+const QString BG = "#F5F7FB";
+const QString CARD = "#FFFFFF";
+const QString BORDER = "#E5EAF0";
+const QString TEXT = "#162033";
+const QString MUTED = "#7A8494";
+const QString GREEN = "#18A66A";
+const QString GREEN_BG = "#E8F8F1";
+const QString ORANGE = "#D88719";
+const QString ORANGE_BG = "#FFF3DE";
+const QString RED = "#D64A4A";
+const QString RED_BG = "#FDECEC";
+
+QLabel* label(const QString& text, int size = 11, bool bold = false,
+              const QString& color = TEXT) {
+    auto* l = new QLabel(text);
+    l->setStyleSheet(QString("color:%1;font-size:%2px;%3")
+                     .arg(color).arg(size).arg(bold ? "font-weight:700;" : ""));
+    return l;
+}
+
+QFrame* card(QWidget* parent = nullptr) {
+    auto* f = new QFrame(parent);
+    f->setObjectName("card");
+    f->setStyleSheet(
+        "QFrame#card { background:#FFFFFF; border:1px solid #E5EAF0; "
+        "border-radius:12px; }");
+    return f;
+}
+
+QPushButton* button(const QString& text, bool primary = true, QWidget* parent = nullptr) {
+    auto* b = new QPushButton(text, parent);
+    b->setCursor(Qt::PointingHandCursor);
+    b->setMinimumHeight(34);
+    b->setStyleSheet(primary
+        ? "QPushButton { background:#1677D2; color:white; border:none; border-radius:7px; "
+          "padding:0 15px; font-size:10px; font-weight:700; }"
+          "QPushButton:hover { background:#0E66BA; }"
+        : "QPushButton { background:white; color:#1677D2; border:1px solid #B9D7F3; "
+          "border-radius:7px; padding:0 15px; font-size:10px; font-weight:600; }"
+          "QPushButton:hover { background:#F0F7FE; }");
+    return b;
+}
+
+QLabel* badge(const QString& text, const QString& bg, const QString& fg) {
+    auto* b = new QLabel(text);
+    b->setAlignment(Qt::AlignCenter);
+    b->setStyleSheet(QString(
+        "background:%1;color:%2;border-radius:10px;padding:4px 9px;"
+        "font-size:9px;font-weight:700;").arg(bg, fg));
+    b->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
+    return b;
+}
+
+QProgressBar* progress(int value, const QString& color = BLUE) {
+    auto* p = new QProgressBar;
+    p->setRange(0, 100);
+    p->setValue(value);
+    p->setTextVisible(false);
+    p->setFixedHeight(7);
+    p->setStyleSheet(QString(
+        "QProgressBar { background:#E9EDF2; border:none; border-radius:4px; }"
+        "QProgressBar::chunk { background:%1; border-radius:4px; }").arg(color));
+    return p;
+}
+
+QWidget* avatar(const QString& initials, const QString& bg = "#E5F1FC") {
+    auto* a = new QLabel(initials);
+    a->setAlignment(Qt::AlignCenter);
+    a->setFixedSize(32, 32);
+    a->setStyleSheet(QString(
+        "background:%1;color:#176DB8;border-radius:16px;font-size:9px;font-weight:800;")
+        .arg(bg));
+    return a;
+}
+
+void styleTable(QTableWidget* table) {
+    table->setAlternatingRowColors(false);
+    table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    table->setSelectionMode(QAbstractItemView::SingleSelection);
+    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    table->setShowGrid(false);
+    table->verticalHeader()->setVisible(false);
+    table->setFocusPolicy(Qt::NoFocus);
+    table->setStyleSheet(
+        "QTableWidget { background:#FFFFFF; border:1px solid #E5EAF0; "
+        "border-radius:10px; color:#273246; font-size:10px; }"
+        "QTableWidget::item { border-bottom:1px solid #EEF1F4; padding:6px 8px; }"
+        "QTableWidget::item:selected { background:#EDF6FF; color:#16314D; }"
+        "QHeaderView::section { background:#F4F6F8; color:#687386; border:none; "
+        "border-bottom:1px solid #E5EAF0; padding:9px 7px; font-size:8px; "
+        "font-weight:800; }");
+    table->horizontalHeader()->setStretchLastSection(true);
+    table->horizontalHeader()->setMinimumSectionSize(55);
+    table->verticalHeader()->setDefaultSectionSize(45);
+}
+
+QWidget* header(QWidget* parent) {
+    auto* h = new QWidget(parent);
+    h->setFixedHeight(58);
+    h->setStyleSheet("background:#FFFFFF;border-bottom:1px solid #E8ECF1;");
+    auto* l = new QHBoxLayout(h);
+    l->setContentsMargins(18, 10, 16, 10);
+    l->setSpacing(10);
+
+    auto* search = new QLineEdit(h);
+    search->setPlaceholderText("⌕  Tìm kiếm hệ thống...");
+    search->setFixedSize(285, 34);
+    search->setStyleSheet(
+        "QLineEdit { background:#F3F5F8; border:1px solid #EEF1F4; "
+        "border-radius:8px; padding:0 12px; color:#344054; font-size:10px; }"
+        "QLineEdit:focus { border:1px solid #B7D7F5; background:#FFFFFF; }");
+    l->addWidget(search);
+    l->addStretch();
+
+    auto* notification = new QPushButton("●", h);
+    notification->setFixedSize(28, 28);
+    notification->setStyleSheet(
+        "QPushButton { background:transparent;color:#1677D2;border:none;font-size:9px; }");
+    l->addWidget(notification);
+
+    auto* account = new QWidget(h);
+    auto* al = new QHBoxLayout(account);
+    al->setContentsMargins(8,0,0,0);
+    al->setSpacing(8);
+    auto* at = label("Admin User\nAdmin", 9, true);
+    at->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    al->addWidget(at);
+    auto* aa = new QLabel("A");
+    aa->setAlignment(Qt::AlignCenter);
+    aa->setFixedSize(30,30);
+    aa->setStyleSheet("background:#101827;color:white;border-radius:15px;font-size:10px;font-weight:800;");
+    al->addWidget(aa);
+    l->addWidget(account);
+    return h;
+}
+
+QWidget* titleBlock(const QString& eyebrow, const QString& titleText,
+                    const QString& desc, QPushButton** action = nullptr,
+                    const QString& actionText = QString()) {
+    auto* row = new QWidget;
+    auto* l = new QHBoxLayout(row);
+    l->setContentsMargins(0,0,0,0);
+    auto* texts = new QVBoxLayout;
+    texts->setContentsMargins(0,0,0,0);
+    texts->setSpacing(2);
+    texts->addWidget(label(eyebrow, 8, true, "#6D7890"));
+    texts->addWidget(label(titleText, 21, true, TEXT));
+    auto* d = label(desc, 9, false, MUTED);
+    d->setWordWrap(true);
+    texts->addWidget(d);
+    l->addLayout(texts, 1);
+    if (action) {
+        *action = button(actionText, true);
+        l->addWidget(*action, 0, Qt::AlignTop);
     }
-    return label;
-}
-
-QFrame* makeLine(QWidget* parent = nullptr) {
-    auto* line = new QFrame(parent);
-    line->setFixedHeight(1);
-    line->setStyleSheet("background: #e8e7eb; border: none;");
-    return line;
-}
-
-QProgressBar* makeProgress(int value, const QString& chunkColor, int height = 5) {
-    auto* bar = new QProgressBar();
-    bar->setRange(0, 100);
-    bar->setValue(value);
-    bar->setTextVisible(false);
-    bar->setFixedHeight(height);
-    bar->setStyleSheet(
-        QString(
-            "QProgressBar { background: #dedee3; border: none; border-radius: %1px; }"
-            "QProgressBar::chunk { background: %2; border-radius: %1px; }")
-            .arg(height / 2)
-            .arg(chunkColor));
-    return bar;
-}
-
-QWidget* makeStatusDot(const QString& color, const QString& text, const QString& value) {
-    auto* row = new QWidget();
-    auto* layout = new QHBoxLayout(row);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->setSpacing(8);
-
-    auto* dot = new QFrame(row);
-    dot->setFixedSize(8, 8);
-    dot->setStyleSheet(QString("background: %1; border: none; border-radius: 4px;").arg(color));
-
-    auto* label = makeLabel(text, "color: #292832; font-size: 12px;");
-    auto* count = makeLabel(value, "color: #191821; font-size: 12px; font-weight: 700;");
-
-    layout->addWidget(dot);
-    layout->addWidget(label);
-    layout->addStretch();
-    layout->addWidget(count);
     return row;
 }
 
-QLabel* makeBadge(const QString& text, const QString& bg, const QString& fg) {
-    auto* badge = new QLabel(text);
-    badge->setAlignment(Qt::AlignCenter);
-    badge->setStyleSheet(QString(
-        "background: %1; color: %2; border: none; border-radius: 6px; "
-        "padding: 4px 7px; font-size: 10px; font-weight: 600;")
-        .arg(bg, fg));
-    badge->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
-    return badge;
+QFrame* makeMetric(const QString& icon, const QString& titleText,
+               const QString& value, const QString& note,
+               const QString& accent = BLUE) {
+    auto* f = card();
+    auto* l = new QVBoxLayout(f);
+    l->setContentsMargins(14,13,14,12);
+    l->setSpacing(4);
+
+    auto* top = new QHBoxLayout;
+    top->setContentsMargins(0,0,0,0);
+    top->addWidget(label(titleText, 9, false, MUTED));
+    top->addStretch();
+    auto* i = new QLabel(icon);
+    i->setAlignment(Qt::AlignCenter);
+    i->setFixedSize(30,30);
+    i->setStyleSheet(QString("background:%1;color:%1;border-radius:9px;").arg(accent+"22"));
+    i->setStyleSheet(QString("background:%1;color:%2;border-radius:9px;font-size:11px;font-weight:800;")
+                     .arg(accent+"22", accent));
+    top->addWidget(i);
+    l->addLayout(top);
+    l->addWidget(label(value, 20, true, TEXT));
+    l->addWidget(label(note, 8, true, accent));
+    return f;
 }
 
-QWidget* makeStudentCell(const QString& initials, const QString& name,
-                         const QString& avatarBg, const QString& avatarFg) {
-    auto* cell = new QWidget();
-    auto* layout = new QHBoxLayout(cell);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->setSpacing(8);
-
-    auto* avatar = new QLabel(initials);
-    avatar->setAlignment(Qt::AlignCenter);
-    avatar->setFixedSize(25, 25);
-    avatar->setStyleSheet(QString(
-        "background: %1; color: %2; border: none; border-radius: 12px; "
-        "font-size: 9px; font-weight: 700;")
-        .arg(avatarBg, avatarFg));
-
-    auto* nameLabel = makeLabel(name, "color: #22212a; font-size: 11px;");
-    layout->addWidget(avatar);
-    layout->addWidget(nameLabel);
-    layout->addStretch();
-    return cell;
+void addFilter(QHBoxLayout* l, const QString& placeholder,
+               const QStringList& values, int width = 190) {
+    auto* edit = new QLineEdit;
+    edit->setPlaceholderText(placeholder);
+    edit->setFixedHeight(38);
+    edit->setMinimumWidth(width);
+    edit->setStyleSheet(
+        "QLineEdit { background:white;border:1px solid #DDE4EC;border-radius:8px;"
+        "padding:0 11px;font-size:10px;color:#344054; }"
+        "QLineEdit:focus { border:1px solid #86BCEB; }");
+    l->addWidget(edit, 1);
+    Q_UNUSED(values);
 }
 
-QFrame* makeStatCard(const QString& title,
-                     const QString& value,
-                     const QString& iconText,
-                     const QString& iconBg,
-                     const QString& iconFg,
-                     const QString& delta,
-                     const QString& deltaColor,
-                     bool showProgress = false) {
-    auto* card = new QFrame();
-    card->setObjectName("dashboardStatCard");
-    card->setMinimumHeight(126);
-    card->setStyleSheet(
-        "QFrame#dashboardStatCard { background: #f0eef0; border: none; border-radius: 4px; }");
+QComboBox* combo(const QStringList& items, int width = 150) {
+    auto* c = new QComboBox;
+    c->addItems(items);
+    c->setFixedSize(width, 38);
+    c->setStyleSheet(
+        "QComboBox { background:white;border:1px solid #DDE4EC;border-radius:8px;"
+        "padding:0 10px;font-size:10px;color:#344054; }"
+        "QComboBox::drop-down { border:none;width:24px; }");
+    return c;
+}
 
-    auto* layout = new QVBoxLayout(card);
-    layout->setContentsMargins(16, 15, 14, 13);
-    layout->setSpacing(3);
-
-    auto* topRow = new QHBoxLayout();
-    topRow->setContentsMargins(0, 0, 0, 0);
-    topRow->setSpacing(8);
-
-    auto* textCol = new QVBoxLayout();
-    textCol->setContentsMargins(0, 0, 0, 0);
-    textCol->setSpacing(1);
-    textCol->addWidget(makeLabel(title,
-        "color: #6b6871; font-size: 12px; font-weight: 500;"));
-    textCol->addWidget(makeLabel(value,
-        "color: #17161c; font-size: 22px; font-weight: 700;"));
-
-    auto* icon = new QLabel(iconText);
-    icon->setAlignment(Qt::AlignCenter);
-    icon->setFixedSize(38, 38);
-    icon->setStyleSheet(QString(
-        "background: %1; color: %2; border: none; border-radius: 8px; "
-        "font-size: 12px; font-weight: 800;")
-        .arg(iconBg, iconFg));
-
-    topRow->addLayout(textCol, 1);
-    topRow->addWidget(icon, 0, Qt::AlignTop);
-    layout->addLayout(topRow);
-    layout->addStretch();
-
-    if (showProgress) {
-        layout->addWidget(makeProgress(78, "#0867ba", 5));
-    } else {
-        auto* deltaLabel = makeLabel(delta + "  so với tháng trước",
-            QString("color: %1; font-size: 9px;").arg(deltaColor));
-        layout->addWidget(deltaLabel);
-    }
-
-    return card;
+QFrame* infoTile(const QString& titleText, const QString& value,
+                 const QString& color = BLUE) {
+    auto* f = card();
+    f->setMinimumHeight(70);
+    auto* l = new QVBoxLayout(f);
+    l->setContentsMargins(12,10,12,9);
+    l->setSpacing(3);
+    l->addWidget(label(titleText, 8, true, MUTED));
+    l->addWidget(label(value, 16, true, color));
+    return f;
 }
 
 } // namespace
@@ -171,18 +254,22 @@ MainWindow::MainWindow(QWidget* parent)
     tutors = FileManager::loadTutors();
 
     setWindowTitle("Quản lý gia sư");
-    resize(1280, 800);
-    setMinimumSize(1050, 690);
+    resize(1360, 820);
+    setMinimumSize(1100, 700);
 
     auto* central = new QWidget(this);
     auto* mainLayout = new QHBoxLayout(central);
-    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->setContentsMargins(0,0,0,0);
     mainLayout->setSpacing(0);
 
-    auto* sidebar = createSidebar();
-    mainLayout->addWidget(sidebar, 0);
+    mainLayout->addWidget(createSidebar(), 0);
 
-    stackedWidget = new QStackedWidget(this);
+    // Quan trọng: QStackedWidget là con trực tiếp của central để sidebar
+    // luôn hiển thị đúng khi chuyển trang.
+    stackedWidget = new QStackedWidget(central);
+    stackedWidget->setObjectName("contentStack");
+    stackedWidget->setStyleSheet("QStackedWidget#contentStack { background:#F5F7FB; border:none; }");
+
     stackedWidget->addWidget(createDashboardPage());
     stackedWidget->addWidget(createStudentPage());
     stackedWidget->addWidget(createTutorPage());
@@ -196,988 +283,624 @@ MainWindow::MainWindow(QWidget* parent)
 }
 
 MainWindow::~MainWindow() {
-    for (std::size_t i = 0; i < students.size(); ++i) {
-        delete students[i];
-    }
-    for (std::size_t i = 0; i < tutors.size(); ++i) {
-        delete tutors[i];
-    }
+    for (std::size_t i = 0; i < students.size(); ++i) delete students[i];
+    for (std::size_t i = 0; i < tutors.size(); ++i) delete tutors[i];
 }
 
 QString MainWindow::joinStrings(const std::vector<std::string>& items) {
     QStringList parts;
     for (const auto& item : items) {
-        if (!item.empty()) {
-            parts << QString::fromStdString(item);
-        }
+        if (!item.empty()) parts << QString::fromStdString(item);
     }
     return parts.join(", ");
 }
 
 QWidget* MainWindow::createSidebar() {
-    auto* panel = new QWidget(this);
-    panel->setFixedWidth(232);
-    panel->setObjectName("mainSidebar");
-    panel->setStyleSheet("QWidget#mainSidebar { background: #061323; color: white; }");
+    auto* panel = new QWidget;
+    panel->setFixedWidth(118);
+    panel->setObjectName("sidebar");
+    panel->setStyleSheet(
+        "QWidget#sidebar { background:#071426; color:white; }");
 
-    auto* layout = new QVBoxLayout(panel);
-    layout->setContentsMargins(14, 14, 14, 12);
-    layout->setSpacing(4);
+    auto* l = new QVBoxLayout(panel);
+    l->setContentsMargins(8,12,8,10);
+    l->setSpacing(4);
 
-    auto* brandRow = new QWidget(panel);
-    auto* brandLayout = new QHBoxLayout(brandRow);
-    brandLayout->setContentsMargins(9, 3, 4, 13);
-    brandLayout->setSpacing(8);
-
-    auto* brandIcon = new QLabel("◇");
-    brandIcon->setAlignment(Qt::AlignCenter);
-    brandIcon->setFixedSize(20, 20);
-    brandIcon->setStyleSheet("color: #2d8cff; font-size: 18px; font-weight: 800;");
-    auto* brandTitle = new QLabel("QUẢN LÝ GIA SƯ");
-    brandTitle->setStyleSheet("color: #ffffff; font-size: 12px; font-weight: 800;");
-    brandLayout->addWidget(brandIcon);
-    brandLayout->addWidget(brandTitle);
-    brandLayout->addStretch();
-    layout->addWidget(brandRow);
+    auto* brand = new QFrame(panel);
+    brand->setStyleSheet("background:#0D1D33;border:1px solid #19304B;border-radius:10px;");
+    auto* bl = new QVBoxLayout(brand);
+    bl->setContentsMargins(7,9,7,9);
+    bl->setSpacing(2);
+    auto* logo = new QLabel("TF");
+    logo->setAlignment(Qt::AlignCenter);
+    logo->setFixedSize(28,28);
+    logo->setStyleSheet("background:#1677D2;color:white;border-radius:8px;font-size:10px;font-weight:900;");
+    bl->addWidget(logo,0,Qt::AlignCenter);
+    auto* bt = label("TUTOR",8,true,"#FFFFFF");
+    bt->setAlignment(Qt::AlignCenter);
+    auto* bs = label("FLOW",8,true,"#5AA8EA");
+    bs->setAlignment(Qt::AlignCenter);
+    bl->addWidget(bt); bl->addWidget(bs);
+    l->addWidget(brand);
+    l->addSpacing(8);
 
     auto* group = new QButtonGroup(panel);
     group->setExclusive(true);
 
-    const QStringList labels = {
-        "▦   Tổng quan",
-        "♙   Học sinh",
-        "♟   Gia sư",
-        "⌕   Tìm gia sư",
-        "▣   Lớp học",
-        "▤   Hợp đồng",
-        "▥   Thống kê"
+    const QStringList names = {
+        "⌂\nTổng quan", "♙\nHọc sinh", "♟\nGia sư", "⌕\nTìm gia sư",
+        "▣\nLớp học", "▤\nHợp đồng", "▥\nThống kê"
     };
 
-    for (int i = 0; i < labels.size(); ++i) {
-        auto* btn = new QPushButton(labels[i], panel);
-        btn->setCheckable(true);
-        btn->setCursor(Qt::PointingHandCursor);
-        btn->setFixedHeight(44);
-        btn->setStyleSheet(
-            "QPushButton { text-align: left; padding: 0 10px; color: #f4f7fb; "
-            "background: transparent; border: none; border-radius: 4px; font-size: 12px; }"
-            "QPushButton:hover { background: #0b1d31; }"
-            "QPushButton:checked { color: #ffffff; font-weight: 700; background: #07192c; }"
-        );
-        if (i == 0) {
-            btn->setChecked(true);
-        }
-        group->addButton(btn, i);
-        connect(btn, &QPushButton::clicked, this, [this, i]() { switchPage(i); });
-        layout->addWidget(btn);
+    for (int i=0; i<names.size(); ++i) {
+        auto* b = new QPushButton(names[i], panel);
+        b->setCheckable(true);
+        b->setFixedHeight(48);
+        b->setCursor(Qt::PointingHandCursor);
+        b->setStyleSheet(
+            "QPushButton { background:transparent;color:#AEBBCA;border:none;"
+            "border-radius:8px;font-size:8px;font-weight:600;padding:3px 2px; }"
+            "QPushButton:hover { background:#10243B;color:white; }"
+            "QPushButton:checked { background:#1677D2;color:white;font-weight:800; }");
+        if (i==0) b->setChecked(true);
+        group->addButton(b,i);
+        connect(b,&QPushButton::clicked,this,[this,i](){ switchPage(i); });
+        l->addWidget(b);
     }
 
-    layout->addStretch();
+    l->addStretch();
 
-    auto* userBox = new QWidget(panel);
-    auto* userLayout = new QHBoxLayout(userBox);
-    userLayout->setContentsMargins(7, 8, 7, 9);
-    userLayout->setSpacing(8);
+    auto* profile = new QFrame(panel);
+    profile->setStyleSheet("background:#0D1D33;border:1px solid #19304B;border-radius:8px;");
+    auto* pl = new QVBoxLayout(profile);
+    pl->setContentsMargins(5,7,5,7);
+    auto* pa = new QLabel("A");
+    pa->setAlignment(Qt::AlignCenter);
+    pa->setFixedSize(25,25);
+    pa->setStyleSheet("background:#1677D2;color:white;border-radius:13px;font-size:9px;font-weight:800;");
+    pl->addWidget(pa,0,Qt::AlignCenter);
+    auto* pn = label("Admin",8,true,"#FFFFFF");
+    pn->setAlignment(Qt::AlignCenter);
+    pl->addWidget(pn);
+    auto* pr = label("Quản trị",7,false,"#8392A7");
+    pr->setAlignment(Qt::AlignCenter);
+    pl->addWidget(pr);
+    l->addWidget(profile);
 
-    auto* avatar = new QLabel("A");
-    avatar->setAlignment(Qt::AlignCenter);
-    avatar->setFixedSize(28, 28);
-    avatar->setStyleSheet(
-        "background: #237bd2; color: white; border-radius: 14px; "
-        "font-weight: 700; font-size: 11px;");
-
-    auto* userText = new QLabel("Admin\nQuản trị viên");
-    userText->setStyleSheet("color: #ffffff; font-size: 10px; font-weight: 600;");
-    userLayout->addWidget(avatar);
-    userLayout->addWidget(userText);
-    userLayout->addStretch();
-    layout->addWidget(userBox);
-
-    auto* logoutButton = new QPushButton("↪  Đăng xuất", panel);
-    logoutButton->setFixedHeight(36);
-    logoutButton->setCursor(Qt::PointingHandCursor);
-    logoutButton->setStyleSheet(
-        "QPushButton { background: #112137; color: white; border: none; border-radius: 3px; "
-        "font-size: 10px; font-weight: 600; }"
-        "QPushButton:hover { background: #182d48; }"
-    );
-    layout->addWidget(logoutButton);
-
+    auto* logout = new QPushButton("↪", panel);
+    logout->setToolTip("Đăng xuất");
+    logout->setFixedHeight(30);
+    logout->setStyleSheet(
+        "QPushButton { background:#10243B;color:#D9E2EC;border:none;border-radius:7px;font-size:12px; }"
+        "QPushButton:hover { background:#173450; }");
+    l->addWidget(logout);
     return panel;
 }
 
 QWidget* MainWindow::createDashboardPage() {
-    auto* page = new QWidget(this);
-    page->setObjectName("dashboardPage");
-    page->setStyleSheet("QWidget#dashboardPage { background: #fbfafc; }");
-
+    auto* page = new QWidget;
     auto* root = new QVBoxLayout(page);
-    root->setContentsMargins(0, 0, 0, 0);
+    root->setContentsMargins(0,0,0,0);
     root->setSpacing(0);
 
-    // Header giống ảnh mẫu: ô tìm kiếm bên trái, chuông và tài khoản bên phải.
-    auto* header = new QWidget(page);
-    header->setFixedHeight(52);
-    header->setStyleSheet("background: #ffffff; border-bottom: 1px solid #ecebf0;");
-    auto* headerLayout = new QHBoxLayout(header);
-    headerLayout->setContentsMargins(22, 8, 18, 8);
-    headerLayout->setSpacing(10);
+    root->addWidget(header(page));
 
-    auto* search = new QLineEdit(header);
-    search->setPlaceholderText("⌕  Tìm kiếm hệ thống...");
-    search->setFixedWidth(315);
-    search->setFixedHeight(32);
-    search->setStyleSheet(
-        "QLineEdit { background: #f1f0f3; color: #33313a; border: none; border-radius: 4px; "
-        "padding: 0 12px; font-size: 11px; }"
-        "QLineEdit::placeholder { color: #9a98a1; }");
-    headerLayout->addWidget(search);
-    headerLayout->addStretch();
+    auto* content = new QWidget;
+    auto* l = new QVBoxLayout(content);
+    l->setContentsMargins(18,16,18,16);
+    l->setSpacing(12);
 
-    auto* bell = new QPushButton("♧", header);
-    bell->setFixedSize(32, 32);
-    bell->setStyleSheet(
-        "QPushButton { background: transparent; color: #55525a; border: none; font-size: 17px; }"
-        "QPushButton:hover { background: #f1f0f3; border-radius: 16px; }");
-    headerLayout->addWidget(bell);
+    QPushButton* unused = nullptr;
+    l->addWidget(titleBlock("DASHBOARD", "Tổng quan hệ thống",
+                            "Theo dõi nhanh học sinh, gia sư, lớp học và hiệu quả ghép nối.", &unused,
+                            "Báo cáo mới"));
 
-    auto* sep = new QFrame(header);
-    sep->setFixedSize(1, 30);
-    sep->setStyleSheet("background: #ebe9ed; border: none;");
-    headerLayout->addWidget(sep);
+    auto* actions = new QHBoxLayout;
+    actions->setSpacing(7);
+    auto* a1 = button("＋ Thêm học sinh", true);
+    auto* a2 = button("＋ Thêm gia sư", true);
+    auto* a3 = button("⌕ Tìm gia sư", false);
+    auto* a4 = button("▣ Tạo lớp học", false);
+    actions->addStretch(); actions->addWidget(a1); actions->addWidget(a2); actions->addWidget(a3); actions->addWidget(a4);
+    l->addLayout(actions);
 
-    auto* account = new QWidget(header);
-    auto* accountLayout = new QHBoxLayout(account);
-    accountLayout->setContentsMargins(0, 0, 0, 0);
-    accountLayout->setSpacing(8);
+    connect(a1,&QPushButton::clicked,this,[this](){switchPage(1);});
+    connect(a2,&QPushButton::clicked,this,[this](){switchPage(2);});
+    connect(a3,&QPushButton::clicked,this,[this](){switchPage(3);});
+    connect(a4,&QPushButton::clicked,this,[this](){switchPage(4);});
 
-    auto* accountText = new QLabel("Admin User\n<span style='color:#8b8992; font-size:9px;'>Sẵn sàng</span>");
-    accountText->setTextFormat(Qt::RichText);
-    accountText->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    accountText->setStyleSheet("color: #3b3941; font-size: 11px; font-weight: 600;");
-    auto* accountAvatar = new QLabel("●");
-    accountAvatar->setAlignment(Qt::AlignCenter);
-    accountAvatar->setFixedSize(32, 32);
-    accountAvatar->setStyleSheet(
-        "background: #171924; color: white; border-radius: 16px; font-size: 12px;");
-    accountLayout->addWidget(accountText);
-    accountLayout->addWidget(accountAvatar);
-    headerLayout->addWidget(account);
-    root->addWidget(header);
+    auto* metrics = new QHBoxLayout;
+    metrics->setSpacing(10);
+    metrics->addWidget(makeMetric("HS","Tổng học sinh","125","+12% so với tháng trước"),1);
+    metrics->addWidget(makeMetric("GS","Tổng gia sư","68","+5% so với tháng trước","#2C8BE0"),1);
+    metrics->addWidget(makeMetric("LH","Lớp đang hoạt động","42","-2% so với tháng trước",ORANGE),1);
+    metrics->addWidget(makeMetric("%","Tỷ lệ ghép thành công","78%","Đang tăng tốt",GREEN),1);
+    l->addLayout(metrics);
 
-    auto* content = new QWidget(page);
-    auto* contentLayout = new QVBoxLayout(content);
-    contentLayout->setContentsMargins(24, 18, 24, 18);
-    contentLayout->setSpacing(14);
+    auto* body = new QHBoxLayout;
+    body->setSpacing(10);
 
-    // Tiêu đề + nhóm nút thao tác.
-    auto* headingRow = new QWidget(content);
-    auto* headingLayout = new QHBoxLayout(headingRow);
-    headingLayout->setContentsMargins(0, 0, 0, 0);
-    headingLayout->setSpacing(8);
+    auto* status = card();
+    auto* sl = new QVBoxLayout(status);
+    sl->setContentsMargins(14,13,14,13);
+    sl->setSpacing(9);
+    sl->addWidget(label("Trạng thái hôm nay",13,true));
+    sl->addWidget(label("HỌC SINH",8,true,MUTED));
+    sl->addWidget(label("Đã ghép                         98",10,false,TEXT));
+    sl->addWidget(progress(78));
+    sl->addWidget(label("Chưa ghép                       27",10,false,TEXT));
+    sl->addWidget(progress(22,"#9AA4B2"));
+    sl->addSpacing(5);
+    sl->addWidget(label("GIA SƯ",8,true,MUTED));
+    sl->addWidget(label("Sẵn sàng                        45",10,false,TEXT));
+    sl->addWidget(label("Đang bận                        18",10,false,TEXT));
+    sl->addWidget(label("Không hoạt động                  5",10,false,TEXT));
+    body->addWidget(status,0);
 
-    auto* headingText = new QVBoxLayout();
-    headingText->setContentsMargins(0, 0, 0, 0);
-    headingText->setSpacing(1);
-    headingText->addWidget(makeLabel("BÁO CÁO TỔNG HỢP",
-        "color: #435267; font-size: 9px; font-weight: 700;"));
-    headingText->addWidget(makeLabel("Tổng quan hệ thống",
-        "color: #111016; font-size: 20px; font-weight: 800;"));
-    headingLayout->addLayout(headingText);
-    headingLayout->addStretch();
+    auto* recent = card();
+    auto* rl = new QVBoxLayout(recent);
+    rl->setContentsMargins(14,12,14,12);
+    auto* rh = new QHBoxLayout;
+    rh->addWidget(label("Lớp học gần đây",13,true));
+    rh->addStretch();
+    auto* see = button("XEM TẤT CẢ",false);
+    see->setFixedHeight(28);
+    rh->addWidget(see);
+    rl->addLayout(rh);
 
-    const QString actionStylePrimary =
-        "QPushButton { background: #0c0d17; color: white; border: 1px solid #0c0d17; "
-        "border-radius: 2px; padding: 8px 13px; font-size: 10px; font-weight: 700; }"
-        "QPushButton:hover { background: #20222f; }";
-    const QString actionStyleBlue =
-        "QPushButton { background: #0873c8; color: white; border: 1px solid #0873c8; "
-        "border-radius: 2px; padding: 8px 13px; font-size: 10px; font-weight: 700; }"
-        "QPushButton:hover { background: #0967b0; }";
-    const QString actionStyleOutline =
-        "QPushButton { background: #ffffff; color: #0666b3; border: 1px solid #6ca8dc; "
-        "border-radius: 2px; padding: 8px 13px; font-size: 10px; font-weight: 600; }"
-        "QPushButton:hover { background: #f2f8fd; }";
-
-    auto* addStudentBtn = new QPushButton("♙  Thêm học sinh", headingRow);
-    auto* addTutorBtn = new QPushButton("♟  Thêm gia sư", headingRow);
-    auto* findTutorBtn = new QPushButton("⌕  Tìm gia sư", headingRow);
-    auto* createClassBtn = new QPushButton("▣  Tạo lớp học", headingRow);
-    addStudentBtn->setStyleSheet(actionStylePrimary);
-    addTutorBtn->setStyleSheet(actionStyleBlue);
-    findTutorBtn->setStyleSheet(actionStyleOutline);
-    createClassBtn->setStyleSheet(actionStyleOutline);
-    addStudentBtn->setCursor(Qt::PointingHandCursor);
-    addTutorBtn->setCursor(Qt::PointingHandCursor);
-    findTutorBtn->setCursor(Qt::PointingHandCursor);
-    createClassBtn->setCursor(Qt::PointingHandCursor);
-
-    connect(addStudentBtn, &QPushButton::clicked, this, [this]() { switchPage(1); });
-    connect(addTutorBtn, &QPushButton::clicked, this, [this]() { switchPage(2); });
-    connect(findTutorBtn, &QPushButton::clicked, this, [this]() { switchPage(3); });
-    connect(createClassBtn, &QPushButton::clicked, this, [this]() { switchPage(4); });
-
-    headingLayout->addWidget(addStudentBtn);
-    headingLayout->addWidget(addTutorBtn);
-    headingLayout->addWidget(findTutorBtn);
-    headingLayout->addWidget(createClassBtn);
-    contentLayout->addWidget(headingRow);
-
-    // 4 thẻ thống kê nằm trên cùng một hàng như ảnh mẫu.
-    auto* statsRow = new QWidget(content);
-    auto* statsLayout = new QHBoxLayout(statsRow);
-    statsLayout->setContentsMargins(0, 0, 0, 0);
-    statsLayout->setSpacing(10);
-    statsLayout->addWidget(makeStatCard("Tổng học sinh", "125", "HS", "#e1e2e7", "#0a0b11", "+12%", "#0475c5"), 1);
-    statsLayout->addWidget(makeStatCard("Tổng gia sư", "68", "GS", "#d9e9f7", "#0872c3", "+5%", "#0475c5"), 1);
-    statsLayout->addWidget(makeStatCard("Lớp đang hoạt động", "42", "LH", "#e5dedc", "#24140f", "-2%", "#d42828"), 1);
-    statsLayout->addWidget(makeStatCard("Tỷ lệ ghép thành\ncông", "78%", "%", "#dce9f6", "#075ea3", QString(), "#0475c5", true), 1);
-    contentLayout->addWidget(statsRow);
-
-    // Khu vực chính: cột trái trạng thái, cột phải lớp gần đây + thông báo.
-    auto* mainBody = new QWidget(content);
-    auto* bodyLayout = new QHBoxLayout(mainBody);
-    bodyLayout->setContentsMargins(0, 0, 0, 0);
-    bodyLayout->setSpacing(12);
-
-    auto* leftColumn = new QWidget(mainBody);
-    leftColumn->setMaximumWidth(315);
-    auto* leftLayout = new QVBoxLayout(leftColumn);
-    leftLayout->setContentsMargins(0, 0, 0, 0);
-    leftLayout->setSpacing(12);
-
-    auto* studentStatus = new QFrame(leftColumn);
-    studentStatus->setObjectName("studentStatusCard");
-    studentStatus->setStyleSheet(
-        "QFrame#studentStatusCard { background: #f0eef0; border: none; border-radius: 4px; }");
-    auto* studentLayout = new QVBoxLayout(studentStatus);
-    studentLayout->setContentsMargins(16, 15, 16, 14);
-    studentLayout->setSpacing(9);
-    studentLayout->addWidget(makeLabel("Trạng thái học sinh",
-        "color: #18171d; font-size: 12px; font-weight: 700;"));
-    studentLayout->addWidget(makeLine(studentStatus));
-    studentLayout->addWidget(makeStatusDot("#0672c7", "Đã ghép", "98"));
-    studentLayout->addWidget(makeProgress(78, "#0672c7", 5));
-    studentLayout->addWidget(makeStatusDot("#878991", "Chưa ghép", "27"));
-    studentLayout->addWidget(makeProgress(22, "#84868d", 5));
-    leftLayout->addWidget(studentStatus, 1);
-
-    auto* tutorStatus = new QFrame(leftColumn);
-    tutorStatus->setObjectName("tutorStatusCard");
-    tutorStatus->setStyleSheet(
-        "QFrame#tutorStatusCard { background: #f0eef0; border: none; border-radius: 4px; }");
-    auto* tutorLayout = new QVBoxLayout(tutorStatus);
-    tutorLayout->setContentsMargins(16, 15, 16, 14);
-    tutorLayout->setSpacing(9);
-    tutorLayout->addWidget(makeLabel("Trạng thái gia sư",
-        "color: #18171d; font-size: 12px; font-weight: 700;"));
-    tutorLayout->addWidget(makeLine(tutorStatus));
-    tutorLayout->addWidget(makeStatusDot("#0871c4", "Sẵn sàng", "45"));
-    tutorLayout->addWidget(makeStatusDot("#24120f", "Bận", "18"));
-    tutorLayout->addWidget(makeStatusDot("#8b8c92", "Không hoạt động", "5"));
-    tutorLayout->addStretch();
-
-    auto* miniBars = new QWidget(tutorStatus);
-    auto* miniBarsLayout = new QHBoxLayout(miniBars);
-    miniBarsLayout->setContentsMargins(0, 4, 0, 0);
-    miniBarsLayout->setSpacing(7);
-    auto* b1 = new QFrame(miniBars);
-    b1->setFixedSize(63, 48);
-    b1->setStyleSheet("background: #0871c4; border: none;");
-    auto* b2 = new QFrame(miniBars);
-    b2->setFixedSize(63, 22);
-    b2->setStyleSheet("background: #25120f; border: none;");
-    auto* b3 = new QFrame(miniBars);
-    b3->setFixedSize(63, 8);
-    b3->setStyleSheet("background: #86888f; border: none;");
-    miniBarsLayout->addWidget(b1, 0, Qt::AlignBottom);
-    miniBarsLayout->addWidget(b2, 0, Qt::AlignBottom);
-    miniBarsLayout->addWidget(b3, 0, Qt::AlignBottom);
-    miniBarsLayout->addStretch();
-    tutorLayout->addWidget(miniBars);
-    leftLayout->addWidget(tutorStatus, 1);
-    bodyLayout->addWidget(leftColumn, 32);
-
-    auto* rightColumn = new QWidget(mainBody);
-    auto* rightLayout = new QVBoxLayout(rightColumn);
-    rightLayout->setContentsMargins(0, 0, 0, 0);
-    rightLayout->setSpacing(12);
-
-    auto* classesCard = new QFrame(rightColumn);
-    classesCard->setObjectName("recentClassesCard");
-    classesCard->setStyleSheet(
-        "QFrame#recentClassesCard { background: #f0eef0; border: none; border-radius: 4px; }");
-    auto* classesLayout = new QVBoxLayout(classesCard);
-    classesLayout->setContentsMargins(14, 13, 14, 10);
-    classesLayout->setSpacing(8);
-
-    auto* classesHeader = new QHBoxLayout();
-    classesHeader->setContentsMargins(0, 0, 0, 0);
-    classesHeader->addWidget(makeLabel("Lớp học gần đây",
-        "color: #18171d; font-size: 12px; font-weight: 700;"));
-    classesHeader->addStretch();
-    auto* seeAll = new QPushButton("XEM TẤT CẢ", classesCard);
-    seeAll->setStyleSheet(
-        "QPushButton { background: transparent; color: #0065b4; border: none; "
-        "font-size: 9px; font-weight: 800; }"
-        "QPushButton:hover { text-decoration: underline; }");
-    classesHeader->addWidget(seeAll);
-    classesLayout->addLayout(classesHeader);
-    classesLayout->addWidget(makeLine(classesCard));
-
-    auto* table = new QTableWidget(4, 6, classesCard);
-    table->setHorizontalHeaderLabels({"MÃ\nLỚP", "HỌC SINH", "GIA SƯ", "MÔN\nHỌC", "TRẠNG\nTHÁI", "THAO\nTÁC"});
-    table->verticalHeader()->setVisible(false);
-    table->setShowGrid(false);
-    table->setFrameShape(QFrame::Box);
-    table->setLineWidth(1);
-    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    table->setSelectionMode(QAbstractItemView::NoSelection);
-    table->setFocusPolicy(Qt::NoFocus);
-    table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    table->setAlternatingRowColors(false);
-    table->setStyleSheet(
-        "QTableWidget { background: #ffffff; border: 1px solid #d8d7dc; color: #2b2930; font-size: 10px; }"
-        "QHeaderView::section { background: #f0eef0; color: #62606a; border: none; "
-        "padding: 4px 3px; font-size: 8px; font-weight: 800; }"
-        "QTableWidget::item { border: none; padding: 3px; }"
-    );
-    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    table->setColumnWidth(0, 66);
-    table->setColumnWidth(1, 150);
-    table->setColumnWidth(2, 120);
-    table->setColumnWidth(3, 95);
-    table->setColumnWidth(4, 95);
-    table->setColumnWidth(5, 60);
-    table->horizontalHeader()->setMinimumSectionSize(45);
-    table->verticalHeader()->setDefaultSectionSize(48);
-    table->setFixedHeight(242);
-
-    struct RecentClassRow {
-        QString code;
-        QString initials;
-        QString student;
-        QString tutor;
-        QString subject;
-        QString status;
-        QString statusBg;
-        QString statusFg;
-        QString avatarBg;
-        QString avatarFg;
+    auto* t = new QTableWidget(4,6);
+    t->setHorizontalHeaderLabels({"MÃ LỚP","HỌC SINH","GIA SƯ","MÔN","TRẠNG THÁI","THAO TÁC"});
+    styleTable(t);
+    const QString rows[4][6] = {
+        {"LH-1042","Nguyễn Minh Anh","Trần Thị B","Toán 10","Đang học","Xem"},
+        {"LH-1043","Lê Hoàng M","Phạm Văn C","Tiếng Anh","Chờ xử lý","Xem"},
+        {"LH-1044","Vũ Minh T","Chưa có","Vật lý","Cần gia sư","Xem"},
+        {"LH-1045","Hoàng Tú K","Ngô Phương T","Hóa 9","Đang học","Xem"}
     };
+    for(int i=0;i<4;++i) for(int j=0;j<6;++j) t->setItem(i,j,new QTableWidgetItem(rows[i][j]));
+    rl->addWidget(t,1);
+    body->addWidget(recent,1);
+    l->addLayout(body,1);
 
-    const RecentClassRow rows[] = {
-        {"LH-\n1042", "NA", "Nguyễn Văn A", "Trần\nThị B", "Toán\nLớp 10", "Đang\nhọc", "#d9e9f7", "#075f9e", "#0f3d68", "#ffffff"},
-        {"LH-\n1043", "LM", "Lê Hoàng M", "Phạm\nVăn C", "Tiếng\nAnh\nIELTS", "Chờ\nxếp\nlịch", "#e6e6e8", "#52515a", "#6a260e", "#ffffff"},
-        {"LH-\n1044", "VT", "Vũ Minh T", "Chưa\ncó", "Vật Lý\n12", "Cần\ngia\nsư", "#f8dddd", "#c12c2c", "#ffd3d3", "#cf3636"},
-        {"LH-\n1045", "HK", "Hoàng Tú K", "Ngô\nPhương\nT", "Hóa\nLớp 9", "Đang\nhọc", "#d9e9f7", "#075f9e", "#49a7f4", "#ffffff"}
-    };
+    auto* footer = card();
+    auto* fl = new QHBoxLayout(footer);
+    fl->setContentsMargins(12,9,12,9);
+    fl->addWidget(label("💡  Gợi ý hệ thống",9,true,BLUE));
+    fl->addWidget(label("Có 27 học sinh chưa được ghép. Hãy chạy Tìm Gia Sư Thông Minh để tối ưu tỷ lệ ghép.",9,false,MUTED),1);
+    l->addWidget(footer);
 
-    for (int r = 0; r < 4; ++r) {
-        auto* codeItem = new QTableWidgetItem(rows[r].code);
-        codeItem->setForeground(QColor("#0067b6"));
-        QFont codeFont = codeItem->font();
-        codeFont.setBold(true);
-        codeItem->setFont(codeFont);
-        codeItem->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-        table->setItem(r, 0, codeItem);
-        table->setCellWidget(r, 1, makeStudentCell(rows[r].initials, rows[r].student, rows[r].avatarBg, rows[r].avatarFg));
-        table->setItem(r, 2, new QTableWidgetItem(rows[r].tutor));
-        table->setItem(r, 3, new QTableWidgetItem(rows[r].subject));
-        table->setCellWidget(r, 4, makeBadge(rows[r].status, rows[r].statusBg, rows[r].statusFg));
-        auto* more = new QLabel("⋯");
-        more->setAlignment(Qt::AlignCenter);
-        more->setStyleSheet("color: #6d6b72; font-size: 15px;");
-        table->setCellWidget(r, 5, more);
-    }
-
-    classesLayout->addWidget(table);
-    rightLayout->addWidget(classesCard, 1);
-
-    auto* newsCard = new QFrame(rightColumn);
-    newsCard->setObjectName("newsCard");
-    newsCard->setStyleSheet(
-        "QFrame#newsCard { background: #f0eef0; border: none; border-radius: 4px; }");
-    auto* newsLayout = new QHBoxLayout(newsCard);
-    newsLayout->setContentsMargins(16, 12, 16, 12);
-    newsLayout->setSpacing(12);
-
-    auto* newsText = new QVBoxLayout();
-    newsText->setContentsMargins(0, 0, 0, 0);
-    newsText->setSpacing(4);
-    newsText->addWidget(makeLabel("Chương trình đào tạo mới",
-        "color: #222129; font-size: 11px; font-weight: 700;"));
-    auto* newsDesc = makeLabel(
-        "Cập nhật tài liệu giảng dạy môn Toán cấp 3 theo chương trình\n"
-        "GDPT 2018. Vui lòng thông báo cho các gia sư liên quan.",
-        "color: #66646c; font-size: 9px;");
-    newsDesc->setWordWrap(true);
-    newsText->addWidget(newsDesc);
-    newsLayout->addLayout(newsText, 1);
-
-    // Khối QR giả lập bằng các ô vuông nhỏ, giúp bố cục giống ảnh tham chiếu.
-    auto* qr = new QFrame(newsCard);
-    qr->setFixedSize(74, 58);
-    qr->setStyleSheet("background: #ffffff; border: none; padding: 3px;");
-    auto* qrGrid = new QGridLayout(qr);
-    qrGrid->setContentsMargins(5, 5, 5, 5);
-    qrGrid->setSpacing(1);
-    const int pattern[7][9] = {
-        {1,1,1,0,1,0,1,1,1},
-        {1,0,1,1,0,1,1,0,1},
-        {1,1,1,0,1,0,1,1,1},
-        {0,1,0,1,1,1,0,1,0},
-        {1,0,1,1,0,1,1,0,1},
-        {0,1,1,0,1,0,0,1,1},
-        {1,1,0,1,0,1,1,1,0}
-    };
-    for (int r = 0; r < 7; ++r) {
-        for (int c = 0; c < 9; ++c) {
-            auto* px = new QFrame(qr);
-            px->setFixedSize(5, 5);
-            px->setStyleSheet(pattern[r][c]
-                ? "background: #0b6fbd; border: none;"
-                : "background: transparent; border: none;");
-            qrGrid->addWidget(px, r, c);
-        }
-    }
-    newsLayout->addWidget(qr, 0, Qt::AlignRight | Qt::AlignVCenter);
-    rightLayout->addWidget(newsCard, 0);
-
-    bodyLayout->addWidget(rightColumn, 68);
-    contentLayout->addWidget(mainBody, 1);
-    root->addWidget(content, 1);
-
+    root->addWidget(content,1);
     return page;
 }
 
 QWidget* MainWindow::createStudentPage() {
-    auto* page = new QWidget(this);
-    page->setStyleSheet("background: #f5f7fb;");
-
+    auto* page = new QWidget;
     auto* root = new QVBoxLayout(page);
-    root->setContentsMargins(24, 20, 24, 20);
-    root->setSpacing(14);
+    root->setContentsMargins(0,0,0,0);
+    root->setSpacing(0);
+    root->addWidget(header(page));
 
-    auto* header = new QWidget(page);
-    auto* headerLayout = new QHBoxLayout(header);
-    headerLayout->setContentsMargins(0, 0, 0, 0);
+    auto* content = new QWidget;
+    auto* l = new QVBoxLayout(content);
+    l->setContentsMargins(18,16,18,16);
+    l->setSpacing(12);
 
-    auto* title = new QLabel("Quản lý học sinh");
-    title->setStyleSheet("font-size: 20px; font-weight: 700; color: #1f2937;");
-    headerLayout->addWidget(title);
-    headerLayout->addStretch();
+    QPushButton* add = nullptr;
+    l->addWidget(titleBlock("QUẢN LÝ", "Quản lý học sinh",
+                            "Danh sách học sinh và nhu cầu học tập.", &add,
+                            "＋ Thêm học sinh"));
 
-    auto* addBtn = new QPushButton("+ Thêm học sinh");
-    addBtn->setStyleSheet("QPushButton { background: #0d6efd; color: white; border-radius: 8px; padding: 10px 16px; }");
-    headerLayout->addWidget(addBtn);
-    root->addWidget(header);
+    auto* summary = new QHBoxLayout;
+    summary->setSpacing(9);
+    summary->addWidget(infoTile("Tổng học sinh",QString::number(static_cast<int>(students.size()) > 0 ? students.size() : 125)),1);
+    summary->addWidget(infoTile("Đã ghép","98",GREEN),1);
+    summary->addWidget(infoTile("Chưa ghép","27",ORANGE),1);
+    l->addLayout(summary);
 
-    auto* filterBar = new QWidget(page);
-    auto* filterLayout = new QHBoxLayout(filterBar);
-    filterLayout->setContentsMargins(0, 0, 0, 0);
-    filterLayout->setSpacing(12);
+    auto* filters = card();
+    auto* fl = new QHBoxLayout(filters);
+    fl->setContentsMargins(10,10,10,10);
+    fl->setSpacing(8);
+    addFilter(fl,"⌕  Tìm kiếm theo mã, tên học sinh...",{},300);
+    fl->addWidget(combo({"Tất cả khối lớp","Lớp 10","Lớp 11","Lớp 12"},145));
+    fl->addWidget(combo({"Tất cả trạng thái","Đã ghép","Chưa ghép"},145));
+    fl->addStretch();
+    auto* reset = button("Đặt lại",false);
+    reset->setFixedWidth(82);
+    fl->addWidget(reset);
+    l->addWidget(filters);
 
-    auto* search = new QLineEdit(filterBar);
-    search->setPlaceholderText("Tìm kiếm học sinh...");
-    search->setFixedWidth(320);
-    filterLayout->addWidget(search);
-
-    auto* filterClass = new QComboBox(filterBar);
-    filterClass->addItem("Tất cả lớp");
-    filterClass->addItem("Lớp 10");
-    filterClass->addItem("Lớp 11");
-    filterClass->addItem("Lớp 12");
-    filterLayout->addWidget(filterClass);
-
-    auto* filterStatus = new QComboBox(filterBar);
-    filterStatus->addItem("Tất cả trạng thái");
-    filterStatus->addItem("Đã ghép");
-    filterStatus->addItem("Chưa ghép");
-    filterLayout->addWidget(filterStatus);
-
-    filterLayout->addStretch();
-    root->addWidget(filterBar);
-
-    auto* table = new QTableWidget(0, 7, page);
-    table->setHorizontalHeaderLabels({"Mã HS", "Học sinh", "Lớp & Môn", "Lịch rảnh", "Ngân sách", "Trạng thái", "Thao tác"});
-    table->setAlternatingRowColors(true);
-    table->setSelectionBehavior(QAbstractItemView::SelectRows);
-    table->horizontalHeader()->setStretchLastSection(true);
-    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    table->setStyleSheet("QTableWidget { background: white; border: 1px solid #e2e8f0; border-radius: 10px; gridline-color: #edf2f7; }"
-                        "QHeaderView::section { background: #eef2f7; color: #334155; padding: 10px; font-weight: 600; }");
-
+    auto* table = new QTableWidget(0,7);
+    table->setHorizontalHeaderLabels({"MÃ HS","HỌC SINH","LỚP & MÔN","LỊCH RẢNH","NGÂN SÁCH","TRẠNG THÁI","THAO TÁC"});
+    styleTable(table);
     populateStudentTable(table);
-    table->setColumnWidth(0, 90);
-    table->setColumnWidth(1, 180);
-    table->setColumnWidth(2, 180);
-    table->setColumnWidth(3, 160);
-    table->setColumnWidth(4, 120);
-    table->setColumnWidth(5, 120);
-    root->addWidget(table);
+    for(int i=0;i<table->rowCount();++i) {
+        auto* st = table->item(i,5);
+        if(st) st->setTextAlignment(Qt::AlignCenter);
+        auto* action = table->item(i,6);
+        if(action) action->setForeground(QColor(BLUE));
+    }
+    l->addWidget(table,1);
 
+    auto* foot = new QHBoxLayout;
+    foot->addWidget(label(QString("Hiển thị %1 học sinh").arg(table->rowCount()),9,false,MUTED));
+    foot->addStretch();
+    foot->addWidget(label("‹   1   2   3   ›",9,true,BLUE));
+    l->addLayout(foot);
+
+    root->addWidget(content,1);
     return page;
 }
 
 QWidget* MainWindow::createTutorPage() {
-    auto* page = new QWidget(this);
-    page->setStyleSheet("background: #f5f7fb;");
-
+    auto* page = new QWidget;
     auto* root = new QVBoxLayout(page);
-    root->setContentsMargins(24, 20, 24, 20);
-    root->setSpacing(14);
+    root->setContentsMargins(0,0,0,0);
+    root->setSpacing(0);
+    root->addWidget(header(page));
 
-    auto* header = new QWidget(page);
-    auto* headerLayout = new QHBoxLayout(header);
-    headerLayout->setContentsMargins(0, 0, 0, 0);
+    auto* content = new QWidget;
+    auto* l = new QVBoxLayout(content);
+    l->setContentsMargins(18,16,18,16);
+    l->setSpacing(12);
 
-    auto* title = new QLabel("Quản lý gia sư");
-    title->setStyleSheet("font-size: 20px; font-weight: 700; color: #1f2937;");
-    headerLayout->addWidget(title);
-    headerLayout->addStretch();
+    QPushButton* add = nullptr;
+    l->addWidget(titleBlock("QUẢN LÝ", "Quản lý gia sư",
+                            "Danh sách gia sư, chuyên môn và lịch nhận lớp.", &add,
+                            "＋ Thêm gia sư"));
 
-    auto* addBtn = new QPushButton("+ Thêm gia sư");
-    addBtn->setStyleSheet("QPushButton { background: #0d6efd; color: white; border-radius: 8px; padding: 10px 16px; }");
-    headerLayout->addWidget(addBtn);
-    root->addWidget(header);
+    auto* summary = new QHBoxLayout;
+    summary->setSpacing(9);
+    summary->addWidget(infoTile("Tổng gia sư",QString::number(static_cast<int>(tutors.size()) > 0 ? tutors.size() : 68)),1);
+    summary->addWidget(infoTile("Sẵn sàng","45",GREEN),1);
+    summary->addWidget(infoTile("Đang bận","18",ORANGE),1);
+    summary->addWidget(infoTile("Mức phí TB","180k",BLUE),1);
+    l->addLayout(summary);
 
-    auto* filterBar = new QWidget(page);
-    auto* filterLayout = new QHBoxLayout(filterBar);
-    filterLayout->setContentsMargins(0, 0, 0, 0);
-    filterLayout->setSpacing(12);
+    auto* filters = card();
+    auto* fl = new QHBoxLayout(filters);
+    fl->setContentsMargins(10,10,10,10);
+    fl->setSpacing(8);
+    addFilter(fl,"⌕  Tìm kiếm gia sư...",{},250);
+    fl->addWidget(combo({"Tất cả môn","Toán","Lý","Hóa","Tiếng Anh"},135));
+    fl->addWidget(combo({"Tất cả khu vực","Hải Châu","Thanh Khê","Liên Chiểu"},155));
+    fl->addWidget(combo({"Tất cả trạng thái","Sẵn sàng","Bận"},135));
+    l->addWidget(filters);
 
-    auto* search = new QLineEdit(filterBar);
-    search->setPlaceholderText("Tìm kiếm gia sư...");
-    search->setFixedWidth(320);
-    filterLayout->addWidget(search);
-
-    auto* subjectBox = new QComboBox(filterBar);
-    subjectBox->addItem("Tất cả môn");
-    subjectBox->addItem("Toán");
-    subjectBox->addItem("Lý");
-    subjectBox->addItem("Hóa");
-    filterLayout->addWidget(subjectBox);
-
-    auto* areaBox = new QComboBox(filterBar);
-    areaBox->addItem("Tất cả khu vực");
-    areaBox->addItem("Hải Châu");
-    areaBox->addItem("Thanh Khê");
-    areaBox->addItem("Liên Chiểu");
-    filterLayout->addWidget(areaBox);
-
-    auto* statusBox = new QComboBox(filterBar);
-    statusBox->addItem("Tất cả trạng thái");
-    statusBox->addItem("Sẵn sàng");
-    statusBox->addItem("Bận");
-    statusBox->addItem("Không hoạt động");
-    filterLayout->addWidget(statusBox);
-
-    filterLayout->addStretch();
-    root->addWidget(filterBar);
-
-    auto* table = new QTableWidget(0, 9, page);
-    table->setHorizontalHeaderLabels({"Mã GS", "Gia sư", "Môn dạy", "Kinh nghiệm", "Học phí", "Lịch rảnh", "Khu vực", "Trạng thái", "Thao tác"});
-    table->setAlternatingRowColors(true);
-    table->setSelectionBehavior(QAbstractItemView::SelectRows);
-    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    table->horizontalHeader()->setStretchLastSection(true);
-    table->setStyleSheet("QTableWidget { background: white; border: 1px solid #e2e8f0; border-radius: 10px; gridline-color: #edf2f7; }"
-                        "QHeaderView::section { background: #eef2f7; color: #334155; padding: 10px; font-weight: 600; }");
-
+    auto* table = new QTableWidget(0,9);
+    table->setHorizontalHeaderLabels({"MÃ GS","GIA SƯ","MÔN DẠY","KINH NGHIỆM","HỌC PHÍ","LỊCH RẢNH","KHU VỰC","TRẠNG THÁI","THAO TÁC"});
+    styleTable(table);
     populateTutorTable(table);
+    for(int i=0;i<table->rowCount();++i) {
+        auto* action=table->item(i,8);
+        if(action) action->setForeground(QColor(BLUE));
+    }
+    l->addWidget(table,1);
+    auto* foot = new QHBoxLayout;
+    foot->addWidget(label(QString("Hiển thị %1 gia sư").arg(table->rowCount()),9,false,MUTED));
+    foot->addStretch();
+    foot->addWidget(label("‹   1   2   3   ›",9,true,BLUE));
+    l->addLayout(foot);
 
-    table->setColumnWidth(0, 80);
-    table->setColumnWidth(1, 170);
-    table->setColumnWidth(2, 150);
-    table->setColumnWidth(3, 120);
-    table->setColumnWidth(4, 130);
-    table->setColumnWidth(5, 150);
-    table->setColumnWidth(6, 120);
-    table->setColumnWidth(7, 120);
-    root->addWidget(table);
-
+    root->addWidget(content,1);
     return page;
 }
 
 QWidget* MainWindow::createMatchingPage() {
-    auto* page = new QWidget(this);
-    page->setStyleSheet("background: #f5f7fb;");
-
+    auto* page = new QWidget;
     auto* root = new QVBoxLayout(page);
-    root->setContentsMargins(24, 20, 24, 20);
-    root->setSpacing(18);
+    root->setContentsMargins(0,0,0,0);
+    root->setSpacing(0);
+    root->addWidget(header(page));
 
-    auto* topBar = new QWidget(page);
-    auto* topLayout = new QHBoxLayout(topBar);
-    topLayout->setContentsMargins(0, 0, 0, 0);
+    auto* content = new QWidget;
+    auto* l = new QVBoxLayout(content);
+    l->setContentsMargins(18,16,18,16);
+    l->setSpacing(12);
 
-    auto* title = new QLabel("Tìm gia sư phù hợp");
-    title->setStyleSheet("font-size: 22px; font-weight: 700; color: #0f172a;");
-    topLayout->addWidget(title);
-    topLayout->addStretch();
+    l->addWidget(titleBlock("SMART MATCHING","Tìm Gia Sư Thông Minh",
+                            "Hệ thống tự động phân tích yêu cầu học sinh và đề xuất gia sư phù hợp nhất."));
 
-    auto* actionBtn = new QPushButton("Tìm gia sư phù hợp");
-    actionBtn->setStyleSheet("QPushButton { background: #1f2937; color: white; border-radius: 8px; padding: 10px 18px; }");
-    topLayout->addWidget(actionBtn);
-    root->addWidget(topBar);
+    auto* chooseRow = new QHBoxLayout;
+    chooseRow->setSpacing(10);
 
-    auto* selectionRow = new QWidget(page);
-    auto* selectionLayout = new QHBoxLayout(selectionRow);
-    selectionLayout->setContentsMargins(0, 0, 0, 0);
-    selectionLayout->setSpacing(20);
+    auto* studentCard = card();
+    auto* sc = new QVBoxLayout(studentCard);
+    sc->setContentsMargins(14,12,14,12);
+    auto* sh = new QHBoxLayout;
+    sh->addWidget(label("BƯỚC 1",8,true,BLUE));
+    sh->addStretch();
+    sh->addWidget(badge("SV001","#E8F3FC",BLUE));
+    sc->addLayout(sh);
+    sc->addWidget(label("Chọn học sinh",10,true,MUTED));
+    auto* studentCombo = combo({"SV001 - Nguyễn Minh Anh","SV002 - Trần Văn Bảo","SV003 - Lê Thị Lan"},260);
+    sc->addWidget(studentCombo);
+    chooseRow->addWidget(studentCard,1);
 
-    auto* leftSelect = new QFrame(selectionRow);
-    leftSelect->setStyleSheet("QFrame { background: white; border: 1px solid #e2e8f0; border-radius: 12px; }");
-    leftSelect->setFixedHeight(120);
-    auto* leftLayout = new QVBoxLayout(leftSelect);
-    auto* leftTitle = new QLabel("BƯỚC 1: CHỌN HỌC SINH");
-    leftTitle->setStyleSheet("font-size: 14px; font-weight: 700; color: #1f2937;");
-    auto* studentCombo = new QComboBox(leftSelect);
-    studentCombo->addItem("SV001 - Nguyễn Minh Anh");
-    studentCombo->addItem("SV002 - Trần Văn Bảo");
-    studentCombo->addItem("SV003 - Lê Thị Lan");
-    leftLayout->addWidget(leftTitle);
-    leftLayout->addWidget(studentCombo);
-    selectionLayout->addWidget(leftSelect, 1);
+    auto* request = card();
+    auto* rc = new QVBoxLayout(request);
+    rc->setContentsMargins(14,12,14,12);
+    auto* rh = new QHBoxLayout;
+    rh->addWidget(label("YÊU CẦU HỌC SINH",8,true,BLUE));
+    rh->addStretch();
+    rh->addWidget(badge("Đã tải","#E8F8F1",GREEN));
+    rc->addLayout(rh);
+    auto* reqGrid = new QGridLayout;
+    reqGrid->setHorizontalSpacing(22);
+    reqGrid->setVerticalSpacing(5);
+    reqGrid->addWidget(label("Môn học",8,false,MUTED),0,0);
+    reqGrid->addWidget(label("Toán",10,true),1,0);
+    reqGrid->addWidget(label("Khu vực",8,false,MUTED),0,1);
+    reqGrid->addWidget(label("Hải Châu",10,true),1,1);
+    reqGrid->addWidget(label("Ngân sách",8,false,MUTED),0,2);
+    reqGrid->addWidget(label("200.000đ/buổi",10,true,BLUE),1,2);
+    reqGrid->addWidget(label("Lịch học",8,false,MUTED),0,3);
+    reqGrid->addWidget(label("T2, T4, T6",10,true),1,3);
+    rc->addLayout(reqGrid);
+    chooseRow->addWidget(request,2);
+    l->addLayout(chooseRow);
 
-    auto* rightSelect = new QFrame(selectionRow);
-    rightSelect->setStyleSheet("QFrame { background: white; border: 1px solid #e2e8f0; border-radius: 12px; }");
-    rightSelect->setFixedHeight(120);
-    auto* rightLayout = new QVBoxLayout(rightSelect);
-    auto* rightTitle = new QLabel("YÊU CẦU CỦA HỌC SINH");
-    rightTitle->setStyleSheet("font-size: 14px; font-weight: 700; color: #0f172a;");
-    auto* reqLabel = new QLabel("Môn học: Toán\nKhu vực: Hải Châu\nNgân sách: 200.000đ\nLịch học: T2, T4, T6");
-    reqLabel->setStyleSheet("color: #475569;");
-    reqLabel->setWordWrap(true);
-    rightLayout->addWidget(rightTitle);
-    rightLayout->addWidget(reqLabel);
-    selectionLayout->addWidget(rightSelect, 1);
+    auto* find = button("✦  TÌM GIA SƯ PHÙ HỢP",true);
+    find->setFixedSize(210,38);
+    l->addWidget(find,0,Qt::AlignCenter);
 
-    root->addWidget(selectionRow);
+    auto* result = new QHBoxLayout;
+    result->setSpacing(10);
 
-    auto* resultArea = new QWidget(page);
-    auto* resultLayout = new QHBoxLayout(resultArea);
-    resultLayout->setSpacing(18);
+    auto* candidate = new QFrame;
+    candidate->setStyleSheet("QFrame { background:#071426;border-radius:14px; }");
+    candidate->setMinimumWidth(270);
+    auto* cl = new QVBoxLayout(candidate);
+    cl->setContentsMargins(18,16,18,16);
+    cl->setSpacing(7);
+    auto* top = new QHBoxLayout;
+    top->addWidget(badge("TOP 1","#F7C948","#182033"));
+    top->addStretch();
+    top->addWidget(label("95%",19,true,"#5DB2FF"));
+    cl->addLayout(top);
+    cl->addWidget(avatar("TQH","#DDEEFF"),0,Qt::AlignCenter);
+    auto* cn = label("Trần Quốc Huy",18,true,"#FFFFFF");
+    cn->setAlignment(Qt::AlignCenter);
+    cl->addWidget(cn);
+    auto* cc = label("GS003  •  Toán, Lý  •  8 năm kinh nghiệm",8,false,"#9FB0C4");
+    cc->setAlignment(Qt::AlignCenter);
+    cl->addWidget(cc);
+    cl->addSpacing(6);
+    cl->addWidget(label("ĐỘ PHÙ HỢP",8,true,"#8FA2B8"));
+    cl->addWidget(progress(95,"#2C94E9"));
+    auto* perfect = label("95 / 100 điểm",9,true,"#5DB2FF");
+    perfect->setAlignment(Qt::AlignRight);
+    cl->addWidget(perfect);
+    result->addWidget(candidate,1);
 
-    auto* candidate = new QFrame(resultArea);
-    candidate->setStyleSheet("QFrame { background: #0f172a; color: white; border-radius: 16px; }");
-    candidate->setMinimumHeight(360);
-    auto* candidateLayout = new QVBoxLayout(candidate);
-    candidateLayout->setContentsMargins(20, 20, 20, 20);
-    candidateLayout->setSpacing(10);
+    auto* detail = card();
+    auto* dl = new QVBoxLayout(detail);
+    dl->setContentsMargins(15,14,15,14);
+    dl->setSpacing(9);
+    dl->addWidget(label("Chi tiết matching",14,true));
+    auto* chips = new QHBoxLayout;
+    chips->addWidget(infoTile("Kinh nghiệm","25/25",BLUE));
+    chips->addWidget(infoTile("Khu vực","10/10",GREEN));
+    chips->addWidget(infoTile("Học phí","40/45",ORANGE));
+    chips->addWidget(infoTile("Lịch học","20/20",BLUE));
+    dl->addLayout(chips);
 
-    auto* badge = new QLabel("TOP 1");
-    badge->setStyleSheet("background: #facc15; color: #111827; padding: 6px 12px; border-radius: 8px; font-weight: 700;");
-    badge->setFixedWidth(70);
-    candidateLayout->addWidget(badge);
+    dl->addWidget(label("VÌ SAO GIA SƯ NÀY PHÙ HỢP?",10,true,BLUE));
+    const QStringList reasons = {
+        "✓ Kinh nghiệm chuyên môn đáp ứng tốt yêu cầu môn Toán.",
+        "✓ Khu vực Hải Châu phù hợp với địa điểm học.",
+        "✓ Học phí nằm trong ngân sách của học sinh.",
+        "✓ Lịch T2, T4, T6 trùng khớp hoàn toàn."
+    };
+    for(const auto& r: reasons) dl->addWidget(label(r,9,false,MUTED));
+    dl->addStretch();
 
-    auto* avatar = new QLabel("Ảnh");
-    avatar->setAlignment(Qt::AlignCenter);
-    avatar->setFixedSize(120, 120);
-    avatar->setStyleSheet("background: #dbeafe; border-radius: 60px; color: #1e3a8a; font-weight: 700;");
-    candidateLayout->addWidget(avatar, 0, Qt::AlignCenter);
+    auto* actions = new QHBoxLayout;
+    auto* detailBtn = button("Xem chi tiết",false);
+    auto* chooseBtn = button("♥  Chọn gia sư này",true);
+    actions->addStretch(); actions->addWidget(detailBtn); actions->addWidget(chooseBtn);
+    dl->addLayout(actions);
+    result->addWidget(detail,2);
+    l->addLayout(result,1);
 
-    auto* name = new QLabel("Trần Quốc Huy");
-    name->setAlignment(Qt::AlignCenter);
-    name->setStyleSheet("font-size: 20px; font-weight: 700; color: white;");
-    candidateLayout->addWidget(name);
-
-    auto* code = new QLabel("GS003");
-    code->setAlignment(Qt::AlignCenter);
-    code->setStyleSheet("font-size: 14px; color: #cbd5e1;");
-    candidateLayout->addWidget(code);
-
-    auto* score = new QLabel("95%\nĐỘ PHÙ HỢP");
-    score->setAlignment(Qt::AlignCenter);
-    score->setStyleSheet("font-size: 28px; font-weight: 700; color: #60a5fa;");
-    candidateLayout->addWidget(score);
-
-    resultLayout->addWidget(candidate, 1);
-
-    auto* details = new QFrame(resultArea);
-    details->setStyleSheet("QFrame { background: white; border: 1px solid #e2e8f0; border-radius: 12px; }");
-    auto* detailsLayout = new QVBoxLayout(details);
-    detailsLayout->setContentsMargins(18, 18, 18, 18);
-    detailsLayout->setSpacing(12);
-
-    auto* detailTitle = new QLabel("Kinh nghiệm chuyên môn");
-    detailTitle->setStyleSheet("font-size: 14px; font-weight: 700; color: #1f2937;");
-    detailsLayout->addWidget(detailTitle);
-
-    auto* info = new QLabel("Kinh nghiệm: 8 năm\nKhu vực: Hải Châu\nHọc phí: 170k/buổi\nLịch trùng: T2, T4, T6");
-    info->setStyleSheet("color: #475569;");
-    detailsLayout->addWidget(info);
-
-    auto* breakTitle = new QLabel("VÌ SAO GIA SƯ NÀY PHÙ HỢP?");
-    breakTitle->setStyleSheet("font-size: 14px; font-weight: 700; color: #1f2937;");
-    detailsLayout->addWidget(breakTitle);
-
-    auto* reasons = new QLabel("• Kinh nghiệm chuyên môn 25/25\n• Khu vực địa lý 10/10\n• Học phí yêu cầu 40/45\n• Lịch học trùng khớp 20/20");
-    reasons->setStyleSheet("color: #475569;");
-    detailsLayout->addWidget(reasons);
-
-    auto* actionsRow = new QHBoxLayout();
-    auto* detailButton = new QPushButton("Xem chi tiết");
-    detailButton->setStyleSheet("QPushButton { background: #e0f2fe; color: #0f172a; border-radius: 8px; padding: 10px 14px; }");
-    auto* chooseButton = new QPushButton("CHỌN GIA SƯ NÀY");
-    chooseButton->setStyleSheet("QPushButton { background: #0d6efd; color: white; border-radius: 8px; padding: 10px 18px; }");
-    actionsRow->addWidget(detailButton);
-    actionsRow->addWidget(chooseButton);
-    detailsLayout->addLayout(actionsRow);
-
-    resultLayout->addWidget(details, 2);
-    root->addWidget(resultArea);
-
+    root->addWidget(content,1);
     return page;
 }
 
 QWidget* MainWindow::createClassPage() {
-    auto* page = new QWidget(this);
-    page->setStyleSheet("background: #f5f7fb;");
-
+    auto* page = new QWidget;
     auto* root = new QVBoxLayout(page);
-    root->setContentsMargins(24, 20, 24, 20);
-    root->setSpacing(16);
+    root->setContentsMargins(0,0,0,0);
+    root->setSpacing(0);
+    root->addWidget(header(page));
 
-    auto* top = new QWidget(page);
-    auto* topLayout = new QHBoxLayout(top);
-    topLayout->setContentsMargins(0, 0, 0, 0);
-    auto* title = new QLabel("Quản lý lớp học");
-    title->setStyleSheet("font-size: 20px; font-weight: 700; color: #1f2937;");
-    topLayout->addWidget(title);
-    topLayout->addStretch();
-    auto* addBtn = new QPushButton("+ Tạo lớp học");
-    addBtn->setStyleSheet("QPushButton { background: #0d6efd; color: white; border-radius: 8px; padding: 10px 16px; }");
-    topLayout->addWidget(addBtn);
-    root->addWidget(top);
+    auto* content = new QWidget;
+    auto* l = new QVBoxLayout(content);
+    l->setContentsMargins(18,16,18,16);
+    l->setSpacing(12);
 
-    auto* table = new QTableWidget(4, 10, page);
-    table->setHorizontalHeaderLabels({"Mã lớp", "Học sinh", "Gia sư", "Môn", "Lịch học", "Ngày bắt đầu", "Ngày kết thúc", "Học phí", "Trạng thái", "Thao tác"});
-    table->setAlternatingRowColors(true);
-    table->setSelectionBehavior(QAbstractItemView::SelectRows);
-    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    table->horizontalHeader()->setStretchLastSection(true);
-    table->setStyleSheet("QTableWidget { background: white; border: 1px solid #e2e8f0; border-radius: 10px; gridline-color: #edf2f7; }"
-                        "QHeaderView::section { background: #eef2f7; color: #334155; padding: 10px; font-weight: 600; }");
+    QPushButton* add=nullptr;
+    l->addWidget(titleBlock("QUẢN LÝ","Quản lý lớp học",
+                            "Theo dõi lịch học, học sinh, gia sư và tiến độ lớp.",&add,
+                            "＋ Tạo lớp học"));
 
-    const QString rows[4][10] = {
-        {"CL001", "Nguyễn Minh Anh", "Trần Quốc Huy", "Toán", "T2,T4,T6", "01/09/2026", "30/06/2027", "200k", "Active", "Xem"},
-        {"CL002", "Trần Văn Bảo", "Nguyễn Văn B", "Lý", "T3,T5", "10/09/2026", "31/12/2026", "250k", "Pending", "Xem"},
-        {"CL003", "Lê Thị Lan", "Lê Minh C", "Văn", "T2,T5,T7", "01/10/2026", "30/06/2027", "300k", "Completed", "Xem"},
-        {"CL004", "Phạm Quốc Huy", "Phạm Văn D", "Hóa", "T4,T6", "15/09/2026", "15/01/2027", "180k", "Active", "Xem"},
+    auto* summary = new QHBoxLayout;
+    summary->setSpacing(9);
+    summary->addWidget(infoTile("Tổng lớp","42",BLUE),1);
+    summary->addWidget(infoTile("Đang học","31",GREEN),1);
+    summary->addWidget(infoTile("Chờ xếp lịch","7",ORANGE),1);
+    summary->addWidget(infoTile("Cần gia sư","4",RED),1);
+    l->addLayout(summary);
+
+    auto* filters=card();
+    auto* fl=new QHBoxLayout(filters);
+    fl->setContentsMargins(10,10,10,10);
+    fl->setSpacing(8);
+    addFilter(fl,"⌕  Tìm mã lớp, học sinh...",{},260);
+    fl->addWidget(combo({"Tất cả môn","Toán","Lý","Hóa","Văn"},130));
+    fl->addWidget(combo({"Tất cả trạng thái","Đang học","Chờ xử lý","Cần gia sư"},150));
+    l->addWidget(filters);
+
+    auto* table=new QTableWidget(4,10);
+    table->setHorizontalHeaderLabels({"MÃ LỚP","HỌC SINH","GIA SƯ","MÔN","LỊCH","BẮT ĐẦU","KẾT THÚC","HỌC PHÍ","TRẠNG THÁI","THAO TÁC"});
+    styleTable(table);
+    const QString rows[4][10]={
+        {"CL001","Nguyễn Minh Anh","Trần Quốc Huy","Toán","T2,T4,T6","01/09/26","30/06/27","200k","Đang học","Xem"},
+        {"CL002","Trần Văn Bảo","Nguyễn Văn B","Lý","T3,T5","10/09/26","31/12/26","250k","Chờ xử lý","Xem"},
+        {"CL003","Lê Thị Lan","Lê Minh C","Văn","T2,T5,T7","01/10/26","30/06/27","300k","Hoàn thành","Xem"},
+        {"CL004","Phạm Quốc Huy","Phạm Văn D","Hóa","T4,T6","15/09/26","15/01/27","180k","Cần gia sư","Xem"}
     };
-
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 10; ++j) {
-            auto* item = new QTableWidgetItem(rows[i][j]);
-            table->setItem(i, j, item);
-        }
-    }
-
-    table->setColumnWidth(0, 90);
-    table->setColumnWidth(1, 150);
-    table->setColumnWidth(2, 150);
-    table->setColumnWidth(3, 100);
-    table->setColumnWidth(4, 120);
-    table->setColumnWidth(5, 120);
-    table->setColumnWidth(6, 120);
-    table->setColumnWidth(7, 100);
-    table->setColumnWidth(8, 100);
-
-    root->addWidget(table);
+    for(int i=0;i<4;++i)for(int j=0;j<10;++j)table->setItem(i,j,new QTableWidgetItem(rows[i][j]));
+    l->addWidget(table,1);
+    root->addWidget(content,1);
     return page;
 }
 
 QWidget* MainWindow::createContractPage() {
-    auto* page = new QWidget(this);
-    page->setStyleSheet("background: #f5f7fb;");
-
+    auto* page = new QWidget;
     auto* root = new QVBoxLayout(page);
-    root->setContentsMargins(24, 20, 24, 20);
-    root->setSpacing(16);
+    root->setContentsMargins(0,0,0,0);
+    root->setSpacing(0);
+    root->addWidget(header(page));
 
-    auto* top = new QWidget(page);
-    auto* topLayout = new QHBoxLayout(top);
-    topLayout->setContentsMargins(0, 0, 0, 0);
-    auto* title = new QLabel("Quản lý hợp đồng");
-    title->setStyleSheet("font-size: 20px; font-weight: 700; color: #1f2937;");
-    topLayout->addWidget(title);
-    topLayout->addStretch();
-    auto* addBtn = new QPushButton("+ Tạo hợp đồng");
-    addBtn->setStyleSheet("QPushButton { background: #0d6efd; color: white; border-radius: 8px; padding: 10px 16px; }");
-    topLayout->addWidget(addBtn);
-    root->addWidget(top);
+    auto* content = new QWidget;
+    auto* l = new QVBoxLayout(content);
+    l->setContentsMargins(18,16,18,16);
+    l->setSpacing(12);
 
-    auto* table = new QTableWidget(4, 9, page);
-    table->setHorizontalHeaderLabels({"Mã HĐ", "Mã lớp", "Học sinh", "Gia sư", "Ngày bắt đầu", "Ngày kết thúc", "Tổng phí", "Trạng thái", "Thao tác"});
-    table->setAlternatingRowColors(true);
-    table->setSelectionBehavior(QAbstractItemView::SelectRows);
-    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    table->horizontalHeader()->setStretchLastSection(true);
-    table->setStyleSheet("QTableWidget { background: white; border: 1px solid #e2e8f0; border-radius: 10px; gridline-color: #edf2f7; }"
-                        "QHeaderView::section { background: #eef2f7; color: #334155; padding: 10px; font-weight: 600; }");
+    QPushButton* add=nullptr;
+    l->addWidget(titleBlock("QUẢN LÝ","Quản lý hợp đồng",
+                            "Theo dõi toàn bộ hợp đồng của trung tâm.",&add,
+                            "＋ Tạo hợp đồng"));
 
-    const QString rows[4][9] = {
-        {"HD001", "CL001", "Nguyễn Minh Anh", "Trần Quốc Huy", "01/09/2026", "30/06/2027", "200.000đ", "Active", "Xem"},
-        {"HD002", "CL002", "Trần Văn Bảo", "Nguyễn Văn B", "10/09/2026", "31/12/2026", "250.000đ", "Pending", "Xem"},
-        {"HD003", "CL003", "Lê Thị Lan", "Lê Minh C", "01/10/2026", "30/06/2027", "300.000đ", "Completed", "Xem"},
-        {"HD004", "CL004", "Phạm Quốc Huy", "Phạm Văn D", "15/09/2026", "15/01/2027", "180.000đ", "Active", "Xem"},
+    auto* summary=new QHBoxLayout;
+    summary->setSpacing(9);
+    summary->addWidget(infoTile("Tổng hợp đồng","18",BLUE),1);
+    summary->addWidget(infoTile("Đang hiệu lực","12",GREEN),1);
+    summary->addWidget(infoTile("Chờ xử lý","4",ORANGE),1);
+    summary->addWidget(infoTile("Hoàn thành","2","#7C5CDB"),1);
+    l->addLayout(summary);
+
+    auto* filters=card();
+    auto* fl=new QHBoxLayout(filters);
+    fl->setContentsMargins(10,10,10,10);
+    fl->setSpacing(8);
+    addFilter(fl,"⌕  Tìm mã hợp đồng, lớp, học sinh...",{},300);
+    fl->addWidget(combo({"Tất cả trạng thái","Đang hiệu lực","Chờ xử lý","Hoàn thành"},170));
+    fl->addWidget(combo({"Tất cả thời gian","Tháng này","Quý này"},145));
+    l->addWidget(filters);
+
+    auto* table=new QTableWidget(4,9);
+    table->setHorizontalHeaderLabels({"MÃ HĐ","MÃ LỚP","HỌC SINH","GIA SƯ","BẮT ĐẦU","KẾT THÚC","TỔNG PHÍ","TRẠNG THÁI","THAO TÁC"});
+    styleTable(table);
+    const QString rows[4][9]={
+        {"HD001","CL001","Nguyễn Minh Anh","Trần Quốc Huy","01/09/26","30/06/27","200.000đ","Đang hiệu lực","Xem"},
+        {"HD002","CL002","Trần Văn Bảo","Nguyễn Văn B","10/09/26","31/12/26","250.000đ","Chờ xử lý","Xem"},
+        {"HD003","CL003","Lê Thị Lan","Lê Minh C","01/10/26","30/06/27","300.000đ","Hoàn thành","Xem"},
+        {"HD004","CL004","Phạm Quốc Huy","Phạm Văn D","15/09/26","15/01/27","180.000đ","Đang hiệu lực","Xem"}
     };
+    for(int i=0;i<4;++i)for(int j=0;j<9;++j)table->setItem(i,j,new QTableWidgetItem(rows[i][j]));
+    l->addWidget(table,1);
 
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 9; ++j) {
-            auto* item = new QTableWidgetItem(rows[i][j]);
-            table->setItem(i, j, item);
-        }
-    }
+    auto* notice=card();
+    auto* nl=new QHBoxLayout(notice);
+    nl->setContentsMargins(12,9,12,9);
+    nl->addWidget(label("▣  Lưu ý",9,true,ORANGE));
+    nl->addWidget(label("4 hợp đồng đang chờ xử lý. Kiểm tra thời gian bắt đầu trước khi xác nhận.",9,false,MUTED),1);
+    l->addWidget(notice);
 
-    table->setColumnWidth(0, 90);
-    table->setColumnWidth(1, 90);
-    table->setColumnWidth(2, 170);
-    table->setColumnWidth(3, 170);
-    table->setColumnWidth(4, 120);
-    table->setColumnWidth(5, 120);
-    table->setColumnWidth(6, 110);
-    table->setColumnWidth(7, 100);
-    root->addWidget(table);
-
+    root->addWidget(content,1);
     return page;
 }
 
 QWidget* MainWindow::createStatisticsPage() {
-    auto* page = new QWidget(this);
-    page->setStyleSheet("background: #fbfafc;");
+    auto* page=new QWidget;
+    auto* root=new QVBoxLayout(page);
+    root->setContentsMargins(0,0,0,0);
+    root->setSpacing(0);
+    root->addWidget(header(page));
 
-    auto* root = new QVBoxLayout(page);
-    root->setContentsMargins(14, 12, 14, 12);
-    root->setSpacing(10);
+    auto* content=new QWidget;
+    auto* l=new QVBoxLayout(content);
+    l->setContentsMargins(18,16,18,16);
+    l->setSpacing(12);
 
-    auto* header = new QWidget(page);
-    auto* headerLayout = new QHBoxLayout(header);
-    headerLayout->setContentsMargins(0, 0, 0, 0);
-    auto* heading = new QVBoxLayout();
-    heading->setContentsMargins(0, 0, 0, 0);
-    heading->setSpacing(2);
-    auto* eyebrow = new QLabel("BÁO CÁO VẬN HÀNH");
-    eyebrow->setStyleSheet("color: #526176; font-size: 9px; font-weight: 700;");
-    auto* title = new QLabel("Thống kê hệ thống");
-    title->setStyleSheet("color: #111016; font-size: 20px; font-weight: 800;");
-    heading->addWidget(eyebrow);
-    heading->addWidget(title);
-    headerLayout->addLayout(heading);
-    headerLayout->addStretch();
-    auto* period = new QComboBox(header);
-    period->addItem("30 ngày qua");
-    period->setFixedSize(120, 32);
-    period->setStyleSheet("QComboBox { background: white; border: 1px solid #d8d7dc; border-radius: 3px; padding: 0 8px; font-size: 10px; }");
-    auto* exportButton = new QPushButton("Xuất báo cáo", header);
-    exportButton->setFixedSize(112, 32);
-    exportButton->setStyleSheet("QPushButton { background: #0873c8; color: white; border: none; border-radius: 3px; font-size: 10px; font-weight: 700; }");
-    headerLayout->addWidget(period);
-    headerLayout->addWidget(exportButton);
-    root->addWidget(header);
+    auto* titleRow=new QHBoxLayout;
+    auto* texts=new QVBoxLayout;
+    texts->setContentsMargins(0,0,0,0);
+    texts->addWidget(label("BÁO CÁO VẬN HÀNH",8,true,"#6D7890"));
+    texts->addWidget(label("Thống kê hệ thống",21,true,TEXT));
+    texts->addWidget(label("Phân tích hiệu suất hoạt động của trung tâm.",9,false,MUTED));
+    titleRow->addLayout(texts,1);
+    titleRow->addWidget(combo({"30 ngày qua","7 ngày qua","Quý này"},125));
+    titleRow->addWidget(button("⇩  Xuất báo cáo",true));
+    l->addLayout(titleRow);
 
-    auto* statsRow = new QWidget(page);
-    auto* statsLayout = new QHBoxLayout(statsRow);
-    statsLayout->setContentsMargins(0, 0, 0, 0);
-    statsLayout->setSpacing(8);
-    const QStringList labels = {"Tổng học sinh", "Tổng gia sư", "Gia sư sẵn sàng nhận lớp", "Lớp đang hoạt động", "Tỷ lệ ghép thành công"};
-    const QStringList values = {"2,543", "842", "315", "1,120", "86%"};
-    const QStringList deltas = {"+12%", "+5%", "LIVE", "+18%", "Cao"};
-    for (int i = 0; i < labels.size(); ++i) {
-        auto* card = new QFrame(statsRow);
-        card->setFixedHeight(92);
-        card->setStyleSheet(i == 2
-            ? "QFrame { background: #111621; border: none; border-radius: 4px; }"
-            : "QFrame { background: #f0eef0; border: none; border-radius: 4px; }");
-        auto* cardLayout = new QVBoxLayout(card);
-        cardLayout->setContentsMargins(12, 10, 12, 9);
-        auto* label = new QLabel(labels[i]);
-        auto* value = new QLabel(values[i]);
-        auto* delta = new QLabel(deltas[i]);
-        const QString fg = i == 2 ? "#ffffff" : "#17161c";
-        label->setStyleSheet(QString("color: %1; font-size: 9px;").arg(i == 2 ? "#d7dce6" : "#6b6871"));
-        value->setStyleSheet(QString("color: %1; font-size: 20px; font-weight: 800;").arg(fg));
-        delta->setStyleSheet(QString("color: %1; font-size: 8px; font-weight: 700;").arg(i == 2 ? "#58c786" : "#0873c8"));
-        cardLayout->addWidget(label);
-        cardLayout->addWidget(value);
-        cardLayout->addStretch();
-        cardLayout->addWidget(delta);
-        statsLayout->addWidget(card, 1);
+    auto* metrics=new QHBoxLayout;
+    metrics->setSpacing(9);
+    metrics->addWidget(makeMetric("HS","Tổng học sinh","2,543","+12%","#2C8BE0"),1);
+    metrics->addWidget(makeMetric("GS","Tổng gia sư","842","+5%",BLUE),1);
+    metrics->addWidget(makeMetric("●","Sẵn sàng nhận lớp","315","LIVE",GREEN),1);
+    metrics->addWidget(makeMetric("LH","Lớp hoạt động","1,120","+18%","#7C5CDB"),1);
+    metrics->addWidget(makeMetric("%","Tỷ lệ ghép","86%","Cao",ORANGE),1);
+    l->addLayout(metrics);
+
+    auto* body=new QHBoxLayout;
+    body->setSpacing(10);
+
+    auto* match=card();
+    auto* ml=new QVBoxLayout(match);
+    ml->setContentsMargins(15,14,15,14);
+    ml->addWidget(label("Tình trạng ghép nối",13,true));
+    auto* circle=new QLabel("86%\nĐÃ GHÉP NỐI");
+    circle->setAlignment(Qt::AlignCenter);
+    circle->setFixedHeight(150);
+    circle->setStyleSheet(
+        "background:#EEF5FC;color:#0D6DBB;border:16px solid #1677D2;"
+        "border-radius:75px;font-size:18px;font-weight:800;");
+    ml->addWidget(circle,0,Qt::AlignCenter);
+    ml->addWidget(label("Lớp đã có gia sư                         1,420",9,false,MUTED));
+    ml->addWidget(progress(86,BLUE));
+    ml->addWidget(label("Đang chờ ghép                            231",9,false,MUTED));
+    ml->addWidget(progress(14,"#AEB7C3"));
+    body->addWidget(match,0);
+
+    auto* chart=card();
+    auto* cl=new QVBoxLayout(chart);
+    cl->setContentsMargins(15,14,15,14);
+    auto* ch=new QHBoxLayout;
+    ch->addWidget(label("Phân bổ gia sư theo môn học",13,true));
+    ch->addStretch();
+    ch->addWidget(label("Xem chi tiết →",8,true,BLUE));
+    cl->addLayout(ch);
+
+    const QString subjects[5]={"Toán Học","Tiếng Anh","Vật Lý","Hóa Học","Ngữ Văn"};
+    const int vals[5]={32,28,18,14,8};
+    for(int i=0;i<5;++i){
+        auto* row=new QHBoxLayout;
+        row->addWidget(label(subjects[i],9,false,TEXT));
+        row->addStretch();
+        row->addWidget(label(QString("%1%").arg(vals[i]),9,true,BLUE));
+        cl->addLayout(row);
+        cl->addWidget(progress(vals[i], i==0?NAVY:(i==1?BLUE:(i==2?"#52708D":"#7FB8E9"))));
     }
-    root->addWidget(statsRow);
-
-    auto* body = new QWidget(page);
-    auto* bodyLayout = new QHBoxLayout(body);
-    bodyLayout->setContentsMargins(0, 0, 0, 0);
-    bodyLayout->setSpacing(10);
-
-    auto* matchCard = new QFrame(body);
-    matchCard->setFixedWidth(180);
-    matchCard->setStyleSheet("QFrame { background: #f0eef0; border: none; border-radius: 4px; }");
-    auto* matchLayout = new QVBoxLayout(matchCard);
-    matchLayout->setContentsMargins(14, 14, 14, 12);
-    auto* matchTitle = new QLabel("Tình trạng ghép nối");
-    matchTitle->setStyleSheet("color: #17161c; font-size: 11px; font-weight: 700;");
-    matchLayout->addWidget(matchTitle);
-    auto* donut = new QLabel("◯\n86%\nĐÃ GHÉP NỐI", matchCard);
-    donut->setAlignment(Qt::AlignCenter);
-    donut->setMinimumHeight(145);
-    donut->setStyleSheet("color: #111621; font-size: 15px; font-weight: 800;");
-    matchLayout->addWidget(donut);
-    matchLayout->addWidget(makeStatusDot("#111621", "Lớp đã có gia sư", "1,420"));
-    matchLayout->addWidget(makeStatusDot("#b4b3b9", "Đang chờ ghép", "231"));
-    bodyLayout->addWidget(matchCard);
-
-    auto* charts = new QFrame(body);
-    charts->setStyleSheet("QFrame { background: #f0eef0; border: none; border-radius: 4px; }");
-    auto* chartsLayout = new QVBoxLayout(charts);
-    chartsLayout->setContentsMargins(14, 14, 14, 12);
-    chartsLayout->setSpacing(9);
-    auto* classHeader = new QHBoxLayout();
-    auto* classTitle = new QLabel("Trạng thái lớp học");
-    classTitle->setStyleSheet("color: #17161c; font-size: 11px; font-weight: 700;");
-    classHeader->addWidget(classTitle);
-    classHeader->addStretch();
-    classHeader->addWidget(makeBadge("Tuần này", "#ffffff", "#5d5b64"));
-    chartsLayout->addLayout(classHeader);
-    chartsLayout->addWidget(new QLabel("Phân bổ theo giai đoạn hoạt động"));
-    const QStringList stages = {"CHỜ BẮT ĐẦU", "ĐANG HỌC", "HOÀN THÀNH", "HỦY"};
-    const QStringList stageColors = {"#86bdf0", "#111621", "#697b8e", "#d7d5d8"};
-    auto* stageRow = new QHBoxLayout();
-    for (int i = 0; i < stages.size(); ++i) {
-        auto* col = new QVBoxLayout();
-        auto* bar = new QProgressBar();
-        bar->setRange(0, 100); bar->setValue(i == 0 ? 46 : i == 1 ? 72 : i == 2 ? 64 : 18);
-        bar->setTextVisible(false); bar->setFixedHeight(5);
-        bar->setStyleSheet(QString("QProgressBar { background: #dedde1; border: none; } QProgressBar::chunk { background: %1; }").arg(stageColors[i]));
-        auto* stageLabel = new QLabel(stages[i]);
-        stageLabel->setAlignment(Qt::AlignCenter);
-        stageLabel->setStyleSheet("color: #64616a; font-size: 7px; font-weight: 700;");
-        col->addWidget(bar); col->addWidget(stageLabel); stageRow->addLayout(col, 1);
+    cl->addSpacing(8);
+    cl->addWidget(label("Trạng thái lớp học",13,true));
+    const QString stages[4]={"CHỜ BẮT ĐẦU","ĐANG HỌC","HOÀN THÀNH","HỦY"};
+    const int stageVals[4]={46,72,64,18};
+    auto* stagesRow=new QHBoxLayout;
+    for(int i=0;i<4;++i){
+        auto* col=new QVBoxLayout;
+        col->addWidget(progress(stageVals[i],i==1?NAVY:BLUE));
+        auto* s=label(stages[i],7,true,MUTED); s->setAlignment(Qt::AlignCenter);
+        col->addWidget(s);
+        stagesRow->addLayout(col,1);
     }
-    chartsLayout->addLayout(stageRow);
-    chartsLayout->addSpacing(2);
-    auto* subjectTitle = new QHBoxLayout();
-    subjectTitle->addWidget(new QLabel("Phân bổ gia sư theo môn học"));
-    subjectTitle->addStretch();
-    subjectTitle->addWidget(makeLabel("Xem chi tiết", "color: #69727f; font-size: 8px;"));
-    chartsLayout->addLayout(subjectTitle);
-    const QStringList subjects = {"Toán Học", "Tiếng Anh", "Vật Lý", "Hóa Học", "Ngữ Văn"};
-    const QStringList subjectValues = {"32% (269)", "28% (235)", "18% (151)", "14% (118)", "8% (69)"};
-    const QStringList subjectColors = {"#111621", "#0873c8", "#27435f", "#4ea8f4", "#d8d7dc"};
-    for (int i = 0; i < subjects.size(); ++i) {
-        auto* row = new QHBoxLayout();
-        row->addWidget(new QLabel(subjects[i])); row->addStretch(); row->addWidget(new QLabel(subjectValues[i]));
-        chartsLayout->addLayout(row);
-        auto* bar = new QProgressBar(); bar->setRange(0, 100); bar->setValue(32 - i * 6); bar->setTextVisible(false); bar->setFixedHeight(5);
-        bar->setStyleSheet(QString("QProgressBar { background: #dedde1; border: none; } QProgressBar::chunk { background: %1; }").arg(subjectColors[i]));
-        chartsLayout->addWidget(bar);
-    }
-    bodyLayout->addWidget(charts, 1);
-    root->addWidget(body, 1);
+    cl->addLayout(stagesRow);
+    body->addWidget(chart,1);
+    l->addLayout(body,1);
+
+    root->addWidget(content,1);
     return page;
 }
 
@@ -1195,6 +918,7 @@ void MainWindow::populateStudentTable(QTableWidget* table) {
     }
 }
 
+
 void MainWindow::populateTutorTable(QTableWidget* table) {
     table->setRowCount(static_cast<int>(tutors.size()));
     for (std::size_t i = 0; i < tutors.size(); ++i) {
@@ -1210,6 +934,7 @@ void MainWindow::populateTutorTable(QTableWidget* table) {
         table->setItem(static_cast<int>(i), 8, new QTableWidgetItem("Xem"));
     }
 }
+
 
 void MainWindow::switchPage(int index) {
     if (stackedWidget) {
