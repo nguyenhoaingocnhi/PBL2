@@ -4,24 +4,26 @@
 #include <sstream>
 #include <filesystem>
 
+using namespace std;
+
 namespace {
-std::string trim(const std::string& s) {
+string trim(const string& s) {
     size_t start = s.find_first_not_of(" \r\n\t");
-    if (start == std::string::npos) return "";
+    if (start == string::npos) return "";
     size_t end = s.find_last_not_of(" \r\n\t");
     return s.substr(start, end - start + 1);
 }
 }
 
-std::string FileManager::getDataPath(const std::string& fileName) {
-    return (std::filesystem::path("data") / fileName).string();
+string FileManager::getDataPath(const string& fileName) {
+    return (filesystem::path("data") / fileName).string();
 }
 
-std::vector<std::string> FileManager::splitString(const std::string& text, char delimiter) {
-    std::vector<std::string> tokens;
-    std::stringstream ss(text);
-    std::string token;
-    while (std::getline(ss, token, delimiter)) {
+vector<string> FileManager::splitString(const string& text, char delimiter) {
+    vector<string> tokens;
+    stringstream ss(text);
+    string token;
+    while (getline(ss, token, delimiter)) {
         tokens.push_back(trim(token));
     }
     return tokens;
@@ -29,9 +31,9 @@ std::vector<std::string> FileManager::splitString(const std::string& text, char 
 
 Vector<Student*> FileManager::loadStudents() {
     Vector<Student*> students;
-    std::ifstream in(getDataPath("student.txt"));
-    std::string line;
-    while (std::getline(in, line)) {
+    ifstream in(getDataPath("student.txt"));
+    string line;
+    while (getline(in, line)) {
         if (line.empty()) continue;
         auto parts = splitString(line, '|');
         if (parts.size() < 15) continue;
@@ -57,22 +59,22 @@ Vector<Student*> FileManager::loadStudents() {
 }
 
 void FileManager::saveStudents(const Vector<Student*>& students) {
-    std::ofstream out(getDataPath("student.txt"), std::ios::trunc);
-    for (std::size_t i = 0; i < students.size(); ++i) {
+    ofstream out(getDataPath("student.txt"), ios::trunc);
+    for (size_t i = 0; i < students.size(); ++i) {
         out << students[i]->toString() << "\n";
     }
 }
 
 Vector<Tutor*> FileManager::loadTutors() {
     Vector<Tutor*> tutors;
-    std::ifstream in(getDataPath("tutor.txt"));
-    std::string line;
-    while (std::getline(in, line)) {
+    ifstream in(getDataPath("tutor.txt"));
+    string line;
+    while (getline(in, line)) {
         if (line.empty()) continue;
         auto parts = splitString(line, '|');
-        if (parts.size() < 15) continue;
-        std::vector<std::string> subjects = splitString(parts[7], ',');
-        std::vector<std::string> areas = splitString(parts[13], ',');
+        if (parts.size() < 16) continue;
+        vector<string> subjects = splitString(parts[7], ',');
+        vector<string> areas = splitString(parts[13], ',');
         Tutor* t = new Tutor(
             parts[0],
             parts[1],
@@ -83,12 +85,12 @@ Vector<Tutor*> FileManager::loadTutors() {
             parts[6],
             subjects,
             parts[8],
-            std::stoi(parts[9]),
+            stoi(parts[9]),
             parts[10],
             parts[11],
             parts[12],
             parts[14] == "true",
-            std::stoi(parts[15]),
+            stoi(parts[15]),
             {},
             areas,
             "");
@@ -98,17 +100,17 @@ Vector<Tutor*> FileManager::loadTutors() {
 }
 
 void FileManager::saveTutors(const Vector<Tutor*>& tutors) {
-    std::ofstream out(getDataPath("tutor.txt"), std::ios::trunc);
-    for (std::size_t i = 0; i < tutors.size(); ++i) {
+    ofstream out(getDataPath("tutor.txt"), ios::trunc);
+    for (size_t i = 0; i < tutors.size(); ++i) {
         out << tutors[i]->toString() << "\n";
     }
 }
 
 Vector<TutoringClass*> FileManager::loadClasses() {
     Vector<TutoringClass*> classes;
-    std::ifstream in(getDataPath("class.txt"));
-    std::string line;
-    while (std::getline(in, line)) {
+    ifstream in(getDataPath("class.txt"));
+    string line;
+    while (getline(in, line)) {
         if (line.empty()) continue;
         auto parts = splitString(line, '|');
         if (parts.size() < 11) continue;
@@ -118,8 +120,8 @@ Vector<TutoringClass*> FileManager::loadClasses() {
 }
 
 void FileManager::saveClasses(const Vector<TutoringClass*>& classes) {
-    std::ofstream out(getDataPath("class.txt"), std::ios::trunc);
-    for (std::size_t i = 0; i < classes.size(); ++i) {
+    ofstream out(getDataPath("class.txt"), ios::trunc);
+    for (size_t i = 0; i < classes.size(); ++i) {
         out << classes[i]->getClassID() << "|" << classes[i]->getStudentID() << "|" << classes[i]->getTutorID() << "|"
             << classes[i]->getSubject() << "|" << classes[i]->getSchedule() << "|" << classes[i]->getStartDate() << "|"
             << classes[i]->getEndDate() << "|" << classes[i]->getStatus() << "|" << classes[i]->getRatePerHour() << "|"
@@ -129,9 +131,9 @@ void FileManager::saveClasses(const Vector<TutoringClass*>& classes) {
 
 Vector<Contract*> FileManager::loadContracts() {
     Vector<Contract*> contracts;
-    std::ifstream in(getDataPath("contract.txt"));
-    std::string line;
-    while (std::getline(in, line)) {
+    ifstream in(getDataPath("contract.txt"));
+    string line;
+    while (getline(in, line)) {
         if (line.empty()) continue;
         auto parts = splitString(line, '|');
         if (parts.size() < 9) continue;
@@ -141,18 +143,18 @@ Vector<Contract*> FileManager::loadContracts() {
 }
 
 void FileManager::saveContracts(const Vector<Contract*>& contracts) {
-    std::ofstream out(getDataPath("contract.txt"), std::ios::trunc);
-    for (std::size_t i = 0; i < contracts.size(); ++i) {
+    ofstream out(getDataPath("contract.txt"), ios::trunc);
+    for (size_t i = 0; i < contracts.size(); ++i) {
         out << contracts[i]->getContractID() << "|" << contracts[i]->getClassID() << "|" << contracts[i]->getStudentID() << "|"
             << contracts[i]->getTutorID() << "|" << contracts[i]->getCreatedAt() << "|" << contracts[i]->getStartDate() << "|"
             << contracts[i]->getEndDate() << "|" << contracts[i]->getTotalFee() << "|" << contracts[i]->getStatus() << "\n";
     }
 }
 
-bool FileManager::validateAdminLogin(const std::string& username, const std::string& password) {
-    std::ifstream in(getDataPath("admin.txt"));
-    std::string line;
-    while (std::getline(in, line)) {
+bool FileManager::validateAdminLogin(const string& username, const string& password) {
+    ifstream in(getDataPath("admin.txt"));
+    string line;
+    while (getline(in, line)) {
         auto parts = splitString(line, '|');
         if (parts.size() >= 2 && trim(parts[0]) == username && trim(parts[1]) == password) {
             return true;

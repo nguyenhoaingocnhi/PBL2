@@ -6,6 +6,11 @@
 #include <utility>
 #include <vector>
 
+using namespace std;
+
+template <typename T>
+using Hash = hash<T>;
+
 template <typename K, typename V>
 class HashMap {
 public:
@@ -15,13 +20,13 @@ public:
         bool used = false;
     };
 
-    HashMap(std::size_t bucketCount = 16)
+    HashMap(size_t bucketCount = 16)
         : buckets_(bucketCount) {}
 
     void insert(const K& key, const V& value) {
         auto index = hash(key) % buckets_.size();
-        for (std::size_t i = 0; i < buckets_.size(); ++i) {
-            std::size_t pos = (index + i) % buckets_.size();
+        for (size_t i = 0; i < buckets_.size(); ++i) {
+            size_t pos = (index + i) % buckets_.size();
             if (!buckets_[pos].used || buckets_[pos].key == key) {
                 buckets_[pos].key = key;
                 buckets_[pos].value = value;
@@ -29,7 +34,7 @@ public:
                 return;
             }
         }
-        throw std::runtime_error("HashMap is full");
+        throw runtime_error("HashMap is full");
     }
 
     bool contains(const K& key) const {
@@ -38,8 +43,8 @@ public:
 
     V* get(const K& key) {
         auto index = hash(key) % buckets_.size();
-        for (std::size_t i = 0; i < buckets_.size(); ++i) {
-            std::size_t pos = (index + i) % buckets_.size();
+        for (size_t i = 0; i < buckets_.size(); ++i) {
+            size_t pos = (index + i) % buckets_.size();
             if (!buckets_[pos].used) {
                 return nullptr;
             }
@@ -52,8 +57,8 @@ public:
 
     const V* get(const K& key) const {
         auto index = hash(key) % buckets_.size();
-        for (std::size_t i = 0; i < buckets_.size(); ++i) {
-            std::size_t pos = (index + i) % buckets_.size();
+        for (size_t i = 0; i < buckets_.size(); ++i) {
+            size_t pos = (index + i) % buckets_.size();
             if (!buckets_[pos].used) {
                 return nullptr;
             }
@@ -66,8 +71,8 @@ public:
 
     void remove(const K& key) {
         auto index = hash(key) % buckets_.size();
-        for (std::size_t i = 0; i < buckets_.size(); ++i) {
-            std::size_t pos = (index + i) % buckets_.size();
+        for (size_t i = 0; i < buckets_.size(); ++i) {
+            size_t pos = (index + i) % buckets_.size();
             if (!buckets_[pos].used) {
                 return;
             }
@@ -84,8 +89,8 @@ public:
         }
     }
 
-    std::size_t size() const {
-        std::size_t count = 0;
+    size_t size() const {
+        size_t count = 0;
         for (const auto& entry : buckets_) {
             if (entry.used) {
                 ++count;
@@ -95,12 +100,12 @@ public:
     }
 
 private:
-    std::size_t hash(const K& key) const {
-        std::hash<K> hasher;
+    size_t hash(const K& key) const {
+        Hash<K> hasher;
         return hasher(key);
     }
 
-    std::vector<Entry> buckets_;
+    vector<Entry> buckets_;
 };
 
 #endif

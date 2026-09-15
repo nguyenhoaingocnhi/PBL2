@@ -1,51 +1,54 @@
-#ifndef CONTRACT_H
-#define CONTRACT_H
+#pragma once
 
 #include <string>
+
+using namespace std;
+
+struct ContractData {
+    string contractID;
+    string classID;
+    string studentID;
+    string tutorID;
+    string createdAt;
+    string startDate;
+    string endDate;
+    string totalFee;
+    string status;
+};
 
 class Contract {
 public:
     Contract();
-    Contract(const std::string& contractID,
-             const std::string& classID,
-             const std::string& studentID,
-             const std::string& tutorID,
-             const std::string& createdAt,
-             const std::string& startDate,
-             const std::string& endDate,
-             const std::string& totalFee,
-             const std::string& status);
+    Contract(const string& contractID,
+             const string& classID,
+             const string& studentID,
+             const string& tutorID,
+             const string& createdAt,
+             const string& startDate,
+             const string& endDate,
+             const string& totalFee,
+             const string& status);
 
-    const std::string& getContractID() const;
-    const std::string& getClassID() const;
-    const std::string& getStudentID() const;
-    const std::string& getTutorID() const;
-    const std::string& getCreatedAt() const;
-    const std::string& getStartDate() const;
-    const std::string& getEndDate() const;
-    const std::string& getTotalFee() const;
-    const std::string& getStatus() const;
+    const string& getContractID() const;
+    const string& getClassID() const;
+    const string& getStudentID() const;
+    const string& getTutorID() const;
+    const string& getCreatedAt() const;
+    const string& getStartDate() const;
+    const string& getEndDate() const;
+    const string& getTotalFee() const;
+    const string& getStatus() const;
 
-    void setContractID(const std::string& value);
-    void setClassID(const std::string& value);
-    void setStudentID(const std::string& value);
-    void setTutorID(const std::string& value);
-    void setCreatedAt(const std::string& value);
-    void setStartDate(const std::string& value);
-    void setEndDate(const std::string& value);
-    void setTotalFee(const std::string& value);
-    void setStatus(const std::string& value);
+    void setContractID(const string& value);
+    void setClassID(const string& value);
+    void setStudentID(const string& value);
+    void setTutorID(const string& value);
+    void setCreatedAt(const string& value);
+    void setStartDate(const string& value);
+    void setEndDate(const string& value);
+    void setTotalFee(const string& value);
+    void setStatus(const string& value);
 
 private:
-    std::string contractID;
-    std::string classID;
-    std::string studentID;
-    std::string tutorID;
-    std::string createdAt;
-    std::string startDate;
-    std::string endDate;
-    std::string totalFee;
-    std::string status;
+    ContractData data_;
 };
-
-#endif

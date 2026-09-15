@@ -1,59 +1,62 @@
-#ifndef TUTORINGCLASS_H
-#define TUTORINGCLASS_H
+#pragma once
 
 #include <string>
+
+using namespace std;
+
+struct TutoringClassData {
+    string classID;
+    string studentID;
+    string tutorID;
+    string subject;
+    string schedule;
+    string startDate;
+    string endDate;
+    string status;
+    string ratePerHour;
+    string createdAt;
+    string updatedAt;
+};
 
 class TutoringClass {
 public:
     TutoringClass();
-    TutoringClass(const std::string& classID,
-                  const std::string& studentID,
-                  const std::string& tutorID,
-                  const std::string& subject,
-                  const std::string& schedule,
-                  const std::string& startDate,
-                  const std::string& endDate,
-                  const std::string& status,
-                  const std::string& ratePerHour,
-                  const std::string& createdAt,
-                  const std::string& updatedAt);
+    TutoringClass(const string& classID,
+                  const string& studentID,
+                  const string& tutorID,
+                  const string& subject,
+                  const string& schedule,
+                  const string& startDate,
+                  const string& endDate,
+                  const string& status,
+                  const string& ratePerHour,
+                  const string& createdAt,
+                  const string& updatedAt);
 
-    const std::string& getClassID() const;
-    const std::string& getStudentID() const;
-    const std::string& getTutorID() const;
-    const std::string& getSubject() const;
-    const std::string& getSchedule() const;
-    const std::string& getStartDate() const;
-    const std::string& getEndDate() const;
-    const std::string& getStatus() const;
-    const std::string& getRatePerHour() const;
-    const std::string& getCreatedAt() const;
-    const std::string& getUpdatedAt() const;
+    const string& getClassID() const;
+    const string& getStudentID() const;
+    const string& getTutorID() const;
+    const string& getSubject() const;
+    const string& getSchedule() const;
+    const string& getStartDate() const;
+    const string& getEndDate() const;
+    const string& getStatus() const;
+    const string& getRatePerHour() const;
+    const string& getCreatedAt() const;
+    const string& getUpdatedAt() const;
 
-    void setClassID(const std::string& value);
-    void setStudentID(const std::string& value);
-    void setTutorID(const std::string& value);
-    void setSubject(const std::string& value);
-    void setSchedule(const std::string& value);
-    void setStartDate(const std::string& value);
-    void setEndDate(const std::string& value);
-    void setStatus(const std::string& value);
-    void setRatePerHour(const std::string& value);
-    void setCreatedAt(const std::string& value);
-    void setUpdatedAt(const std::string& value);
+    void setClassID(const string& value);
+    void setStudentID(const string& value);
+    void setTutorID(const string& value);
+    void setSubject(const string& value);
+    void setSchedule(const string& value);
+    void setStartDate(const string& value);
+    void setEndDate(const string& value);
+    void setStatus(const string& value);
+    void setRatePerHour(const string& value);
+    void setCreatedAt(const string& value);
+    void setUpdatedAt(const string& value);
 
 private:
-    std::string classID;
-    std::string studentID;
-    std::string tutorID;
-    std::string subject;
-    std::string schedule;
-    std::string startDate;
-    std::string endDate;
-    std::string status;
-    std::string ratePerHour;
-    std::string createdAt;
-    std::string updatedAt;
+    TutoringClassData data_;
 };
-
-#endif

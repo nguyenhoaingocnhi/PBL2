@@ -3,70 +3,119 @@
 #include <iostream>
 #include <sstream>
 
+using namespace std;
+
 Student::Student() = default;
 
-Student::Student(const std::string& personID,
-                 const std::string& fullName,
-                 const std::string& phone,
-                 const std::string& email,
-                 const std::string& address,
-                 const std::string& gender,
-                 const std::string& dateOfBirth,
-                 const std::string& grade,
-                 const std::vector<std::string>& needSubjects,
-                 const std::string& availableSchedule,
-                 const std::string& learningLevel,
-                 const std::string& preferredTutorGender,
-                 const std::string& budgetPerHour,
-                 const std::string& notes,
+Student::Student(const string& personID,
+                 const string& fullName,
+                 const string& phone,
+                 const string& email,
+                 const string& address,
+                 const string& gender,
+                 const string& dateOfBirth,
+                 const string& grade,
+                 const vector<string>& needSubjects,
+                 const string& availableSchedule,
+                 const string& learningLevel,
+                 const string& preferredTutorGender,
+                 const string& budgetPerHour,
+                 const string& notes,
                  bool isMatched,
-                 const std::vector<std::string>& enrolledClasses)
-    : Person(personID, fullName, phone, email, address, gender, dateOfBirth),
-      grade(grade),
-      needSubjects(needSubjects),
-      availableSchedule(availableSchedule),
-      learningLevel(learningLevel),
-      preferredTutorGender(preferredTutorGender),
-      budgetPerHour(budgetPerHour),
-      notes(notes),
-      isMatched(isMatched),
-      enrolledClasses(enrolledClasses) {}
+                 const vector<string>& enrolledClasses)
+        : Person(personID, fullName, phone, email, address, gender, dateOfBirth),
+            profile_{grade, needSubjects, availableSchedule, learningLevel,
+                             preferredTutorGender, budgetPerHour, notes, isMatched, enrolledClasses} {}
 
 void Student::displayInfo() const {
-    std::cout << "Student: " << personID << " - " << fullName << std::endl;
+    cout << "Student: " << getPersonID() << " - " << getFullName() << endl;
 }
 
-std::string Student::toString() const {
-    std::ostringstream oss;
-    oss << personID << "|" << fullName << "|" << phone << "|" << email << "|" << address << "|"
-        << gender << "|" << dateOfBirth << "|";
+string Student::toString() const {
+    ostringstream oss;
+    oss << getPersonID() << "|" << getFullName() << "|" << getPhone() << "|" << getEmail() << "|"
+        << getAddress() << "|" << getGender() << "|" << getDateOfBirth() << "|";
 
-    for (std::size_t i = 0; i < needSubjects.size(); ++i) {
+    for (size_t i = 0; i < profile_.needSubjects.size(); ++i) {
         if (i > 0) oss << ",";
-        oss << needSubjects[i];
+        oss << profile_.needSubjects[i];
     }
 
-    oss << "|" << availableSchedule << "|" << learningLevel << "|" << preferredTutorGender << "|"
-        << budgetPerHour << "|" << notes << "|" << (isMatched ? "true" : "false");
+    oss << "|" << profile_.availableSchedule << "|" << profile_.learningLevel << "|"
+        << profile_.preferredTutorGender << "|" << profile_.budgetPerHour << "|"
+        << profile_.notes << "|" << (profile_.isMatched ? "true" : "false");
     return oss.str();
 }
 
-const std::string& Student::getGrade() const { return grade; }
-const std::vector<std::string>& Student::getNeedSubjects() const { return needSubjects; }
-const std::string& Student::getAvailableSchedule() const { return availableSchedule; }
-const std::string& Student::getLearningLevel() const { return learningLevel; }
-const std::string& Student::getPreferredTutorGender() const { return preferredTutorGender; }
-const std::string& Student::getBudgetPerHour() const { return budgetPerHour; }
-const std::string& Student::getNotes() const { return notes; }
-bool Student::getIsMatched() const { return isMatched; }
-const std::vector<std::string>& Student::getEnrolledClasses() const { return enrolledClasses; }
+const string& Student::getGrade() const {
+    return profile_.grade;
+}
 
-void Student::setGrade(const std::string& value) { grade = value; }
-void Student::setNeedSubjects(const std::vector<std::string>& value) { needSubjects = value; }
-void Student::setAvailableSchedule(const std::string& value) { availableSchedule = value; }
-void Student::setLearningLevel(const std::string& value) { learningLevel = value; }
-void Student::setPreferredTutorGender(const std::string& value) { preferredTutorGender = value; }
-void Student::setBudgetPerHour(const std::string& value) { budgetPerHour = value; }
-void Student::setNotes(const std::string& value) { notes = value; }
-void Student::setIsMatched(bool value) { isMatched = value; }
-void Student::setEnrolledClasses(const std::vector<std::string>& value) { enrolledClasses = value; }
+const vector<string>& Student::getNeedSubjects() const {
+    return profile_.needSubjects;
+}
+
+const string& Student::getAvailableSchedule() const {
+    return profile_.availableSchedule;
+}
+
+const string& Student::getLearningLevel() const {
+    return profile_.learningLevel;
+}
+
+const string& Student::getPreferredTutorGender() const {
+    return profile_.preferredTutorGender;
+}
+
+const string& Student::getBudgetPerHour() const {
+    return profile_.budgetPerHour;
+}
+
+const string& Student::getNotes() const {
+    return profile_.notes;
+}
+
+bool Student::getIsMatched() const {
+    return profile_.isMatched;
+}
+
+const vector<string>& Student::getEnrolledClasses() const {
+    return profile_.enrolledClasses;
+}
+
+void Student::setGrade(const string& value) {
+    profile_.grade = value;
+}
+
+void Student::setNeedSubjects(const vector<string>& value) {
+    profile_.needSubjects = value;
+}
+
+void Student::setAvailableSchedule(const string& value) {
+    profile_.availableSchedule = value;
+}
+
+void Student::setLearningLevel(const string& value) {
+    profile_.learningLevel = value;
+}
+
+void Student::setPreferredTutorGender(const string& value) {
+    profile_.preferredTutorGender = value;
+}
+
+void Student::setBudgetPerHour(const string& value) {
+    profile_.budgetPerHour = value;
+}
+
+void Student::setNotes(const string& value) {
+    profile_.notes = value;
+}
+
+void Student::setIsMatched(bool value) {
+    profile_.isMatched = value;
+}
+
+void Student::setEnrolledClasses(const vector<string>& value) {
+    profile_.enrolledClasses = value;
+}
+

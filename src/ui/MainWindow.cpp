@@ -20,6 +20,8 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+using namespace std;
+
 namespace {
 
 const QString NAVY = "#071426";
@@ -283,11 +285,11 @@ MainWindow::MainWindow(QWidget* parent)
 }
 
 MainWindow::~MainWindow() {
-    for (std::size_t i = 0; i < students.size(); ++i) delete students[i];
-    for (std::size_t i = 0; i < tutors.size(); ++i) delete tutors[i];
+    for (size_t i = 0; i < students.size(); ++i) delete students[i];
+    for (size_t i = 0; i < tutors.size(); ++i) delete tutors[i];
 }
 
-QString MainWindow::joinStrings(const std::vector<std::string>& items) {
+QString MainWindow::joinStrings(const vector<string>& items) {
     QStringList parts;
     for (const auto& item : items) {
         if (!item.empty()) parts << QString::fromStdString(item);
@@ -906,7 +908,7 @@ QWidget* MainWindow::createStatisticsPage() {
 
 void MainWindow::populateStudentTable(QTableWidget* table) {
     table->setRowCount(static_cast<int>(students.size()));
-    for (std::size_t i = 0; i < students.size(); ++i) {
+    for (size_t i = 0; i < students.size(); ++i) {
         Student* student = students[i];
         table->setItem(static_cast<int>(i), 0, new QTableWidgetItem(QString::fromStdString(student->getPersonID())));
         table->setItem(static_cast<int>(i), 1, new QTableWidgetItem(QString::fromStdString(student->getFullName())));
@@ -921,7 +923,7 @@ void MainWindow::populateStudentTable(QTableWidget* table) {
 
 void MainWindow::populateTutorTable(QTableWidget* table) {
     table->setRowCount(static_cast<int>(tutors.size()));
-    for (std::size_t i = 0; i < tutors.size(); ++i) {
+    for (size_t i = 0; i < tutors.size(); ++i) {
         Tutor* tutor = tutors[i];
         table->setItem(static_cast<int>(i), 0, new QTableWidgetItem(QString::fromStdString(tutor->getPersonID())));
         table->setItem(static_cast<int>(i), 1, new QTableWidgetItem(QString::fromStdString(tutor->getFullName())));

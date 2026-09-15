@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include <utility>
 
+using namespace std;
+
 template <typename T>
 class Vector {
 public:
@@ -59,7 +61,7 @@ public:
         if (size_ == capacity_) {
             resize(capacity_ == 0 ? 4 : capacity_ * 2);
         }
-        data_[size_++] = std::move(value);
+        data_[size_++] = move(value);
     }
 
     void pop_back() {
@@ -69,21 +71,21 @@ public:
         --size_;
     }
 
-    T& operator[](std::size_t index) {
+    T& operator[](size_t index) {
         if (index >= size_) {
-            throw std::out_of_range("Vector index out of range");
+            throw out_of_range("Vector index out of range");
         }
         return data_[index];
     }
 
-    const T& operator[](std::size_t index) const {
+    const T& operator[](size_t index) const {
         if (index >= size_) {
-            throw std::out_of_range("Vector index out of range");
+            throw out_of_range("Vector index out of range");
         }
         return data_[index];
     }
 
-    std::size_t size() const { return size_; }
+    size_t size() const { return size_; }
     bool empty() const { return size_ == 0; }
 
     void clear() {
@@ -94,9 +96,9 @@ public:
     }
 
 private:
-    void resize(std::size_t newCapacity) {
+    void resize(size_t newCapacity) {
         T* newData = new T[newCapacity];
-        for (std::size_t i = 0; i < size_; ++i) {
+        for (size_t i = 0; i < size_; ++i) {
             newData[i] = data_[i];
         }
         delete[] data_;
@@ -110,15 +112,15 @@ private:
         data_ = nullptr;
         if (capacity_ > 0) {
             data_ = new T[capacity_];
-            for (std::size_t i = 0; i < size_; ++i) {
+            for (size_t i = 0; i < size_; ++i) {
                 data_[i] = other.data_[i];
             }
         }
     }
 
     T* data_ = nullptr;
-    std::size_t size_ = 0;
-    std::size_t capacity_ = 0;
+    size_t size_ = 0;
+    size_t capacity_ = 0;
 };
 
 #endif

@@ -1,63 +1,66 @@
-#ifndef STUDENT_H
-#define STUDENT_H
+#pragma once
 
 #include "Person.h"
 #include <string>
 #include <vector>
 
+using namespace std;
+
+struct StudentProfile {
+    string grade;
+    vector<string> needSubjects;
+    string availableSchedule;
+    string learningLevel;
+    string preferredTutorGender;
+    string budgetPerHour;
+    string notes;
+    bool isMatched = false;
+    vector<string> enrolledClasses;
+};
+
 class Student : public Person {
 public:
     Student();
-    Student(const std::string& personID,
-            const std::string& fullName,
-            const std::string& phone,
-            const std::string& email,
-            const std::string& address,
-            const std::string& gender,
-            const std::string& dateOfBirth,
-            const std::string& grade,
-            const std::vector<std::string>& needSubjects,
-            const std::string& availableSchedule,
-            const std::string& learningLevel,
-            const std::string& preferredTutorGender,
-            const std::string& budgetPerHour,
-            const std::string& notes,
+        Student(const string& personID,
+            const string& fullName,
+            const string& phone,
+            const string& email,
+            const string& address,
+            const string& gender,
+            const string& dateOfBirth,
+            const string& grade,
+            const vector<string>& needSubjects,
+            const string& availableSchedule,
+            const string& learningLevel,
+            const string& preferredTutorGender,
+            const string& budgetPerHour,
+            const string& notes,
             bool isMatched,
-            const std::vector<std::string>& enrolledClasses = {});
+            const vector<string>& enrolledClasses = {});
 
     void displayInfo() const override;
-    std::string toString() const override;
+    string toString() const override;
 
-    const std::string& getGrade() const;
-    const std::vector<std::string>& getNeedSubjects() const;
-    const std::string& getAvailableSchedule() const;
-    const std::string& getLearningLevel() const;
-    const std::string& getPreferredTutorGender() const;
-    const std::string& getBudgetPerHour() const;
-    const std::string& getNotes() const;
+    const string& getGrade() const;
+    const vector<string>& getNeedSubjects() const;
+    const string& getAvailableSchedule() const;
+    const string& getLearningLevel() const;
+    const string& getPreferredTutorGender() const;
+    const string& getBudgetPerHour() const;
+    const string& getNotes() const;
     bool getIsMatched() const;
-    const std::vector<std::string>& getEnrolledClasses() const;
+    const vector<string>& getEnrolledClasses() const;
 
-    void setGrade(const std::string& value);
-    void setNeedSubjects(const std::vector<std::string>& value);
-    void setAvailableSchedule(const std::string& value);
-    void setLearningLevel(const std::string& value);
-    void setPreferredTutorGender(const std::string& value);
-    void setBudgetPerHour(const std::string& value);
-    void setNotes(const std::string& value);
+    void setGrade(const string& value);
+    void setNeedSubjects(const vector<string>& value);
+    void setAvailableSchedule(const string& value);
+    void setLearningLevel(const string& value);
+    void setPreferredTutorGender(const string& value);
+    void setBudgetPerHour(const string& value);
+    void setNotes(const string& value);
     void setIsMatched(bool value);
-    void setEnrolledClasses(const std::vector<std::string>& value);
+    void setEnrolledClasses(const vector<string>& value);
 
 private:
-    std::string grade;
-    std::vector<std::string> needSubjects;
-    std::string availableSchedule;
-    std::string learningLevel;
-    std::string preferredTutorGender;
-    std::string budgetPerHour;
-    std::string notes;
-    bool isMatched = false;
-    std::vector<std::string> enrolledClasses;
+    StudentProfile profile_;
 };
-
-#endif

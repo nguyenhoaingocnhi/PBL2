@@ -9,6 +9,8 @@
 #include <QStackedWidget>
 #include <QTableWidget>
 
+using namespace std;
+
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
@@ -31,7 +33,7 @@ private:
     void switchPage(int index);
     void populateStudentTable(QTableWidget* table);
     void populateTutorTable(QTableWidget* table);
-    static QString joinStrings(const std::vector<std::string>& items);
+    static QString joinStrings(const vector<string>& items);
 };
 
 #endif

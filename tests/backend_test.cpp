@@ -8,42 +8,44 @@
 #include <iostream>
 #include <vector>
 
+using namespace std;
+
 int main() {
     Vector<Student*> students = FileManager::loadStudents();
     Vector<Tutor*> tutors = FileManager::loadTutors();
 
-    std::cout << "Student count: " << students.size() << std::endl;
-    std::cout << "Tutor count: " << tutors.size() << std::endl;
+    cout << "Student count: " << students.size() << endl;
+    cout << "Tutor count: " << tutors.size() << endl;
 
     if (!students.empty()) {
-        std::cout << "Student found: " << students[0]->getPersonID() << " - " << students[0]->getFullName() << std::endl;
+        cout << "Student found: " << students[0]->getPersonID() << " - " << students[0]->getFullName() << endl;
     }
 
     if (!tutors.empty()) {
-        std::cout << "Tutor found: " << tutors[0]->getPersonID() << " - " << tutors[0]->getFullName() << std::endl;
+        cout << "Tutor found: " << tutors[0]->getPersonID() << " - " << tutors[0]->getFullName() << endl;
     }
 
-    HashMap<std::string, Student*> studentMap;
-    for (std::size_t i = 0; i < students.size(); ++i) {
+    HashMap<string, Student*> studentMap;
+    for (size_t i = 0; i < students.size(); ++i) {
         studentMap.insert(students[i]->getPersonID(), students[i]);
     }
-    std::cout << "Contains SV001: " << studentMap.contains("SV001") << std::endl;
+    cout << "Contains SV001: " << studentMap.contains("SV001") << endl;
 
-    HashMap<std::string, Tutor*> tutorMap;
-    for (std::size_t i = 0; i < tutors.size(); ++i) {
+    HashMap<string, Tutor*> tutorMap;
+    for (size_t i = 0; i < tutors.size(); ++i) {
         tutorMap.insert(tutors[i]->getPersonID(), tutors[i]);
     }
-    std::cout << "Contains GS001: " << tutorMap.contains("GS001") << std::endl;
+    cout << "Contains GS001: " << tutorMap.contains("GS001") << endl;
 
     if (!students.empty() && !tutors.empty()) {
-        std::vector<Tutor*> tutorsVector;
-        for (std::size_t i = 0; i < tutors.size(); ++i) {
+        vector<Tutor*> tutorsVector;
+        for (size_t i = 0; i < tutors.size(); ++i) {
             tutorsVector.push_back(tutors[i]);
         }
         auto matches = MatchingService::matchStudentsToTutors(*students[0], tutorsVector);
-        std::cout << "Match count: " << matches.size() << std::endl;
+        cout << "Match count: " << matches.size() << endl;
         if (!matches.empty()) {
-            std::cout << "Top match: " << matches[0].tutor->getPersonID() << " - " << matches[0].totalScore << std::endl;
+            cout << "Top match: " << matches[0].tutor->getPersonID() << " - " << matches[0].totalScore << endl;
         }
     }
 

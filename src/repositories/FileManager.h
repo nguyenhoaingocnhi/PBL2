@@ -8,6 +8,9 @@
 #include "Vector.h"
 
 #include <string>
+#include <vector>
+
+using namespace std;
 
 class FileManager {
 public:
@@ -23,11 +26,11 @@ public:
     static Vector<Contract*> loadContracts();
     static void saveContracts(const Vector<Contract*>& contracts);
 
-    static bool validateAdminLogin(const std::string& username, const std::string& password);
+    static bool validateAdminLogin(const string& username, const string& password);
 
 private:
-    static std::string getDataPath(const std::string& fileName);
-    static std::vector<std::string> splitString(const std::string& text, char delimiter);
+    static string getDataPath(const string& fileName);
+    static vector<string> splitString(const string& text, char delimiter);
 };
 
 #endif

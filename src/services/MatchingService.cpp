@@ -1,15 +1,19 @@
 #include "MatchingService.h"
 
 #include <algorithm>
+#include <functional>
 #include <sstream>
 #include <string>
 
+using namespace std;
+
 namespace {
-std::vector<std::string> splitByComma(const std::string& text) {
-    std::vector<std::string> result;
-    std::stringstream ss(text);
-    std::string item;
-    while (std::getline(ss, item, ',')) {
+
+vector<string> splitByComma(const string& text) {
+    vector<string> result;
+    stringstream ss(text);
+    string item;
+    while (getline(ss, item, ',')) {
         if (!item.empty()) {
             result.push_back(item);
         }
@@ -17,9 +21,33 @@ std::vector<std::string> splitByComma(const std::string& text) {
     return result;
 }
 
-int countMatches(const std::string& studentSchedule, const std::string& tutorAvailability) {
-    std::vector<std::string> s = splitByComma(studentSchedule);
-    std::vector<std::string> t = splitByComma(tutorAvailability);
+bool hasMatchingSubject(const Student& student, const Tutor& tutor) {
+    if (student.getNeedSubjects().empty()) {
+        return true;
+    }
+
+    for (const auto& tutorSubject : tutor.getSubjects()) {
+        for (const auto& requestedSubject : student.getNeedSubjects()) {
+            if (tutorSubject == requestedSubject) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+long long parseRate(const string& rate) {
+    try {
+        return stoll(rate);
+    } catch (const exception&) {
+        return 0;
+    }
+}
+
+int countMatchingScheduleItems(const string& studentSchedule,
+                               const string& tutorAvailability) {
+    vector<string> s = splitByComma(studentSchedule);
+    vector<string> t = splitByComma(tutorAvailability);
     int matches = 0;
     for (const auto& day : s) {
         for (const auto& tutorDay : t) {
@@ -31,49 +59,55 @@ int countMatches(const std::string& studentSchedule, const std::string& tutorAva
     }
     return matches;
 }
+
+MatchResult createMatchResult(const Student& student, Tutor& tutor) {
+    MatchResult result;
+    result.tutor = &tutor;
+    result.experienceScore = MatchingService::calculateExperienceScore(tutor.getYearsOfExperience());
+    result.locationScore = MatchingService::calculateLocationScore(
+        student.getAddress(), tutor.getTeachingAreas());
+    result.priceScore = MatchingService::calculatePriceScore(
+        parseRate(tutor.getRatePerHour()), parseRate(student.getBudgetPerHour()));
+    result.scheduleScore = MatchingService::calculateScheduleScore(
+        student.getAvailableSchedule(), tutor.getAvailability());
+    result.totalScore = result.experienceScore + result.locationScore
+                      + result.priceScore + result.scheduleScore;
+    return result;
 }
 
-std::vector<MatchResult> MatchingService::matchStudentsToTutors(const Student& student, const std::vector<Tutor*>& tutors) {
-    std::vector<MatchResult> results;
+void sortMatches(vector<MatchResult>& results) {
+    sort(results.begin(), results.end(), [](const MatchResult& left, const MatchResult& right) {
+        return left.totalScore > right.totalScore;
+    });
+}
+}
+
+vector<MatchResult> MatchingService::matchStudentsToTutors(
+    const Student& student, const vector<Tutor*>& tutors) {
+    vector<reference_wrapper<Tutor>> safeTutors;
+    safeTutors.reserve(tutors.size());
     for (Tutor* tutor : tutors) {
-        if (tutor == nullptr || !tutor->getIsAvailable()) {
+        if (tutor != nullptr) {
+            safeTutors.emplace_back(*tutor);
+        }
+    }
+    return matchStudentsToTutors(student, safeTutors);
+}
+
+vector<MatchResult> MatchingService::matchStudentsToTutors(
+    const Student& student, const vector<reference_wrapper<Tutor>>& tutors) {
+    vector<MatchResult> results;
+    for (Tutor& tutor : tutors) {
+        if (!tutor.getIsAvailable()) {
             continue;
         }
 
-        bool hasSubject = false;
-        for (const auto& subject : tutor->getSubjects()) {
-            if (student.getNeedSubjects().empty()) {
-                hasSubject = true;
-                break;
-            }
-            for (const auto& need : student.getNeedSubjects()) {
-                if (subject == need) {
-                    hasSubject = true;
-                    break;
-                }
-            }
-            if (hasSubject) break;
+        if (hasMatchingSubject(student, tutor)) {
+            results.push_back(createMatchResult(student, tutor));
         }
-        if (!hasSubject) continue;
-
-        MatchResult result;
-        result.tutor = tutor;
-        result.experienceScore = calculateExperienceScore(tutor->getYearsOfExperience());
-        result.locationScore = calculateLocationScore(student.getAddress(), tutor->getTeachingAreas());
-
-        long long tutorRate = std::stoll(tutor->getRatePerHour());
-        long long studentBudget = std::stoll(student.getBudgetPerHour());
-        result.priceScore = calculatePriceScore(tutorRate, studentBudget);
-        result.scheduleScore = calculateScheduleScore(student.getAvailableSchedule(), tutor->getAvailability());
-        result.totalScore = result.experienceScore + result.locationScore + result.priceScore + result.scheduleScore;
-
-        results.push_back(result);
     }
 
-    std::sort(results.begin(), results.end(), [](const MatchResult& a, const MatchResult& b) {
-        return a.totalScore > b.totalScore;
-    });
-
+    sortMatches(results);
     return results;
 }
 
@@ -85,7 +119,7 @@ double MatchingService::calculateExperienceScore(int yearsOfExperience) {
     return 5.0;
 }
 
-double MatchingService::calculateLocationScore(const std::string& studentArea, const std::vector<std::string>& tutorAreas) {
+double MatchingService::calculateLocationScore(const string& studentArea, const vector<string>& tutorAreas) {
     for (const auto& area : tutorAreas) {
         if (area == studentArea) {
             return 10.0;
@@ -103,8 +137,8 @@ double MatchingService::calculatePriceScore(long long tutorRate, long long stude
     return 10.0;
 }
 
-double MatchingService::calculateScheduleScore(const std::string& studentSchedule, const std::string& tutorAvailability) {
-    int matched = countMatches(studentSchedule, tutorAvailability);
+double MatchingService::calculateScheduleScore(const string& studentSchedule, const string& tutorAvailability) {
+    int matched = countMatchingScheduleItems(studentSchedule, tutorAvailability);
     if (matched >= 4) return 20.0;
     if (matched == 3) return 15.0;
     if (matched == 2) return 10.0;

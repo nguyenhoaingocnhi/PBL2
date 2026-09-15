@@ -1,34 +1,71 @@
 #include "Person.h"
 
+using namespace std;
+
 Person::Person() = default;
 
-Person::Person(const std::string& personID,
-               const std::string& fullName,
-               const std::string& phone,
-               const std::string& email,
-               const std::string& address,
-               const std::string& gender,
-               const std::string& dateOfBirth)
-    : personID(personID),
-      fullName(fullName),
-      phone(phone),
-      email(email),
-      address(address),
-      gender(gender),
-      dateOfBirth(dateOfBirth) {}
+Person::Person(const string& personID,
+               const string& fullName,
+               const string& phone,
+               const string& email,
+               const string& address,
+               const string& gender,
+               const string& dateOfBirth)
+    : info_{personID, fullName, phone, email, address, gender, dateOfBirth} {}
 
-const std::string& Person::getPersonID() const { return personID; }
-const std::string& Person::getFullName() const { return fullName; }
-const std::string& Person::getPhone() const { return phone; }
-const std::string& Person::getEmail() const { return email; }
-const std::string& Person::getAddress() const { return address; }
-const std::string& Person::getGender() const { return gender; }
-const std::string& Person::getDateOfBirth() const { return dateOfBirth; }
+const string& Person::getPersonID() const {
+    return info_.personID;
+}
 
-void Person::setPersonID(const std::string& id) { personID = id; }
-void Person::setFullName(const std::string& name) { fullName = name; }
-void Person::setPhone(const std::string& phoneValue) { phone = phoneValue; }
-void Person::setEmail(const std::string& emailValue) { email = emailValue; }
-void Person::setAddress(const std::string& addressValue) { address = addressValue; }
-void Person::setGender(const std::string& genderValue) { gender = genderValue; }
-void Person::setDateOfBirth(const std::string& dob) { dateOfBirth = dob; }
+const string& Person::getFullName() const {
+    return info_.fullName;
+}
+
+const string& Person::getPhone() const {
+    return info_.phone;
+}
+
+const string& Person::getEmail() const {
+    return info_.email;
+}
+
+const string& Person::getAddress() const {
+    return info_.address;
+}
+
+const string& Person::getGender() const {
+    return info_.gender;
+}
+
+const string& Person::getDateOfBirth() const {
+    return info_.dateOfBirth;
+}
+
+void Person::setPersonID(const string& id) {
+    info_.personID = id;
+}
+
+void Person::setFullName(const string& name) {
+    info_.fullName = name;
+}
+
+void Person::setPhone(const string& phoneValue) {
+    info_.phone = phoneValue;
+}
+
+void Person::setEmail(const string& emailValue) {
+    info_.email = emailValue;
+}
+
+void Person::setAddress(const string& addressValue) {
+    info_.address = addressValue;
+}
+
+void Person::setGender(const string& genderValue) {
+    info_.gender = genderValue;
+}
+
+void Person::setDateOfBirth(const string& dob) {
+    info_.dateOfBirth = dob;
+}
+
