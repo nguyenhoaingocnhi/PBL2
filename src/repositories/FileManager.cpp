@@ -16,6 +16,12 @@ string trim(const string& s) {
 }
 
 string FileManager::getDataPath(const string& fileName) {
+    if (filesystem::exists(filesystem::path("data") / fileName)) {
+        return (filesystem::path("data") / fileName).string();
+    }
+    if (filesystem::exists(filesystem::path("../data") / fileName)) {
+        return (filesystem::path("../data") / fileName).string();
+    }
     return (filesystem::path("data") / fileName).string();
 }
 
