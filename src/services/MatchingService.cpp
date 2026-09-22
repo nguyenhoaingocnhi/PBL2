@@ -1,7 +1,6 @@
 #include "MatchingService.h"
 
 #include <algorithm>
-#include <functional>
 #include <sstream>
 #include <string>
 
@@ -9,7 +8,7 @@ using namespace std;
 
 namespace {
 
-vector<string> splitByComma(const string& text) {
+vector<string> splitByComma(string text) {
     vector<string> result;
     stringstream ss(text);
     string item;
@@ -21,13 +20,13 @@ vector<string> splitByComma(const string& text) {
     return result;
 }
 
-bool hasMatchingSubject(const Student& student, const Tutor& tutor) {
+bool hasMatchingSubject(Student& student, Tutor& tutor) {
     if (student.getNeedSubjects().empty()) {
         return true;
     }
 
-    for (const auto& tutorSubject : tutor.getSubjects()) {
-        for (const auto& requestedSubject : student.getNeedSubjects()) {
+    for (auto& tutorSubject : tutor.getSubjects()) {
+        for (auto& requestedSubject : student.getNeedSubjects()) {
             if (tutorSubject == requestedSubject) {
                 return true;
             }
@@ -36,7 +35,7 @@ bool hasMatchingSubject(const Student& student, const Tutor& tutor) {
     return false;
 }
 
-long long parseRate(const string& rate) {
+long long parseRate(string rate) {
     try {
         return stoll(rate);
     } catch (const exception&) {
@@ -44,13 +43,13 @@ long long parseRate(const string& rate) {
     }
 }
 
-int countMatchingScheduleItems(const string& studentSchedule,
-                               const string& tutorAvailability) {
+int countMatchingScheduleItems(string studentSchedule,
+                               string tutorAvailability) {
     vector<string> s = splitByComma(studentSchedule);
     vector<string> t = splitByComma(tutorAvailability);
     int matches = 0;
-    for (const auto& day : s) {
-        for (const auto& tutorDay : t) {
+    for (auto& day : s) {
+        for (auto& tutorDay : t) {
             if (day == tutorDay) {
                 ++matches;
                 break;
@@ -60,7 +59,7 @@ int countMatchingScheduleItems(const string& studentSchedule,
     return matches;
 }
 
-MatchResult createMatchResult(const Student& student, Tutor& tutor) {
+MatchResult createMatchResult(Student& student, Tutor& tutor) {
     MatchResult result;
     result.tutor = &tutor;
     result.experienceScore = MatchingService::calculateExperienceScore(tutor.getYearsOfExperience());
@@ -76,34 +75,22 @@ MatchResult createMatchResult(const Student& student, Tutor& tutor) {
 }
 
 void sortMatches(vector<MatchResult>& results) {
-    sort(results.begin(), results.end(), [](const MatchResult& left, const MatchResult& right) {
+    sort(results.begin(), results.end(), [](MatchResult& left, MatchResult& right) {
         return left.totalScore > right.totalScore;
     });
 }
 }
 
 vector<MatchResult> MatchingService::matchStudentsToTutors(
-    const Student& student, const vector<Tutor*>& tutors) {
-    vector<reference_wrapper<Tutor>> safeTutors;
-    safeTutors.reserve(tutors.size());
-    for (Tutor* tutor : tutors) {
-        if (tutor != nullptr) {
-            safeTutors.emplace_back(*tutor);
-        }
-    }
-    return matchStudentsToTutors(student, safeTutors);
-}
-
-vector<MatchResult> MatchingService::matchStudentsToTutors(
-    const Student& student, const vector<reference_wrapper<Tutor>>& tutors) {
+    Student& student, vector<Tutor*>& tutors) {
     vector<MatchResult> results;
-    for (Tutor& tutor : tutors) {
-        if (!tutor.getIsAvailable()) {
+    for (Tutor* tutor : tutors) {
+        if (tutor == nullptr || !tutor->getIsAvailable()) {
             continue;
         }
 
-        if (hasMatchingSubject(student, tutor)) {
-            results.push_back(createMatchResult(student, tutor));
+        if (hasMatchingSubject(student, *tutor)) {
+            results.push_back(createMatchResult(student, *tutor));
         }
     }
 
@@ -119,8 +106,8 @@ double MatchingService::calculateExperienceScore(int yearsOfExperience) {
     return 5.0;
 }
 
-double MatchingService::calculateLocationScore(const string& studentArea, const vector<string>& tutorAreas) {
-    for (const auto& area : tutorAreas) {
+double MatchingService::calculateLocationScore(string studentArea, vector<string>& tutorAreas) {
+    for (auto& area : tutorAreas) {
         if (area == studentArea) {
             return 10.0;
         }
@@ -137,7 +124,7 @@ double MatchingService::calculatePriceScore(long long tutorRate, long long stude
     return 10.0;
 }
 
-double MatchingService::calculateScheduleScore(const string& studentSchedule, const string& tutorAvailability) {
+double MatchingService::calculateScheduleScore(string studentSchedule, string tutorAvailability) {
     int matched = countMatchingScheduleItems(studentSchedule, tutorAvailability);
     if (matched >= 4) return 20.0;
     if (matched == 3) return 15.0;

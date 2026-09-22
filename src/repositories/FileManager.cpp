@@ -7,7 +7,7 @@
 using namespace std;
 
 namespace {
-string trim(const string& s) {
+string trim(string s) {
     size_t start = s.find_first_not_of(" \r\n\t");
     if (start == string::npos) return "";
     size_t end = s.find_last_not_of(" \r\n\t");
@@ -15,7 +15,7 @@ string trim(const string& s) {
 }
 }
 
-string FileManager::getDataPath(const string& fileName) {
+string FileManager::getDataPath(string fileName) {
     if (filesystem::exists(filesystem::path("data") / fileName)) {
         return (filesystem::path("data") / fileName).string();
     }
@@ -25,7 +25,7 @@ string FileManager::getDataPath(const string& fileName) {
     return (filesystem::path("data") / fileName).string();
 }
 
-vector<string> FileManager::splitString(const string& text, char delimiter) {
+vector<string> FileManager::splitString(string text, char delimiter) {
     vector<string> tokens;
     stringstream ss(text);
     string token;
@@ -64,7 +64,7 @@ Vector<Student*> FileManager::loadStudents() {
     return students;
 }
 
-void FileManager::saveStudents(const Vector<Student*>& students) {
+void FileManager::saveStudents(Vector<Student*>& students) {
     ofstream out(getDataPath("student.txt"), ios::trunc);
     for (size_t i = 0; i < students.size(); ++i) {
         out << students[i]->toString() << "\n";
@@ -105,7 +105,7 @@ Vector<Tutor*> FileManager::loadTutors() {
     return tutors;
 }
 
-void FileManager::saveTutors(const Vector<Tutor*>& tutors) {
+void FileManager::saveTutors(Vector<Tutor*>& tutors) {
     ofstream out(getDataPath("tutor.txt"), ios::trunc);
     for (size_t i = 0; i < tutors.size(); ++i) {
         out << tutors[i]->toString() << "\n";
@@ -125,7 +125,7 @@ Vector<TutoringClass*> FileManager::loadClasses() {
     return classes;
 }
 
-void FileManager::saveClasses(const Vector<TutoringClass*>& classes) {
+void FileManager::saveClasses(Vector<TutoringClass*>& classes) {
     ofstream out(getDataPath("class.txt"), ios::trunc);
     for (size_t i = 0; i < classes.size(); ++i) {
         out << classes[i]->getClassID() << "|" << classes[i]->getStudentID() << "|" << classes[i]->getTutorID() << "|"
@@ -148,7 +148,7 @@ Vector<Contract*> FileManager::loadContracts() {
     return contracts;
 }
 
-void FileManager::saveContracts(const Vector<Contract*>& contracts) {
+void FileManager::saveContracts(Vector<Contract*>& contracts) {
     ofstream out(getDataPath("contract.txt"), ios::trunc);
     for (size_t i = 0; i < contracts.size(); ++i) {
         out << contracts[i]->getContractID() << "|" << contracts[i]->getClassID() << "|" << contracts[i]->getStudentID() << "|"
@@ -157,7 +157,35 @@ void FileManager::saveContracts(const Vector<Contract*>& contracts) {
     }
 }
 
-bool FileManager::validateAdminLogin(const string& username, const string& password) {
+Vector<Registration*> FileManager::loadRegistrations() {
+    Vector<Registration*> registrations;
+    ifstream in(getDataPath("registration.txt"));
+    string line;
+    while (getline(in, line)) {
+        if (line.empty()) continue;
+        auto parts = splitString(line, '|');
+        if (parts.size() < 7) continue;
+        vector<string> subjects = splitString(parts[3], ',');
+        registrations.push_back(new Registration(
+            parts[0],
+            parts[1],
+            parts[2],
+            subjects,
+            parts[4],
+            parts[5],
+            parts[6]));
+    }
+    return registrations;
+}
+
+void FileManager::saveRegistrations(Vector<Registration*>& registrations) {
+    ofstream out(getDataPath("registration.txt"), ios::trunc);
+    for (size_t i = 0; i < registrations.size(); ++i) {
+        out << registrations[i]->toString() << "\n";
+    }
+}
+
+bool FileManager::validateAdminLogin(string username, string password) {
     ifstream in(getDataPath("admin.txt"));
     string line;
     while (getline(in, line)) {

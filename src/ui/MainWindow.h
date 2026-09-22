@@ -4,6 +4,7 @@
 #include "FileManager.h"
 #include "Student.h"
 #include "Tutor.h"
+#include "Registration.h"
 
 #include <QMainWindow>
 #include <QStackedWidget>
@@ -21,6 +22,7 @@ private:
     QStackedWidget* stackedWidget = nullptr;
     Vector<Student*> students;
     Vector<Tutor*> tutors;
+    Vector<Registration*> registrations;
 
     QWidget* createDashboardPage();
     QWidget* createStudentPage();
@@ -29,11 +31,13 @@ private:
     QWidget* createClassPage();
     QWidget* createContractPage();
     QWidget* createStatisticsPage();
+    QWidget* createRegistrationPage();
     QWidget* createSidebar();
     void switchPage(int index);
     void populateStudentTable(QTableWidget* table);
     void populateTutorTable(QTableWidget* table);
-    static QString joinStrings(const vector<string>& items);
+    void populateRegistrationTable(QTableWidget* table);
+    static QString joinStrings(vector<string> items);
 };
 
 #endif

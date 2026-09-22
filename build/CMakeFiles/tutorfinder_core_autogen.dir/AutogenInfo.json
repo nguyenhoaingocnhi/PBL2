@@ -286,6 +286,12 @@
 			null
 		],
 		[
+			"D:/New folder/ki3/PBL2/src/entities/Registration.h",
+			"MU",
+			"IEUNVJTDNW/moc_Registration.cpp",
+			null
+		],
+		[
 			"D:/New folder/ki3/PBL2/src/entities/Student.h",
 			"MU",
 			"IEUNVJTDNW/moc_Student.cpp",
@@ -374,6 +380,7 @@
 	[
 		[ "D:/New folder/ki3/PBL2/src/entities/Contract.cpp", "MU", null ],
 		[ "D:/New folder/ki3/PBL2/src/entities/Person.cpp", "MU", null ],
+		[ "D:/New folder/ki3/PBL2/src/entities/Registration.cpp", "MU", null ],
 		[ "D:/New folder/ki3/PBL2/src/entities/Student.cpp", "MU", null ],
 		[ "D:/New folder/ki3/PBL2/src/entities/Tutor.cpp", "MU", null ],
 		[ "D:/New folder/ki3/PBL2/src/entities/TutoringClass.cpp", "MU", null ],

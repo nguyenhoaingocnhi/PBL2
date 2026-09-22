@@ -20,6 +20,7 @@ set(CORE_SOURCES
     src/entities/Tutor.cpp
     src/entities/TutoringClass.cpp
     src/entities/Contract.cpp
+    src/entities/Registration.cpp
     src/structures/Vector.cpp
     src/services/MatchingService.cpp
     src/repositories/FileManager.cpp

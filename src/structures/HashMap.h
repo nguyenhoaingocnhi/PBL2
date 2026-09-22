@@ -23,7 +23,7 @@ public:
     HashMap(size_t bucketCount = 16)
         : buckets_(bucketCount) {}
 
-    void insert(const K& key, const V& value) {
+    void insert(K key, V value) {
         auto index = hash(key) % buckets_.size();
         for (size_t i = 0; i < buckets_.size(); ++i) {
             size_t pos = (index + i) % buckets_.size();
@@ -37,11 +37,11 @@ public:
         throw runtime_error("HashMap is full");
     }
 
-    bool contains(const K& key) const {
+    bool contains(K key) {
         return get(key) != nullptr;
     }
 
-    V* get(const K& key) {
+    V* get(K key) {
         auto index = hash(key) % buckets_.size();
         for (size_t i = 0; i < buckets_.size(); ++i) {
             size_t pos = (index + i) % buckets_.size();
@@ -55,21 +55,7 @@ public:
         return nullptr;
     }
 
-    const V* get(const K& key) const {
-        auto index = hash(key) % buckets_.size();
-        for (size_t i = 0; i < buckets_.size(); ++i) {
-            size_t pos = (index + i) % buckets_.size();
-            if (!buckets_[pos].used) {
-                return nullptr;
-            }
-            if (buckets_[pos].key == key) {
-                return &buckets_[pos].value;
-            }
-        }
-        return nullptr;
-    }
-
-    void remove(const K& key) {
+    void remove(K key) {
         auto index = hash(key) % buckets_.size();
         for (size_t i = 0; i < buckets_.size(); ++i) {
             size_t pos = (index + i) % buckets_.size();
@@ -89,9 +75,9 @@ public:
         }
     }
 
-    size_t size() const {
+    size_t size() {
         size_t count = 0;
-        for (const auto& entry : buckets_) {
+        for (auto& entry : buckets_) {
             if (entry.used) {
                 ++count;
             }
@@ -100,7 +86,7 @@ public:
     }
 
 private:
-    size_t hash(const K& key) const {
+    size_t hash(K key) {
         Hash<K> hasher;
         return hasher(key);
     }

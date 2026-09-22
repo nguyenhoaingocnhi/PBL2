@@ -2,7 +2,6 @@
 
 #include "Student.h"
 #include "Tutor.h"
-#include <functional>
 #include <string>
 #include <vector>
 
@@ -19,11 +18,9 @@ struct MatchResult {
 
 class MatchingService {
 public:
-    static vector<MatchResult> matchStudentsToTutors(const Student& student, const vector<Tutor*>& tutors);
-    static vector<MatchResult> matchStudentsToTutors(
-        const Student& student, const vector<reference_wrapper<Tutor>>& tutors);
+    static vector<MatchResult> matchStudentsToTutors(Student& student, vector<Tutor*>& tutors);
     static double calculateExperienceScore(int yearsOfExperience);
-    static double calculateLocationScore(const string& studentArea, const vector<string>& tutorAreas);
+    static double calculateLocationScore(string studentArea, vector<string>& tutorAreas);
     static double calculatePriceScore(long long tutorRate, long long studentBudget);
-    static double calculateScheduleScore(const string& studentSchedule, const string& tutorAvailability);
+    static double calculateScheduleScore(string studentSchedule, string tutorAvailability);
 };

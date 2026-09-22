@@ -22,6 +22,9 @@
 #include <QTableWidgetItem>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <QDialog>
+#include <QFormLayout>
+#include <QMessageBox>
 
 using namespace std;
 
@@ -430,6 +433,7 @@ MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent) {
     students = FileManager::loadStudents();
     tutors = FileManager::loadTutors();
+    registrations = FileManager::loadRegistrations();
 
     setWindowTitle(QString::fromUtf8("QUẢN LÝ GIA SƯ - Hệ thống quản trị"));
     resize(1360, 860);
@@ -454,6 +458,7 @@ MainWindow::MainWindow(QWidget* parent)
     stackedWidget->addWidget(createClassPage());
     stackedWidget->addWidget(createContractPage());
     stackedWidget->addWidget(createStatisticsPage());
+    stackedWidget->addWidget(createRegistrationPage());
 
     mainLayout->addWidget(stackedWidget, 1);
     setCentralWidget(central);
@@ -462,11 +467,12 @@ MainWindow::MainWindow(QWidget* parent)
 MainWindow::~MainWindow() {
     for (size_t i = 0; i < students.size(); ++i) delete students[i];
     for (size_t i = 0; i < tutors.size(); ++i) delete tutors[i];
+    for (size_t i = 0; i < registrations.size(); ++i) delete registrations[i];
 }
 
-QString MainWindow::joinStrings(const vector<string>& items) {
+QString MainWindow::joinStrings(vector<string> items) {
     QStringList parts;
-    for (const auto& item : items) {
+    for (auto& item : items) {
         if (!item.empty()) parts << QString::fromStdString(item);
     }
     return parts.join(", ");
@@ -522,7 +528,8 @@ QWidget* MainWindow::createSidebar() {
         {QString::fromUtf8("👤⁺"), QString::fromUtf8("Tìm gia sư")},
         {QString::fromUtf8("📖"), QString::fromUtf8("Lớp học")},
         {QString::fromUtf8("📄"), QString::fromUtf8("Hợp đồng")},
-        {QString::fromUtf8("📊"), QString::fromUtf8("Thống kê")}
+        {QString::fromUtf8("📊"), QString::fromUtf8("Thống kê")},
+        {QString::fromUtf8("📝"), QString::fromUtf8("Đăng ký môn")}
     };
 
     for (int i = 0; i < items.size(); ++i) {
@@ -1922,3 +1929,179 @@ void MainWindow::switchPage(int index) {
         stackedWidget->setCurrentIndex(index);
     }
 }
+
+// -------------------------------------------------------------
+// QUẢN LÝ ĐĂNG KÝ MÔN HỌC (1 SINH VIÊN ĐĂNG KÝ NHIỀU MÔN)
+// -------------------------------------------------------------
+QWidget* MainWindow::createRegistrationPage() {
+    auto* page = new QWidget;
+    auto* root = new QVBoxLayout(page);
+    root->setContentsMargins(0, 0, 0, 0);
+    root->setSpacing(0);
+    root->addWidget(header(page));
+
+    auto* scroll = new QScrollArea(page);
+    scroll->setWidgetResizable(true);
+    scroll->setFrameShape(QFrame::NoFrame);
+    scroll->setStyleSheet(QString("QScrollArea { background:%1; border:none; }").arg(BG));
+
+    auto* content = new QWidget;
+    content->setStyleSheet(QString("background:%1;").arg(BG));
+    auto* l = new QVBoxLayout(content);
+    l->setContentsMargins(28, 22, 28, 24);
+    l->setSpacing(16);
+
+    auto* topCard = new QFrame(content);
+    topCard->setStyleSheet("background:#F1F5F9; border:1px solid #E2E8F0; border-radius:10px;");
+    auto* topLayout = new QHBoxLayout(topCard);
+    topLayout->setContentsMargins(24, 18, 24, 18);
+    auto* tCol = new QVBoxLayout;
+    tCol->setSpacing(4);
+    tCol->addWidget(label(QString::fromUtf8("Quản lý đăng ký môn học"), 22, true, TEXT_MAIN));
+    tCol->addWidget(label(QString::fromUtf8("Theo dõi học sinh đăng ký nhiều môn học, số lượng môn và trạng thái ghép gia sư."), 13, false, TEXT_MUTED));
+    topLayout->addLayout(tCol, 1);
+    auto* btnNewReg = blueButton(QString::fromUtf8("📝⁺  Đăng ký môn học mới"), topCard);
+    topLayout->addWidget(btnNewReg);
+    l->addWidget(topCard);
+
+    int pendingCount = 0;
+    int approvedCount = 0;
+    for (size_t i = 0; i < registrations.size(); ++i) {
+        if (registrations[i]->getStatus().find("duyet") != string::npos || registrations[i]->getStatus().find("Duyet") != string::npos) {
+            ++approvedCount;
+        } else {
+            ++pendingCount;
+        }
+    }
+
+    auto* summary = new QHBoxLayout;
+    summary->setSpacing(14);
+    summary->addWidget(infoTile(QString::fromUtf8("Tổng phiếu ĐK"), QString::number(registrations.size()), BLUE), 1);
+    summary->addWidget(infoTile(QString::fromUtf8("Chờ ghép gia sư"), QString::number(pendingCount), "#F59E0B"), 1);
+    summary->addWidget(infoTile(QString::fromUtf8("Đã duyệt ghép"), QString::number(approvedCount), GREEN), 1);
+    l->addLayout(summary);
+
+    auto* filters = card();
+    auto* fl = new QHBoxLayout(filters);
+    fl->setContentsMargins(14, 10, 14, 10);
+    fl->setSpacing(12);
+    addFilter(fl, QString::fromUtf8("🔍  Tìm mã ĐK, mã học sinh, tên học sinh..."), 280);
+    fl->addWidget(combo({QString::fromUtf8("Tất cả trạng thái"), QString::fromUtf8("Chờ ghép gia sư"), QString::fromUtf8("Đã duyệt"), QString::fromUtf8("Đã hoàn thành")}, 170));
+    l->addWidget(filters);
+
+    auto* tableCard = card();
+    auto* tl = new QVBoxLayout(tableCard);
+    tl->setContentsMargins(16, 14, 16, 14);
+
+    auto* table = new QTableWidget(static_cast<int>(registrations.size()), 9, tableCard);
+    table->setHorizontalHeaderLabels({
+        QString::fromUtf8("MÃ ĐK"),
+        QString::fromUtf8("MÃ SV"),
+        QString::fromUtf8("HỌC SINH"),
+        QString::fromUtf8("CÁC MÔN ĐĂNG KÝ"),
+        QString::fromUtf8("SỐ MÔN"),
+        QString::fromUtf8("NGÀY ĐK"),
+        QString::fromUtf8("TRẠNG THÁI"),
+        QString::fromUtf8("GHI CHÚ"),
+        QString::fromUtf8("THAO TÁC")
+    });
+    styleTable(table);
+    populateRegistrationTable(table);
+    tl->addWidget(table);
+    l->addWidget(tableCard, 1);
+
+    // Xử lý sự kiện ấn nút "Đăng ký môn học mới"
+    connect(btnNewReg, &QPushButton::clicked, this, [this, table]() {
+        QDialog dialog(this);
+        dialog.setWindowTitle(QString::fromUtf8("Đăng ký môn học mới cho sinh viên"));
+        dialog.setMinimumWidth(450);
+        auto* form = new QFormLayout(&dialog);
+
+        auto* txtRegID = new QLineEdit(&dialog);
+        txtRegID->setText(QString("DK%1").arg(registrations.size() + 1, 3, 10, QChar('0')));
+        auto* txtStudentID = new QLineEdit(&dialog);
+        txtStudentID->setPlaceholderText("Ví dụ: SV001");
+        auto* txtStudentName = new QLineEdit(&dialog);
+        txtStudentName->setPlaceholderText("Ví dụ: Nguyen Van A");
+        auto* txtSubjects = new QLineEdit(&dialog);
+        txtSubjects->setPlaceholderText("Các môn học, cách nhau dấu phẩy: Toan, Ly, Hoa");
+        auto* txtDate = new QLineEdit(&dialog);
+        txtDate->setText("22/09/2026");
+        auto* txtNotes = new QLineEdit(&dialog);
+        txtNotes->setPlaceholderText("Yêu cầu, ghi chú...");
+
+        form->addRow(QString::fromUtf8("Mã đăng ký:"), txtRegID);
+        form->addRow(QString::fromUtf8("Mã sinh viên:"), txtStudentID);
+        form->addRow(QString::fromUtf8("Tên sinh viên:"), txtStudentName);
+        form->addRow(QString::fromUtf8("Các môn đăng ký:"), txtSubjects);
+        form->addRow(QString::fromUtf8("Ngày đăng ký:"), txtDate);
+        form->addRow(QString::fromUtf8("Ghi chú:"), txtNotes);
+
+        auto* btnBox = new QHBoxLayout;
+        auto* btnSave = new QPushButton(QString::fromUtf8("Lưu đăng ký"), &dialog);
+        btnSave->setStyleSheet("background:#0284C7; color:white; padding:8px 16px; border-radius:6px; font-weight:600;");
+        auto* btnCancel = new QPushButton(QString::fromUtf8("Hủy"), &dialog);
+        btnCancel->setStyleSheet("background:#E2E8F0; color:#334155; padding:8px 16px; border-radius:6px;");
+        btnBox->addStretch();
+        btnBox->addWidget(btnCancel);
+        btnBox->addWidget(btnSave);
+        form->addRow(btnBox);
+
+        connect(btnCancel, &QPushButton::clicked, &dialog, &QDialog::reject);
+        connect(btnSave, &QPushButton::clicked, [&]() {
+            if (txtStudentID->text().trimmed().isEmpty() || txtSubjects->text().trimmed().isEmpty()) {
+                QMessageBox::warning(&dialog, QString::fromUtf8("Thông báo"), QString::fromUtf8("Vui lòng nhập mã sinh viên và ít nhất một môn học!"));
+                return;
+            }
+
+            auto rawSubjects = txtSubjects->text().split(',');
+            vector<string> subjects;
+            for (auto& s : rawSubjects) {
+                QString trimmed = s.trimmed();
+                if (!trimmed.isEmpty()) {
+                    subjects.push_back(trimmed.toStdString());
+                }
+            }
+
+            Registration* newReg = new Registration(
+                txtRegID->text().trimmed().toStdString(),
+                txtStudentID->text().trimmed().toStdString(),
+                txtStudentName->text().trimmed().toStdString(),
+                subjects,
+                txtDate->text().trimmed().toStdString(),
+                "Cho ghep gia su",
+                txtNotes->text().trimmed().toStdString()
+            );
+
+            registrations.push_back(newReg);
+            FileManager::saveRegistrations(registrations);
+            populateRegistrationTable(table);
+            QMessageBox::information(&dialog, QString::fromUtf8("Thành công"), QString::fromUtf8("Đã đăng ký thành công các môn học cho sinh viên!"));
+            dialog.accept();
+        });
+
+        dialog.exec();
+    });
+
+    l->addStretch();
+    scroll->setWidget(content);
+    root->addWidget(scroll, 1);
+    return page;
+}
+
+void MainWindow::populateRegistrationTable(QTableWidget* table) {
+    table->setRowCount(static_cast<int>(registrations.size()));
+    for (size_t i = 0; i < registrations.size(); ++i) {
+        Registration* reg = registrations[i];
+        table->setItem(static_cast<int>(i), 0, new QTableWidgetItem(QString::fromStdString(reg->getRegistrationID())));
+        table->setItem(static_cast<int>(i), 1, new QTableWidgetItem(QString::fromStdString(reg->getStudentID())));
+        table->setItem(static_cast<int>(i), 2, new QTableWidgetItem(QString::fromStdString(reg->getStudentName())));
+        table->setItem(static_cast<int>(i), 3, new QTableWidgetItem(QString::fromStdString(reg->getSubjectsSummary())));
+        table->setItem(static_cast<int>(i), 4, new QTableWidgetItem(QString::number(reg->getSubjectCount()) + QString::fromUtf8(" môn")));
+        table->setItem(static_cast<int>(i), 5, new QTableWidgetItem(QString::fromStdString(reg->getRegistrationDate())));
+        table->setItem(static_cast<int>(i), 6, new QTableWidgetItem(QString::fromStdString(reg->getStatus())));
+        table->setItem(static_cast<int>(i), 7, new QTableWidgetItem(QString::fromStdString(reg->getNotes())));
+        table->setItem(static_cast<int>(i), 8, new QTableWidgetItem(QString::fromUtf8("Chi tiết")));
+    }
+}
+

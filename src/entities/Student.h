@@ -21,45 +21,51 @@ struct StudentProfile {
 class Student : public Person {
 public:
     Student();
-        Student(const string& personID,
-            const string& fullName,
-            const string& phone,
-            const string& email,
-            const string& address,
-            const string& gender,
-            const string& dateOfBirth,
-            const string& grade,
-            const vector<string>& needSubjects,
-            const string& availableSchedule,
-            const string& learningLevel,
-            const string& preferredTutorGender,
-            const string& budgetPerHour,
-            const string& notes,
+    Student(string personID,
+            string fullName,
+            string phone,
+            string email,
+            string address,
+            string gender,
+            string dateOfBirth,
+            string grade,
+            vector<string> needSubjects,
+            string availableSchedule,
+            string learningLevel,
+            string preferredTutorGender,
+            string budgetPerHour,
+            string notes,
             bool isMatched,
-            const vector<string>& enrolledClasses = {});
+            vector<string> enrolledClasses = {});
 
-    void displayInfo() const override;
-    string toString() const override;
+    void displayInfo() override;
+    string toString() override;
 
-    const string& getGrade() const;
-    const vector<string>& getNeedSubjects() const;
-    const string& getAvailableSchedule() const;
-    const string& getLearningLevel() const;
-    const string& getPreferredTutorGender() const;
-    const string& getBudgetPerHour() const;
-    const string& getNotes() const;
-    bool getIsMatched() const;
-    const vector<string>& getEnrolledClasses() const;
+    string getGrade();
+    vector<string>& getNeedSubjects();
+    string getAvailableSchedule();
+    string getLearningLevel();
+    string getPreferredTutorGender();
+    string getBudgetPerHour();
+    string getNotes();
+    bool getIsMatched();
+    vector<string>& getEnrolledClasses();
 
-    void setGrade(const string& value);
-    void setNeedSubjects(const vector<string>& value);
-    void setAvailableSchedule(const string& value);
-    void setLearningLevel(const string& value);
-    void setPreferredTutorGender(const string& value);
-    void setBudgetPerHour(const string& value);
-    void setNotes(const string& value);
+    void setGrade(string value);
+    void setNeedSubjects(vector<string> value);
+    void setAvailableSchedule(string value);
+    void setLearningLevel(string value);
+    void setPreferredTutorGender(string value);
+    void setBudgetPerHour(string value);
+    void setNotes(string value);
     void setIsMatched(bool value);
-    void setEnrolledClasses(const vector<string>& value);
+    void setEnrolledClasses(vector<string> value);
+
+    // Tiện ích đăng ký nhiều môn học cho sinh viên
+    void registerSubject(string subject);
+    void registerMultipleSubjects(vector<string> subjects);
+    bool unregisterSubject(string subject);
+    vector<string>& getRegisteredSubjects();
 
 private:
     StudentProfile profile_;

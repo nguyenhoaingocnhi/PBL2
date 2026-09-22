@@ -92,6 +92,14 @@ build CMakeFiles/tutorfinder_core.dir/src/entities/Contract.cpp.obj: CXX_COMPILE
   OBJECT_FILE_DIR = CMakeFiles\tutorfinder_core.dir\src\entities
   TARGET_SUPPORT_DIR = CMakeFiles\tutorfinder_core.dir
 
+build CMakeFiles/tutorfinder_core.dir/src/entities/Registration.cpp.obj: CXX_COMPILER__tutorfinder_core_unscanned_ D$:/New$ folder/ki3/PBL2/src/entities/Registration.cpp || cmake_object_order_depends_target_tutorfinder_core
+  DEP_FILE = CMakeFiles\tutorfinder_core.dir\src\entities\Registration.cpp.obj.d
+  FLAGS = -std=c++17 -finput-charset=UTF-8 -fexec-charset=UTF-8
+  INCLUDES = -I"D:/New folder/ki3/PBL2/build/tutorfinder_core_autogen/include" -I"D:/New folder/ki3/PBL2/src" -I"D:/New folder/ki3/PBL2/src/entities" -I"D:/New folder/ki3/PBL2/src/structures" -I"D:/New folder/ki3/PBL2/src/services" -I"D:/New folder/ki3/PBL2/src/repositories"
+  OBJECT_DIR = CMakeFiles\tutorfinder_core.dir
+  OBJECT_FILE_DIR = CMakeFiles\tutorfinder_core.dir\src\entities
+  TARGET_SUPPORT_DIR = CMakeFiles\tutorfinder_core.dir
+
 build CMakeFiles/tutorfinder_core.dir/src/structures/Vector.cpp.obj: CXX_COMPILER__tutorfinder_core_unscanned_ D$:/New$ folder/ki3/PBL2/src/structures/Vector.cpp || cmake_object_order_depends_target_tutorfinder_core
   DEP_FILE = CMakeFiles\tutorfinder_core.dir\src\structures\Vector.cpp.obj.d
   FLAGS = -std=c++17 -finput-charset=UTF-8 -fexec-charset=UTF-8
@@ -124,7 +132,7 @@ build CMakeFiles/tutorfinder_core.dir/src/repositories/FileManager.cpp.obj: CXX_
 #############################################
 # Link the static library libtutorfinder_core.a
 
-build libtutorfinder_core.a: CXX_STATIC_LIBRARY_LINKER__tutorfinder_core_ CMakeFiles/tutorfinder_core.dir/tutorfinder_core_autogen/mocs_compilation.cpp.obj CMakeFiles/tutorfinder_core.dir/src/entities/Person.cpp.obj CMakeFiles/tutorfinder_core.dir/src/entities/Student.cpp.obj CMakeFiles/tutorfinder_core.dir/src/entities/Tutor.cpp.obj CMakeFiles/tutorfinder_core.dir/src/entities/TutoringClass.cpp.obj CMakeFiles/tutorfinder_core.dir/src/entities/Contract.cpp.obj CMakeFiles/tutorfinder_core.dir/src/structures/Vector.cpp.obj CMakeFiles/tutorfinder_core.dir/src/services/MatchingService.cpp.obj CMakeFiles/tutorfinder_core.dir/src/repositories/FileManager.cpp.obj || tutorfinder_core_autogen tutorfinder_core_autogen_timestamp_deps
+build libtutorfinder_core.a: CXX_STATIC_LIBRARY_LINKER__tutorfinder_core_ CMakeFiles/tutorfinder_core.dir/tutorfinder_core_autogen/mocs_compilation.cpp.obj CMakeFiles/tutorfinder_core.dir/src/entities/Person.cpp.obj CMakeFiles/tutorfinder_core.dir/src/entities/Student.cpp.obj CMakeFiles/tutorfinder_core.dir/src/entities/Tutor.cpp.obj CMakeFiles/tutorfinder_core.dir/src/entities/TutoringClass.cpp.obj CMakeFiles/tutorfinder_core.dir/src/entities/Contract.cpp.obj CMakeFiles/tutorfinder_core.dir/src/entities/Registration.cpp.obj CMakeFiles/tutorfinder_core.dir/src/structures/Vector.cpp.obj CMakeFiles/tutorfinder_core.dir/src/services/MatchingService.cpp.obj CMakeFiles/tutorfinder_core.dir/src/repositories/FileManager.cpp.obj || tutorfinder_core_autogen tutorfinder_core_autogen_timestamp_deps
   OBJECT_DIR = CMakeFiles\tutorfinder_core.dir
   POST_BUILD = cd .
   PRE_LINK = cd .

@@ -4,68 +4,67 @@ using namespace std;
 
 Person::Person() = default;
 
-Person::Person(const string& personID,
-               const string& fullName,
-               const string& phone,
-               const string& email,
-               const string& address,
-               const string& gender,
-               const string& dateOfBirth)
+Person::Person(string personID,
+               string fullName,
+               string phone,
+               string email,
+               string address,
+               string gender,
+               string dateOfBirth)
     : info_{personID, fullName, phone, email, address, gender, dateOfBirth} {}
 
-const string& Person::getPersonID() const {
+string Person::getPersonID() {
     return info_.personID;
 }
 
-const string& Person::getFullName() const {
+string Person::getFullName() {
     return info_.fullName;
 }
 
-const string& Person::getPhone() const {
+string Person::getPhone() {
     return info_.phone;
 }
 
-const string& Person::getEmail() const {
+string Person::getEmail() {
     return info_.email;
 }
 
-const string& Person::getAddress() const {
+string Person::getAddress() {
     return info_.address;
 }
 
-const string& Person::getGender() const {
+string Person::getGender() {
     return info_.gender;
 }
 
-const string& Person::getDateOfBirth() const {
+string Person::getDateOfBirth() {
     return info_.dateOfBirth;
 }
 
-void Person::setPersonID(const string& id) {
+void Person::setPersonID(string id) {
     info_.personID = id;
 }
 
-void Person::setFullName(const string& name) {
+void Person::setFullName(string name) {
     info_.fullName = name;
 }
 
-void Person::setPhone(const string& phoneValue) {
+void Person::setPhone(string phoneValue) {
     info_.phone = phoneValue;
 }
 
-void Person::setEmail(const string& emailValue) {
+void Person::setEmail(string emailValue) {
     info_.email = emailValue;
 }
 
-void Person::setAddress(const string& addressValue) {
+void Person::setAddress(string addressValue) {
     info_.address = addressValue;
 }
 
-void Person::setGender(const string& genderValue) {
+void Person::setGender(string genderValue) {
     info_.gender = genderValue;
 }
 
-void Person::setDateOfBirth(const string& dob) {
+void Person::setDateOfBirth(string dob) {
     info_.dateOfBirth = dob;
 }
-

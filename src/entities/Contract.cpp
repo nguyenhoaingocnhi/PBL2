@@ -4,86 +4,85 @@ using namespace std;
 
 Contract::Contract() = default;
 
-Contract::Contract(const string& contractID,
-                   const string& classID,
-                   const string& studentID,
-                   const string& tutorID,
-                   const string& createdAt,
-                   const string& startDate,
-                   const string& endDate,
-                   const string& totalFee,
-                   const string& status)
+Contract::Contract(string contractID,
+                   string classID,
+                   string studentID,
+                   string tutorID,
+                   string createdAt,
+                   string startDate,
+                   string endDate,
+                   string totalFee,
+                   string status)
     : data_{contractID, classID, studentID, tutorID, createdAt, startDate, endDate, totalFee, status} {}
 
-const string& Contract::getContractID() const {
+string Contract::getContractID() {
     return data_.contractID;
 }
 
-const string& Contract::getClassID() const {
+string Contract::getClassID() {
     return data_.classID;
 }
 
-const string& Contract::getStudentID() const {
+string Contract::getStudentID() {
     return data_.studentID;
 }
 
-const string& Contract::getTutorID() const {
+string Contract::getTutorID() {
     return data_.tutorID;
 }
 
-const string& Contract::getCreatedAt() const {
+string Contract::getCreatedAt() {
     return data_.createdAt;
 }
 
-const string& Contract::getStartDate() const {
+string Contract::getStartDate() {
     return data_.startDate;
 }
 
-const string& Contract::getEndDate() const {
+string Contract::getEndDate() {
     return data_.endDate;
 }
 
-const string& Contract::getTotalFee() const {
+string Contract::getTotalFee() {
     return data_.totalFee;
 }
 
-const string& Contract::getStatus() const {
+string Contract::getStatus() {
     return data_.status;
 }
 
-void Contract::setContractID(const string& value) {
+void Contract::setContractID(string value) {
     data_.contractID = value;
 }
 
-void Contract::setClassID(const string& value) {
+void Contract::setClassID(string value) {
     data_.classID = value;
 }
 
-void Contract::setStudentID(const string& value) {
+void Contract::setStudentID(string value) {
     data_.studentID = value;
 }
 
-void Contract::setTutorID(const string& value) {
+void Contract::setTutorID(string value) {
     data_.tutorID = value;
 }
 
-void Contract::setCreatedAt(const string& value) {
+void Contract::setCreatedAt(string value) {
     data_.createdAt = value;
 }
 
-void Contract::setStartDate(const string& value) {
+void Contract::setStartDate(string value) {
     data_.startDate = value;
 }
 
-void Contract::setEndDate(const string& value) {
+void Contract::setEndDate(string value) {
     data_.endDate = value;
 }
 
-void Contract::setTotalFee(const string& value) {
+void Contract::setTotalFee(string value) {
     data_.totalFee = value;
 }
 
-void Contract::setStatus(const string& value) {
+void Contract::setStatus(string value) {
     data_.status = value;
 }
-

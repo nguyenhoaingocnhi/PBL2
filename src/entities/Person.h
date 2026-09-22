@@ -17,34 +17,34 @@ struct PersonInfo {
 class Person {
 public:
     Person();
-        Person(const string& personID,
-            const string& fullName,
-            const string& phone,
-            const string& email,
-            const string& address,
-            const string& gender,
-            const string& dateOfBirth);
+    Person(string personID,
+           string fullName,
+           string phone,
+           string email,
+           string address,
+           string gender,
+           string dateOfBirth);
 
     virtual ~Person() = default;
 
-    virtual void displayInfo() const = 0;
-    virtual string toString() const = 0;
+    virtual void displayInfo() = 0;
+    virtual string toString() = 0;
 
-    const string& getPersonID() const;
-    const string& getFullName() const;
-    const string& getPhone() const;
-    const string& getEmail() const;
-    const string& getAddress() const;
-    const string& getGender() const;
-    const string& getDateOfBirth() const;
+    string getPersonID();
+    string getFullName();
+    string getPhone();
+    string getEmail();
+    string getAddress();
+    string getGender();
+    string getDateOfBirth();
 
-    void setPersonID(const string& id);
-    void setFullName(const string& name);
-    void setPhone(const string& phone);
-    void setEmail(const string& email);
-    void setAddress(const string& address);
-    void setGender(const string& gender);
-    void setDateOfBirth(const string& dob);
+    void setPersonID(string id);
+    void setFullName(string name);
+    void setPhone(string phone);
+    void setEmail(string email);
+    void setAddress(string address);
+    void setGender(string gender);
+    void setDateOfBirth(string dob);
 
 protected:
     PersonInfo info_;

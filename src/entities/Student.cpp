@@ -2,36 +2,37 @@
 
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 
 using namespace std;
 
 Student::Student() = default;
 
-Student::Student(const string& personID,
-                 const string& fullName,
-                 const string& phone,
-                 const string& email,
-                 const string& address,
-                 const string& gender,
-                 const string& dateOfBirth,
-                 const string& grade,
-                 const vector<string>& needSubjects,
-                 const string& availableSchedule,
-                 const string& learningLevel,
-                 const string& preferredTutorGender,
-                 const string& budgetPerHour,
-                 const string& notes,
+Student::Student(string personID,
+                 string fullName,
+                 string phone,
+                 string email,
+                 string address,
+                 string gender,
+                 string dateOfBirth,
+                 string grade,
+                 vector<string> needSubjects,
+                 string availableSchedule,
+                 string learningLevel,
+                 string preferredTutorGender,
+                 string budgetPerHour,
+                 string notes,
                  bool isMatched,
-                 const vector<string>& enrolledClasses)
-        : Person(personID, fullName, phone, email, address, gender, dateOfBirth),
-            profile_{grade, needSubjects, availableSchedule, learningLevel,
-                             preferredTutorGender, budgetPerHour, notes, isMatched, enrolledClasses} {}
+                 vector<string> enrolledClasses)
+    : Person(personID, fullName, phone, email, address, gender, dateOfBirth),
+      profile_{grade, needSubjects, availableSchedule, learningLevel,
+               preferredTutorGender, budgetPerHour, notes, isMatched, enrolledClasses} {}
 
-void Student::displayInfo() const {
+void Student::displayInfo() {
     cout << "Student: " << getPersonID() << " - " << getFullName() << endl;
 }
 
-string Student::toString() const {
+string Student::toString() {
     ostringstream oss;
     oss << getPersonID() << "|" << getFullName() << "|" << getPhone() << "|" << getEmail() << "|"
         << getAddress() << "|" << getGender() << "|" << getDateOfBirth() << "|";
@@ -47,67 +48,67 @@ string Student::toString() const {
     return oss.str();
 }
 
-const string& Student::getGrade() const {
+string Student::getGrade() {
     return profile_.grade;
 }
 
-const vector<string>& Student::getNeedSubjects() const {
+vector<string>& Student::getNeedSubjects() {
     return profile_.needSubjects;
 }
 
-const string& Student::getAvailableSchedule() const {
+string Student::getAvailableSchedule() {
     return profile_.availableSchedule;
 }
 
-const string& Student::getLearningLevel() const {
+string Student::getLearningLevel() {
     return profile_.learningLevel;
 }
 
-const string& Student::getPreferredTutorGender() const {
+string Student::getPreferredTutorGender() {
     return profile_.preferredTutorGender;
 }
 
-const string& Student::getBudgetPerHour() const {
+string Student::getBudgetPerHour() {
     return profile_.budgetPerHour;
 }
 
-const string& Student::getNotes() const {
+string Student::getNotes() {
     return profile_.notes;
 }
 
-bool Student::getIsMatched() const {
+bool Student::getIsMatched() {
     return profile_.isMatched;
 }
 
-const vector<string>& Student::getEnrolledClasses() const {
+vector<string>& Student::getEnrolledClasses() {
     return profile_.enrolledClasses;
 }
 
-void Student::setGrade(const string& value) {
+void Student::setGrade(string value) {
     profile_.grade = value;
 }
 
-void Student::setNeedSubjects(const vector<string>& value) {
+void Student::setNeedSubjects(vector<string> value) {
     profile_.needSubjects = value;
 }
 
-void Student::setAvailableSchedule(const string& value) {
+void Student::setAvailableSchedule(string value) {
     profile_.availableSchedule = value;
 }
 
-void Student::setLearningLevel(const string& value) {
+void Student::setLearningLevel(string value) {
     profile_.learningLevel = value;
 }
 
-void Student::setPreferredTutorGender(const string& value) {
+void Student::setPreferredTutorGender(string value) {
     profile_.preferredTutorGender = value;
 }
 
-void Student::setBudgetPerHour(const string& value) {
+void Student::setBudgetPerHour(string value) {
     profile_.budgetPerHour = value;
 }
 
-void Student::setNotes(const string& value) {
+void Student::setNotes(string value) {
     profile_.notes = value;
 }
 
@@ -115,7 +116,39 @@ void Student::setIsMatched(bool value) {
     profile_.isMatched = value;
 }
 
-void Student::setEnrolledClasses(const vector<string>& value) {
+void Student::setEnrolledClasses(vector<string> value) {
     profile_.enrolledClasses = value;
 }
 
+// 1 sinh viên có thể đăng ký thêm môn học
+void Student::registerSubject(string subject) {
+    if (subject.empty()) return;
+    for (size_t i = 0; i < profile_.needSubjects.size(); ++i) {
+        if (profile_.needSubjects[i] == subject) {
+            return;
+        }
+    }
+    profile_.needSubjects.push_back(subject);
+}
+
+// 1 sinh viên có thể đăng ký nhiều môn học cùng lúc
+void Student::registerMultipleSubjects(vector<string> subjects) {
+    for (auto& subj : subjects) {
+        registerSubject(subj);
+    }
+}
+
+// Hủy đăng ký môn học
+bool Student::unregisterSubject(string subject) {
+    for (auto it = profile_.needSubjects.begin(); it != profile_.needSubjects.end(); ++it) {
+        if (*it == subject) {
+            profile_.needSubjects.erase(it);
+            return true;
+        }
+    }
+    return false;
+}
+
+vector<string>& Student::getRegisteredSubjects() {
+    return profile_.needSubjects;
+}

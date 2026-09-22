@@ -209,6 +209,8 @@ tutorfinder_core_autogen/timestamp: \
 	D:/New\ folder/ki3/PBL2/src/entities/Contract.h \
 	D:/New\ folder/ki3/PBL2/src/entities/Person.cpp \
 	D:/New\ folder/ki3/PBL2/src/entities/Person.h \
+	D:/New\ folder/ki3/PBL2/src/entities/Registration.cpp \
+	D:/New\ folder/ki3/PBL2/src/entities/Registration.h \
 	D:/New\ folder/ki3/PBL2/src/entities/Student.cpp \
 	D:/New\ folder/ki3/PBL2/src/entities/Student.h \
 	D:/New\ folder/ki3/PBL2/src/entities/Tutor.cpp \

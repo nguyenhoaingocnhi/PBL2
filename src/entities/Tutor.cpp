@@ -7,34 +7,34 @@ using namespace std;
 
 Tutor::Tutor() = default;
 
-Tutor::Tutor(const string& personID,
-             const string& fullName,
-             const string& phone,
-             const string& email,
-             const string& address,
-             const string& gender,
-             const string& dateOfBirth,
-             const vector<string>& subjects,
-             const string& degrees,
+Tutor::Tutor(string personID,
+             string fullName,
+             string phone,
+             string email,
+             string address,
+             string gender,
+             string dateOfBirth,
+             vector<string> subjects,
+             string degrees,
              int yearsOfExperience,
-             const string& experienceDetails,
-             const string& ratePerHour,
-             const string& availability,
+             string experienceDetails,
+             string ratePerHour,
+             string availability,
              bool isAvailable,
              int currentStudents,
-             const vector<string>& teachingClasses,
-             const vector<string>& teachingAreas,
-             const string& achievements)
+             vector<string> teachingClasses,
+             vector<string> teachingAreas,
+             string achievements)
     : Person(personID, fullName, phone, email, address, gender, dateOfBirth),
       profile_{subjects, degrees, yearsOfExperience, experienceDetails, ratePerHour,
                availability, isAvailable, currentStudents, teachingClasses, teachingAreas,
                achievements} {}
 
-void Tutor::displayInfo() const {
+void Tutor::displayInfo() {
     cout << "Tutor: " << getPersonID() << " - " << getFullName() << endl;
 }
 
-string Tutor::toString() const {
+string Tutor::toString() {
     ostringstream oss;
     oss << getPersonID() << "|" << getFullName() << "|" << getPhone() << "|" << getEmail() << "|"
         << getAddress() << "|" << getGender() << "|" << getDateOfBirth() << "|";
@@ -54,55 +54,55 @@ string Tutor::toString() const {
     return oss.str();
 }
 
-const vector<string>& Tutor::getSubjects() const {
+vector<string>& Tutor::getSubjects() {
     return profile_.subjects;
 }
 
-const string& Tutor::getDegrees() const {
+string Tutor::getDegrees() {
     return profile_.degrees;
 }
 
-int Tutor::getYearsOfExperience() const {
+int Tutor::getYearsOfExperience() {
     return profile_.yearsOfExperience;
 }
 
-const string& Tutor::getExperienceDetails() const {
+string Tutor::getExperienceDetails() {
     return profile_.experienceDetails;
 }
 
-const string& Tutor::getRatePerHour() const {
+string Tutor::getRatePerHour() {
     return profile_.ratePerHour;
 }
 
-const string& Tutor::getAvailability() const {
+string Tutor::getAvailability() {
     return profile_.availability;
 }
 
-bool Tutor::getIsAvailable() const {
+bool Tutor::getIsAvailable() {
     return profile_.isAvailable;
 }
 
-int Tutor::getCurrentStudents() const {
+int Tutor::getCurrentStudents() {
     return profile_.currentStudents;
 }
 
-const vector<string>& Tutor::getTeachingClasses() const {
+vector<string>& Tutor::getTeachingClasses() {
     return profile_.teachingClasses;
 }
 
-const vector<string>& Tutor::getTeachingAreas() const {
+vector<string>& Tutor::getTeachingAreas() {
     return profile_.teachingAreas;
 }
 
-const string& Tutor::getAchievements() const {
+string Tutor::getAchievements() {
     return profile_.achievements;
 }
 
-void Tutor::setSubjects(const vector<string>& value) {
+void Tutor::setSubjects(vector<string> value) {
     profile_.subjects = value;
 }
 
-void Tutor::setDegrees(const string& value) {
+void Tutor::setDegrees(string value) {
     profile_.degrees = value;
 }
 
@@ -110,15 +110,15 @@ void Tutor::setYearsOfExperience(int value) {
     profile_.yearsOfExperience = value;
 }
 
-void Tutor::setExperienceDetails(const string& value) {
+void Tutor::setExperienceDetails(string value) {
     profile_.experienceDetails = value;
 }
 
-void Tutor::setRatePerHour(const string& value) {
+void Tutor::setRatePerHour(string value) {
     profile_.ratePerHour = value;
 }
 
-void Tutor::setAvailability(const string& value) {
+void Tutor::setAvailability(string value) {
     profile_.availability = value;
 }
 
@@ -130,15 +130,14 @@ void Tutor::setCurrentStudents(int value) {
     profile_.currentStudents = value;
 }
 
-void Tutor::setTeachingClasses(const vector<string>& value) {
+void Tutor::setTeachingClasses(vector<string> value) {
     profile_.teachingClasses = value;
 }
 
-void Tutor::setTeachingAreas(const vector<string>& value) {
+void Tutor::setTeachingAreas(vector<string> value) {
     profile_.teachingAreas = value;
 }
 
-void Tutor::setAchievements(const string& value) {
+void Tutor::setAchievements(string value) {
     profile_.achievements = value;
 }
-
