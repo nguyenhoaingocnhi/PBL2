@@ -37,7 +37,7 @@ private:
     void populateStudentTable(QTableWidget* table);
     void populateTutorTable(QTableWidget* table);
     void populateRegistrationTable(QTableWidget* table);
-    static QString joinStrings(vector<string> items);
+    static QString joinStrings(Vector<string> items);
 };
 
 #endif

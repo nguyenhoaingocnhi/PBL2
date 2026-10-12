@@ -9,7 +9,6 @@
 #include "Vector.h"
 
 #include <string>
-#include <vector>
 
 using namespace std;
 
@@ -31,10 +30,10 @@ public:
     static void saveRegistrations(Vector<Registration*>& registrations);
 
     static bool validateAdminLogin(string username, string password);
+    static Vector<string> splitString(string text, char delimiter);
 
 private:
     static string getDataPath(string fileName);
-    static vector<string> splitString(string text, char delimiter);
 };
 
 #endif

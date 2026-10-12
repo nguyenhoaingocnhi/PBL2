@@ -25,8 +25,8 @@ string FileManager::getDataPath(string fileName) {
     return (filesystem::path("data") / fileName).string();
 }
 
-vector<string> FileManager::splitString(string text, char delimiter) {
-    vector<string> tokens;
+Vector<string> FileManager::splitString(string text, char delimiter) {
+    Vector<string> tokens;
     stringstream ss(text);
     string token;
     while (getline(ss, token, delimiter)) {
@@ -79,8 +79,8 @@ Vector<Tutor*> FileManager::loadTutors() {
         if (line.empty()) continue;
         auto parts = splitString(line, '|');
         if (parts.size() < 16) continue;
-        vector<string> subjects = splitString(parts[7], ',');
-        vector<string> areas = splitString(parts[13], ',');
+        Vector<string> subjects = splitString(parts[7], ',');
+        Vector<string> areas = splitString(parts[13], ',');
         Tutor* t = new Tutor(
             parts[0],
             parts[1],
@@ -165,7 +165,7 @@ Vector<Registration*> FileManager::loadRegistrations() {
         if (line.empty()) continue;
         auto parts = splitString(line, '|');
         if (parts.size() < 7) continue;
-        vector<string> subjects = splitString(parts[3], ',');
+        Vector<string> subjects = splitString(parts[3], ',');
         registrations.push_back(new Registration(
             parts[0],
             parts[1],

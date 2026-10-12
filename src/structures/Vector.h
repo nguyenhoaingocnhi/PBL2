@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <stdexcept>
 #include <utility>
+#include <initializer_list>
 
 using namespace std;
 
@@ -11,6 +12,26 @@ template <typename T>
 class Vector {
 public:
     Vector() = default;
+
+    explicit Vector(size_t initialSize, const T& defaultValue = T()) {
+        size_t cap = initialSize == 0 ? 4 : initialSize;
+        data_ = new T[cap];
+        capacity_ = cap;
+        size_ = initialSize;
+        for (size_t i = 0; i < size_; ++i) {
+            data_[i] = defaultValue;
+        }
+    }
+
+    Vector(initializer_list<T> list) {
+        size_t cap = list.size() == 0 ? 4 : list.size() * 2;
+        data_ = new T[cap];
+        capacity_ = cap;
+        size_ = 0;
+        for (const auto& item : list) {
+            data_[size_++] = item;
+        }
+    }
 
     Vector(const Vector& other) {
         copyFrom(other);
@@ -71,6 +92,25 @@ public:
         --size_;
     }
 
+    void erase(size_t index) {
+        if (index >= size_) {
+            throw out_of_range("Vector index out of range");
+        }
+        for (size_t i = index; i + 1 < size_; ++i) {
+            data_[i] = move(data_[i + 1]);
+        }
+        --size_;
+    }
+
+    T* erase(T* it) {
+        if (it < begin() || it >= end()) {
+            throw out_of_range("Vector iterator out of range");
+        }
+        size_t index = it - begin();
+        erase(index);
+        return begin() + index;
+    }
+
     T& operator[](size_t index) {
         if (index >= size_) {
             throw out_of_range("Vector index out of range");
@@ -95,11 +135,16 @@ public:
         capacity_ = 0;
     }
 
+    T* begin() { return data_; }
+    T* end() { return data_ + size_; }
+    const T* begin() const { return data_; }
+    const T* end() const { return data_ + size_; }
+
 private:
     void resize(size_t newCapacity) {
         T* newData = new T[newCapacity];
         for (size_t i = 0; i < size_; ++i) {
-            newData[i] = data_[i];
+            newData[i] = move(data_[i]);
         }
         delete[] data_;
         data_ = newData;

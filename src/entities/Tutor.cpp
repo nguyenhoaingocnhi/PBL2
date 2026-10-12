@@ -14,7 +14,7 @@ Tutor::Tutor(string personID,
              string address,
              string gender,
              string dateOfBirth,
-             vector<string> subjects,
+             Vector<string> subjects,
              string degrees,
              int yearsOfExperience,
              string experienceDetails,
@@ -22,8 +22,8 @@ Tutor::Tutor(string personID,
              string availability,
              bool isAvailable,
              int currentStudents,
-             vector<string> teachingClasses,
-             vector<string> teachingAreas,
+             Vector<string> teachingClasses,
+             Vector<string> teachingAreas,
              string achievements)
     : Person(personID, fullName, phone, email, address, gender, dateOfBirth),
       profile_{subjects, degrees, yearsOfExperience, experienceDetails, ratePerHour,
@@ -54,7 +54,7 @@ string Tutor::toString() {
     return oss.str();
 }
 
-vector<string>& Tutor::getSubjects() {
+Vector<string>& Tutor::getSubjects() {
     return profile_.subjects;
 }
 
@@ -86,11 +86,11 @@ int Tutor::getCurrentStudents() {
     return profile_.currentStudents;
 }
 
-vector<string>& Tutor::getTeachingClasses() {
+Vector<string>& Tutor::getTeachingClasses() {
     return profile_.teachingClasses;
 }
 
-vector<string>& Tutor::getTeachingAreas() {
+Vector<string>& Tutor::getTeachingAreas() {
     return profile_.teachingAreas;
 }
 
@@ -98,7 +98,7 @@ string Tutor::getAchievements() {
     return profile_.achievements;
 }
 
-void Tutor::setSubjects(vector<string> value) {
+void Tutor::setSubjects(Vector<string> value) {
     profile_.subjects = value;
 }
 
@@ -130,11 +130,11 @@ void Tutor::setCurrentStudents(int value) {
     profile_.currentStudents = value;
 }
 
-void Tutor::setTeachingClasses(vector<string> value) {
+void Tutor::setTeachingClasses(Vector<string> value) {
     profile_.teachingClasses = value;
 }
 
-void Tutor::setTeachingAreas(vector<string> value) {
+void Tutor::setTeachingAreas(Vector<string> value) {
     profile_.teachingAreas = value;
 }
 

@@ -1,15 +1,15 @@
 #include "MatchingService.h"
 
-#include <algorithm>
 #include <sstream>
 #include <string>
+#include <utility>
 
 using namespace std;
 
 namespace {
 
-vector<string> splitByComma(string text) {
-    vector<string> result;
+Vector<string> splitByComma(string text) {
+    Vector<string> result;
     stringstream ss(text);
     string item;
     while (getline(ss, item, ',')) {
@@ -25,9 +25,9 @@ bool hasMatchingSubject(Student& student, Tutor& tutor) {
         return true;
     }
 
-    for (auto& tutorSubject : tutor.getSubjects()) {
-        for (auto& requestedSubject : student.getNeedSubjects()) {
-            if (tutorSubject == requestedSubject) {
+    for (size_t i = 0; i < tutor.getSubjects().size(); ++i) {
+        for (size_t j = 0; j < student.getNeedSubjects().size(); ++j) {
+            if (tutor.getSubjects()[i] == student.getNeedSubjects()[j]) {
                 return true;
             }
         }
@@ -45,12 +45,12 @@ long long parseRate(string rate) {
 
 int countMatchingScheduleItems(string studentSchedule,
                                string tutorAvailability) {
-    vector<string> s = splitByComma(studentSchedule);
-    vector<string> t = splitByComma(tutorAvailability);
+    Vector<string> s = splitByComma(studentSchedule);
+    Vector<string> t = splitByComma(tutorAvailability);
     int matches = 0;
-    for (auto& day : s) {
-        for (auto& tutorDay : t) {
-            if (day == tutorDay) {
+    for (size_t i = 0; i < s.size(); ++i) {
+        for (size_t j = 0; j < t.size(); ++j) {
+            if (s[i] == t[j]) {
                 ++matches;
                 break;
             }
@@ -74,17 +74,22 @@ MatchResult createMatchResult(Student& student, Tutor& tutor) {
     return result;
 }
 
-void sortMatches(vector<MatchResult>& results) {
-    sort(results.begin(), results.end(), [](MatchResult& left, MatchResult& right) {
-        return left.totalScore > right.totalScore;
-    });
+void sortMatches(Vector<MatchResult>& results) {
+    for (size_t i = 0; i < results.size(); ++i) {
+        for (size_t j = i + 1; j < results.size(); ++j) {
+            if (results[j].totalScore > results[i].totalScore) {
+                swap(results[i], results[j]);
+            }
+        }
+    }
 }
 }
 
-vector<MatchResult> MatchingService::matchStudentsToTutors(
-    Student& student, vector<Tutor*>& tutors) {
-    vector<MatchResult> results;
-    for (Tutor* tutor : tutors) {
+Vector<MatchResult> MatchingService::matchStudentsToTutors(
+    Student& student, Vector<Tutor*>& tutors) {
+    Vector<MatchResult> results;
+    for (size_t i = 0; i < tutors.size(); ++i) {
+        Tutor* tutor = tutors[i];
         if (tutor == nullptr || !tutor->getIsAvailable()) {
             continue;
         }
@@ -106,9 +111,9 @@ double MatchingService::calculateExperienceScore(int yearsOfExperience) {
     return 5.0;
 }
 
-double MatchingService::calculateLocationScore(string studentArea, vector<string>& tutorAreas) {
-    for (auto& area : tutorAreas) {
-        if (area == studentArea) {
+double MatchingService::calculateLocationScore(string studentArea, Vector<string>& tutorAreas) {
+    for (size_t i = 0; i < tutorAreas.size(); ++i) {
+        if (tutorAreas[i] == studentArea) {
             return 10.0;
         }
     }

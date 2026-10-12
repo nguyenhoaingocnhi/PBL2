@@ -2,8 +2,8 @@
 
 #include "Student.h"
 #include "Tutor.h"
+#include "Vector.h"
 #include <string>
-#include <vector>
 
 using namespace std;
 
@@ -18,9 +18,9 @@ struct MatchResult {
 
 class MatchingService {
 public:
-    static vector<MatchResult> matchStudentsToTutors(Student& student, vector<Tutor*>& tutors);
+    static Vector<MatchResult> matchStudentsToTutors(Student& student, Vector<Tutor*>& tutors);
     static double calculateExperienceScore(int yearsOfExperience);
-    static double calculateLocationScore(string studentArea, vector<string>& tutorAreas);
+    static double calculateLocationScore(string studentArea, Vector<string>& tutorAreas);
     static double calculatePriceScore(long long tutorRate, long long studentBudget);
     static double calculateScheduleScore(string studentSchedule, string tutorAvailability);
 };

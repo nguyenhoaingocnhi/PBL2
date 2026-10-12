@@ -17,7 +17,6 @@ public:
                  string status,
                  string notes);
 
-    // Getters (không dùng const)
     string getRegistrationID();
     string getStudentID();
     string getStudentName();
@@ -26,7 +25,6 @@ public:
     string getStatus();
     string getNotes();
 
-    // Setters (không dùng const)
     void setRegistrationID(string value);
     void setStudentID(string value);
     void setStudentName(string value);

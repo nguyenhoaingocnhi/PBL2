@@ -7,7 +7,6 @@
 #include "Vector.h"
 
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
@@ -28,7 +27,7 @@ int main() {
         cout << "Tutor found: " << tutors[0]->getPersonID() << " - " << tutors[0]->getFullName() << endl;
     }
 
-    cout << "\n--- TEST DANG KY NHIEU MON HOC CHO 1 SINH VIEN ---" << endl;
+    cout << "\n--- TEST DANG KY NHIEU MON HOC CHO 1 SINH VIEN (DUNG CUSTOM VECTOR) ---" << endl;
     // Tạo 1 phiếu đăng ký cho sinh viên SV001 với môn ban đầu là Toán
     Registration reg("DK099", "SV001", "Nguyen Minh Anh", {"Toan"}, "22/09/2026", "Cho ghep", "Hoc offline");
     cout << "Ban dau dang ky: " << reg.getSubjectCount() << " mon (" << reg.getSubjectsSummary() << ")" << endl;
@@ -49,16 +48,16 @@ int main() {
 
     // Kiểm tra đăng ký môn học trực tiếp trên đối tượng Student
     if (!students.empty()) {
-        cout << "\n--- TEST DANG KY MON TRUC TIEP TREN STUDENT ---" << endl;
+        cout << "\n--- TEST DANG KY MON TRUC TIEP TREN STUDENT (DUNG CUSTOM VECTOR) ---" << endl;
         students[0]->registerMultipleSubjects({"Lap Trinh C++", "Co So Du Lieu"});
         cout << "Danh sach mon SV001 can hoc: ";
-        for (auto& s : students[0]->getRegisteredSubjects()) {
-            cout << s << " | ";
+        for (size_t i = 0; i < students[0]->getRegisteredSubjects().size(); ++i) {
+            cout << students[0]->getRegisteredSubjects()[i] << " | ";
         }
         cout << endl;
     }
 
-    cout << "\n--- TEST HASHMAP & MATCHING SERVICE (KHONG DUNG CONST) ---" << endl;
+    cout << "\n--- TEST HASHMAP & MATCHING SERVICE (KHONG DUNG STD::VECTOR VA KHONG DUNG CONST) ---" << endl;
     HashMap<string, Student*> studentMap;
     for (size_t i = 0; i < students.size(); ++i) {
         studentMap.insert(students[i]->getPersonID(), students[i]);
@@ -72,11 +71,11 @@ int main() {
     cout << "Contains GS001: " << tutorMap.contains("GS001") << endl;
 
     if (!students.empty() && !tutors.empty()) {
-        vector<Tutor*> tutorsVector;
+        Vector<Tutor*> tutorsVector;
         for (size_t i = 0; i < tutors.size(); ++i) {
             tutorsVector.push_back(tutors[i]);
         }
-        auto matches = MatchingService::matchStudentsToTutors(*students[0], tutorsVector);
+        Vector<MatchResult> matches = MatchingService::matchStudentsToTutors(*students[0], tutorsVector);
         cout << "Match count: " << matches.size() << endl;
         if (!matches.empty()) {
             cout << "Top match: " << matches[0].tutor->getPersonID() << " - " << matches[0].totalScore << endl;

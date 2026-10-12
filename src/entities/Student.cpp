@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <algorithm>
 
 using namespace std;
 
@@ -16,14 +15,14 @@ Student::Student(string personID,
                  string gender,
                  string dateOfBirth,
                  string grade,
-                 vector<string> needSubjects,
+                 Vector<string> needSubjects,
                  string availableSchedule,
                  string learningLevel,
                  string preferredTutorGender,
                  string budgetPerHour,
                  string notes,
                  bool isMatched,
-                 vector<string> enrolledClasses)
+                 Vector<string> enrolledClasses)
     : Person(personID, fullName, phone, email, address, gender, dateOfBirth),
       profile_{grade, needSubjects, availableSchedule, learningLevel,
                preferredTutorGender, budgetPerHour, notes, isMatched, enrolledClasses} {}
@@ -52,7 +51,7 @@ string Student::getGrade() {
     return profile_.grade;
 }
 
-vector<string>& Student::getNeedSubjects() {
+Vector<string>& Student::getNeedSubjects() {
     return profile_.needSubjects;
 }
 
@@ -80,7 +79,7 @@ bool Student::getIsMatched() {
     return profile_.isMatched;
 }
 
-vector<string>& Student::getEnrolledClasses() {
+Vector<string>& Student::getEnrolledClasses() {
     return profile_.enrolledClasses;
 }
 
@@ -88,7 +87,7 @@ void Student::setGrade(string value) {
     profile_.grade = value;
 }
 
-void Student::setNeedSubjects(vector<string> value) {
+void Student::setNeedSubjects(Vector<string> value) {
     profile_.needSubjects = value;
 }
 
@@ -116,7 +115,7 @@ void Student::setIsMatched(bool value) {
     profile_.isMatched = value;
 }
 
-void Student::setEnrolledClasses(vector<string> value) {
+void Student::setEnrolledClasses(Vector<string> value) {
     profile_.enrolledClasses = value;
 }
 
@@ -132,7 +131,7 @@ void Student::registerSubject(string subject) {
 }
 
 // 1 sinh viên có thể đăng ký nhiều môn học cùng lúc
-void Student::registerMultipleSubjects(vector<string> subjects) {
+void Student::registerMultipleSubjects(Vector<string> subjects) {
     for (auto& subj : subjects) {
         registerSubject(subj);
     }
@@ -140,15 +139,15 @@ void Student::registerMultipleSubjects(vector<string> subjects) {
 
 // Hủy đăng ký môn học
 bool Student::unregisterSubject(string subject) {
-    for (auto it = profile_.needSubjects.begin(); it != profile_.needSubjects.end(); ++it) {
-        if (*it == subject) {
-            profile_.needSubjects.erase(it);
+    for (size_t i = 0; i < profile_.needSubjects.size(); ++i) {
+        if (profile_.needSubjects[i] == subject) {
+            profile_.needSubjects.erase(i);
             return true;
         }
     }
     return false;
 }
 
-vector<string>& Student::getRegisteredSubjects() {
+Vector<string>& Student::getRegisteredSubjects() {
     return profile_.needSubjects;
 }

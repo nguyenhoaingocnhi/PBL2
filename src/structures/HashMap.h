@@ -1,10 +1,11 @@
 #ifndef HASHMAP_H
 #define HASHMAP_H
 
+#include "Vector.h"
+
 #include <functional>
 #include <stdexcept>
 #include <utility>
-#include <vector>
 
 using namespace std;
 
@@ -70,15 +71,15 @@ public:
     }
 
     void clear() {
-        for (auto& entry : buckets_) {
-            entry.used = false;
+        for (size_t i = 0; i < buckets_.size(); ++i) {
+            buckets_[i].used = false;
         }
     }
 
     size_t size() {
         size_t count = 0;
-        for (auto& entry : buckets_) {
-            if (entry.used) {
+        for (size_t i = 0; i < buckets_.size(); ++i) {
+            if (buckets_[i].used) {
                 ++count;
             }
         }
@@ -91,7 +92,7 @@ private:
         return hasher(key);
     }
 
-    vector<Entry> buckets_;
+    Vector<Entry> buckets_;
 };
 
 #endif

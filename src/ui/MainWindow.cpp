@@ -470,10 +470,10 @@ MainWindow::~MainWindow() {
     for (size_t i = 0; i < registrations.size(); ++i) delete registrations[i];
 }
 
-QString MainWindow::joinStrings(vector<string> items) {
+QString MainWindow::joinStrings(Vector<string> items) {
     QStringList parts;
-    for (auto& item : items) {
-        if (!item.empty()) parts << QString::fromStdString(item);
+    for (size_t i = 0; i < items.size(); ++i) {
+        if (!items[i].empty()) parts << QString::fromStdString(items[i]);
     }
     return parts.join(", ");
 }
@@ -2055,7 +2055,7 @@ QWidget* MainWindow::createRegistrationPage() {
             }
 
             auto rawSubjects = txtSubjects->text().split(',');
-            vector<string> subjects;
+            Vector<string> subjects;
             for (auto& s : rawSubjects) {
                 QString trimmed = s.trimmed();
                 if (!trimmed.isEmpty()) {

@@ -1,6 +1,5 @@
 #include "Registration.h"
 
-#include <algorithm>
 #include <iostream>
 #include <sstream>
 
@@ -12,7 +11,7 @@ Registration::Registration()
 Registration::Registration(string registrationID,
                            string studentID,
                            string studentName,
-                           vector<string> subjects,
+                           Vector<string> subjects,
                            string registrationDate,
                            string status,
                            string notes)
@@ -36,7 +35,7 @@ string Registration::getStudentName() {
     return studentName_;
 }
 
-vector<string>& Registration::getSubjects() {
+Vector<string>& Registration::getSubjects() {
     return subjects_;
 }
 
@@ -64,7 +63,7 @@ void Registration::setStudentName(string value) {
     studentName_ = value;
 }
 
-void Registration::setSubjects(vector<string> value) {
+void Registration::setSubjects(Vector<string> value) {
     subjects_ = value;
 }
 
@@ -93,9 +92,9 @@ void Registration::addSubject(string subject) {
 
 // Hủy môn học đã đăng ký
 bool Registration::removeSubject(string subject) {
-    for (auto it = subjects_.begin(); it != subjects_.end(); ++it) {
-        if (*it == subject) {
-            subjects_.erase(it);
+    for (size_t i = 0; i < subjects_.size(); ++i) {
+        if (subjects_[i] == subject) {
+            subjects_.erase(i);
             return true;
         }
     }
