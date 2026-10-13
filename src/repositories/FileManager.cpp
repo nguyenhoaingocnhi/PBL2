@@ -22,6 +22,12 @@ string FileManager::getDataPath(string fileName) {
     if (filesystem::exists(filesystem::path("../data") / fileName)) {
         return (filesystem::path("../data") / fileName).string();
     }
+    if (filesystem::is_directory("data")) {
+        return (filesystem::path("data") / fileName).string();
+    }
+    if (filesystem::is_directory("../data")) {
+        return (filesystem::path("../data") / fileName).string();
+    }
     return (filesystem::path("data") / fileName).string();
 }
 

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-#include <vector>
 #include <iostream>
+#include "Vector.h"
 
 using namespace std;
 
@@ -12,7 +12,7 @@ public:
     Registration(string registrationID,
                  string studentID,
                  string studentName,
-                 vector<string> subjects,
+                 Vector<string> subjects,
                  string registrationDate,
                  string status,
                  string notes);
@@ -20,7 +20,7 @@ public:
     string getRegistrationID();
     string getStudentID();
     string getStudentName();
-    vector<string>& getSubjects();
+    Vector<string>& getSubjects();
     string getRegistrationDate();
     string getStatus();
     string getNotes();
@@ -28,7 +28,7 @@ public:
     void setRegistrationID(string value);
     void setStudentID(string value);
     void setStudentName(string value);
-    void setSubjects(vector<string> value);
+    void setSubjects(Vector<string> value);
     void setRegistrationDate(string value);
     void setStatus(string value);
     void setNotes(string value);
@@ -47,7 +47,7 @@ private:
     string registrationID_;
     string studentID_;
     string studentName_;
-    vector<string> subjects_;
+    Vector<string> subjects_;
     string registrationDate_;
     string status_;
     string notes_;

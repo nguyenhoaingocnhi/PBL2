@@ -128,7 +128,8 @@ void LoginWindow::onLoginClicked() {
         QMessageBox::warning(this, QString::fromUtf8("Đăng nhập"), QString::fromUtf8("Vui lòng nhập tên đăng nhập và mật khẩu!"));
         return;
     }
-    if (username == QStringLiteral("admin") && password == QStringLiteral("123456")) {
+    if (FileManager::validateAdminLogin(username.toStdString(), password.toStdString()) ||
+        (username == QStringLiteral("admin") && password == QStringLiteral("123456"))) {
         auto* mainWindow = new MainWindow();
         mainWindow->show();
         close();
