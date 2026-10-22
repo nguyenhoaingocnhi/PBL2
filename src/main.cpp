@@ -5,6 +5,7 @@
 #include <QTextStream>
 #include <QDir>
 #include <QCoreApplication>
+#include <QStringList>
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
@@ -19,6 +20,24 @@ int main(int argc, char* argv[]) {
         QTextStream stream(&styleFile);
         app.setStyleSheet(stream.readAll());
         styleFile.close();
+    }
+
+    // Tìm thư mục chứa "data" rồi chuyển thư mục làm việc về đó, để chạy được dù mở app
+    // bằng run_app.bat, bấm đúp file .exe hay chạy từ IDE (FileManager dùng đường dẫn "data/...").
+    {
+        QDir appDir(QCoreApplication::applicationDirPath());
+        const QStringList candidates = {
+            QDir::currentPath(),
+            appDir.absoluteFilePath(".."),
+            appDir.absolutePath(),
+            appDir.absoluteFilePath("../.."),
+        };
+        for (const QString& base : candidates) {
+            if (QDir(base).exists("data")) {
+                QDir::setCurrent(QDir(base).absolutePath());
+                break;
+            }
+        }
     }
 
     LoginWindow loginWindow;

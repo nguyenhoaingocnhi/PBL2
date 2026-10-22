@@ -1,5 +1,7 @@
 #include "Tutor.h"
 
+#include "TextUtils.h"
+
 #include <iostream>
 #include <sstream>
 
@@ -35,20 +37,25 @@ void Tutor::displayInfo() {
 }
 
 string Tutor::toString() {
+    // Thứ tự cột phải khớp với FileManager::loadTutors (16 cột).
     ostringstream oss;
-    oss << getPersonID() << "|" << getFullName() << "|" << getPhone() << "|" << getEmail() << "|"
-        << getAddress() << "|" << getGender() << "|" << getDateOfBirth() << "|";
+    oss << TextUtils::cleanField(getPersonID()) << "|" << TextUtils::cleanField(getFullName()) << "|"
+        << TextUtils::cleanField(getPhone()) << "|" << TextUtils::cleanField(getEmail()) << "|"
+        << TextUtils::cleanField(getAddress()) << "|" << TextUtils::cleanField(getGender()) << "|"
+        << TextUtils::cleanField(getDateOfBirth()) << "|";
 
     for (size_t i = 0; i < profile_.subjects.size(); ++i) {
         if (i > 0) oss << ",";
-        oss << profile_.subjects[i];
+        oss << TextUtils::cleanField(profile_.subjects[i]);
     }
 
-    oss << "|" << profile_.degrees << "|" << profile_.yearsOfExperience << "|"
-        << profile_.ratePerHour << "|" << profile_.availability << "|";
+    oss << "|" << TextUtils::cleanField(profile_.degrees) << "|" << profile_.yearsOfExperience << "|"
+        << TextUtils::cleanField(profile_.experienceDetails) << "|"
+        << TextUtils::cleanField(profile_.ratePerHour) << "|"
+        << TextUtils::cleanField(profile_.availability) << "|";
     for (size_t i = 0; i < profile_.teachingAreas.size(); ++i) {
         if (i > 0) oss << ",";
-        oss << profile_.teachingAreas[i];
+        oss << TextUtils::cleanField(profile_.teachingAreas[i]);
     }
     oss << "|" << (profile_.isAvailable ? "true" : "false") << "|" << profile_.currentStudents;
     return oss.str();

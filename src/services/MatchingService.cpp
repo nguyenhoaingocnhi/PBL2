@@ -1,106 +1,181 @@
 #include "MatchingService.h"
 
-#include <sstream>
+#include "Algorithms.h"
+#include "TextUtils.h"
+
+#include <cmath>
 #include <string>
-#include <utility>
 
 using namespace std;
 
 namespace {
 
-Vector<string> splitByComma(string text) {
-    Vector<string> result;
-    stringstream ss(text);
-    string item;
-    while (getline(ss, item, ',')) {
-        if (!item.empty()) {
-            result.push_back(item);
-        }
-    }
-    return result;
-}
+double round1(double v) { return std::round(v * 10.0) / 10.0; }
 
-bool hasMatchingSubject(Student& student, Tutor& tutor) {
-    if (student.getNeedSubjects().empty()) {
-        return true;
-    }
-
-    for (size_t i = 0; i < tutor.getSubjects().size(); ++i) {
-        for (size_t j = 0; j < student.getNeedSubjects().size(); ++j) {
-            if (tutor.getSubjects()[i] == student.getNeedSubjects()[j]) {
-                return true;
-            }
-        }
+bool containsValue(const Vector<string>& list, const string& value) {
+    for (size_t i = 0; i < list.size(); ++i) {
+        if (list[i] == value) return true;
     }
     return false;
 }
 
-long long parseRate(string rate) {
-    try {
-        return stoll(rate);
-    } catch (const exception&) {
-        return 0;
+// Loại bỏ phần tử trùng nhau (giữ thứ tự xuất hiện).
+Vector<string> unique(const Vector<string>& list) {
+    Vector<string> out;
+    for (size_t i = 0; i < list.size(); ++i) {
+        if (!containsValue(out, list[i])) out.push_back(list[i]);
     }
+    return out;
 }
 
-int countMatchingScheduleItems(string studentSchedule,
-                               string tutorAvailability) {
-    Vector<string> s = splitByComma(studentSchedule);
-    Vector<string> t = splitByComma(tutorAvailability);
-    int matches = 0;
-    for (size_t i = 0; i < s.size(); ++i) {
-        for (size_t j = 0; j < t.size(); ++j) {
-            if (s[i] == t[j]) {
-                ++matches;
-                break;
-            }
+// Số mục trong lịch học sinh mà gia sư cũng rảnh (so sánh sau khi chuẩn hóa).
+int countScheduleOverlap(const Vector<string>& studentSlots, const Vector<string>& tutorSlots) {
+    int matched = 0;
+    for (size_t i = 0; i < studentSlots.size(); ++i) {
+        if (containsValue(tutorSlots, studentSlots[i])) ++matched;
+    }
+    return matched;
+}
+
+string formatMoney(long long amount) {
+    string digits = to_string(amount);
+    string out;
+    int count = 0;
+    for (size_t i = digits.size(); i > 0; --i) {
+        out.insert(out.begin(), digits[i - 1]);
+        if (++count % 3 == 0 && i > 1) out.insert(out.begin(), '.');
+    }
+    return out;
+}
+
+// Học sinh có yêu cầu giới tính gia sư không? Trả về "nam" / "nu" hoặc rỗng nếu không yêu cầu.
+// (Dữ liệu cũ dùng "Khong"/"Co" nên coi như không yêu cầu.)
+string genderPreference(Student& student) {
+    string pref = TextUtils::normalize(student.getPreferredTutorGender());
+    if (pref == "nam" || pref == "nu") return pref;
+    return "";
+}
+
+// Số môn học sinh cần mà gia sư dạy được.
+int countSubjectMatches(const Vector<string>& needed, Vector<string>& tutorSubjects) {
+    Vector<string> tutorNorm;
+    for (size_t i = 0; i < tutorSubjects.size(); ++i) {
+        string n = TextUtils::normalize(tutorSubjects[i]);
+        if (!n.empty()) tutorNorm.push_back(n);
+    }
+    int matched = 0;
+    for (size_t i = 0; i < needed.size(); ++i) {
+        if (containsValue(tutorNorm, needed[i])) ++matched;
+    }
+    return matched;
+}
+
+MatchResult createMatchResult(Student& student, Tutor& tutor, const Vector<string>& neededSubjects,
+                              int matchedSubjects) {
+    MatchResult r;
+    r.tutor = &tutor;
+
+    long long rate = TextUtils::toLongLong(tutor.getRatePerHour(), 0);
+    long long budget = TextUtils::toLongLong(student.getBudgetPerHour(), 0);
+
+    r.experienceScore = MatchingService::calculateExperienceScore(tutor.getYearsOfExperience());
+    r.locationScore = MatchingService::calculateLocationScore(student.getAddress(), tutor.getTeachingAreas());
+    r.priceScore = MatchingService::calculatePriceScore(rate, budget);
+    r.scheduleScore = MatchingService::calculateScheduleScore(student.getAvailableSchedule(), tutor.getAvailability());
+
+    r.subjectCoverage = neededSubjects.empty()
+                            ? 1.0
+                            : static_cast<double>(matchedSubjects) / static_cast<double>(neededSubjects.size());
+
+    double base = r.experienceScore + r.locationScore + r.priceScore + r.scheduleScore;
+    double adjustment = 0.0;
+
+    string pref = genderPreference(student);
+    string tutorGender = TextUtils::normalize(tutor.getGender());
+    if (!pref.empty() && !tutorGender.empty()) {
+        adjustment += (pref == tutorGender) ? 3.0 : -8.0;
+    }
+    // Phạt nhẹ gia sư đang dạy nhiều học sinh để chia đều tải.
+    adjustment -= static_cast<double>(tutor.getCurrentStudents());
+    r.adjustment = round1(adjustment);
+
+    double total = base * (0.85 + 0.15 * r.subjectCoverage) + adjustment;
+    if (total < 0.0) total = 0.0;
+    if (total > 100.0) total = 100.0;
+    r.totalScore = round1(total);
+
+    // ---- Lý do ghép (hiển thị trên giao diện) ----
+    if (!neededSubjects.empty()) {
+        r.reasons.push_back("Dạy được " + to_string(matchedSubjects) + "/" + to_string(neededSubjects.size()) +
+                            " môn học sinh cần");
+    }
+    if (r.locationScore >= 8.0) {
+        r.reasons.push_back("Dạy tại khu vực của học sinh");
+    } else {
+        r.reasons.push_back("Chưa dạy ở khu vực của học sinh");
+    }
+    Vector<string> studentSlots = unique(TextUtils::splitNormalized(student.getAvailableSchedule(), ','));
+    Vector<string> tutorSlots = TextUtils::splitNormalized(tutor.getAvailability(), ',');
+    if (!studentSlots.empty()) {
+        r.reasons.push_back("Trùng " + to_string(countScheduleOverlap(studentSlots, tutorSlots)) + "/" +
+                            to_string(studentSlots.size()) + " buổi rảnh của học sinh");
+    }
+    if (rate > 0 && budget > 0) {
+        if (rate <= budget) {
+            r.reasons.push_back("Học phí " + formatMoney(rate) + "đ/buổi trong ngân sách " + formatMoney(budget) + "đ");
+        } else {
+            r.reasons.push_back("Học phí " + formatMoney(rate) + "đ/buổi vượt ngân sách " + formatMoney(budget) + "đ");
         }
     }
-    return matches;
-}
-
-MatchResult createMatchResult(Student& student, Tutor& tutor) {
-    MatchResult result;
-    result.tutor = &tutor;
-    result.experienceScore = MatchingService::calculateExperienceScore(tutor.getYearsOfExperience());
-    result.locationScore = MatchingService::calculateLocationScore(
-        student.getAddress(), tutor.getTeachingAreas());
-    result.priceScore = MatchingService::calculatePriceScore(
-        parseRate(tutor.getRatePerHour()), parseRate(student.getBudgetPerHour()));
-    result.scheduleScore = MatchingService::calculateScheduleScore(
-        student.getAvailableSchedule(), tutor.getAvailability());
-    result.totalScore = result.experienceScore + result.locationScore
-                      + result.priceScore + result.scheduleScore;
-    return result;
-}
-
-void sortMatches(Vector<MatchResult>& results) {
-    for (size_t i = 0; i < results.size(); ++i) {
-        for (size_t j = i + 1; j < results.size(); ++j) {
-            if (results[j].totalScore > results[i].totalScore) {
-                swap(results[i], results[j]);
-            }
-        }
+    r.reasons.push_back("Kinh nghiệm " + to_string(tutor.getYearsOfExperience()) + " năm");
+    if (!pref.empty() && !tutorGender.empty() && pref != tutorGender) {
+        r.reasons.push_back("Không đúng giới tính gia sư học sinh mong muốn");
     }
-}
+    return r;
 }
 
-Vector<MatchResult> MatchingService::matchStudentsToTutors(
-    Student& student, Vector<Tutor*>& tutors) {
+}  // namespace
+
+Vector<MatchResult> MatchingService::matchStudentsToTutors(Student& student, Vector<Tutor*>& tutors) {
     Vector<MatchResult> results;
+    Vector<string> needed = unique(TextUtils::splitNormalized(
+        [&]() {
+            string joined;
+            Vector<string>& subs = student.getNeedSubjects();
+            for (size_t i = 0; i < subs.size(); ++i) {
+                if (i > 0) joined += ",";
+                joined += subs[i];
+            }
+            return joined;
+        }(),
+        ','));
+
     for (size_t i = 0; i < tutors.size(); ++i) {
         Tutor* tutor = tutors[i];
-        if (tutor == nullptr || !tutor->getIsAvailable()) {
-            continue;
-        }
+        if (tutor == nullptr || !tutor->getIsAvailable()) continue;
+        if (tutor->getCurrentStudents() >= kMaxStudentsPerTutor) continue;
 
-        if (hasMatchingSubject(student, *tutor)) {
-            results.push_back(createMatchResult(student, *tutor));
-        }
+        int matched = countSubjectMatches(needed, tutor->getSubjects());
+        // Có yêu cầu môn học thì gia sư phải dạy được ít nhất một môn.
+        if (!needed.empty() && matched == 0) continue;
+
+        results.push_back(createMatchResult(student, *tutor, needed, matched));
     }
 
-    sortMatches(results);
+    mergeSort(results, [](const MatchResult& a, const MatchResult& b) {
+        if (a.totalScore != b.totalScore) return a.totalScore > b.totalScore;
+        long long ra = TextUtils::toLongLong(a.tutor->getRatePerHour(), 0);
+        long long rb = TextUtils::toLongLong(b.tutor->getRatePerHour(), 0);
+        if (ra != rb) return ra < rb;  // cùng điểm: học phí thấp hơn đứng trước
+        return a.tutor->getPersonID() < b.tutor->getPersonID();
+    });
     return results;
+}
+
+Vector<MatchResult> MatchingService::matchTopN(Student& student, Vector<Tutor*>& tutors, size_t n) {
+    Vector<MatchResult> all = matchStudentsToTutors(student, tutors);
+    while (all.size() > n) all.pop_back();
+    return all;
 }
 
 double MatchingService::calculateExperienceScore(int yearsOfExperience) {
@@ -112,16 +187,23 @@ double MatchingService::calculateExperienceScore(int yearsOfExperience) {
 }
 
 double MatchingService::calculateLocationScore(string studentArea, Vector<string>& tutorAreas) {
+    if (tutorAreas.empty()) return 5.0;  // chưa biết khu vực -> điểm trung tính
+    string area = TextUtils::normalize(studentArea);
+    if (area.empty()) return 5.0;
+    double best = 3.0;  // khác khu vực
     for (size_t i = 0; i < tutorAreas.size(); ++i) {
-        if (tutorAreas[i] == studentArea) {
-            return 10.0;
-        }
+        string t = TextUtils::normalize(tutorAreas[i]);
+        if (t.empty()) continue;
+        if (t == area) return 10.0;
+        if (t.find(area) != string::npos || area.find(t) != string::npos) best = 8.0;  // vd "quan hai chau"
     }
-    return tutorAreas.empty() ? 0.0 : 5.0;
+    return best;
 }
 
 double MatchingService::calculatePriceScore(long long tutorRate, long long studentBudget) {
-    double r = (studentBudget == 0) ? 0.0 : static_cast<double>(tutorRate) / static_cast<double>(studentBudget);
+    // Thiếu dữ liệu (ngân sách hoặc học phí = 0) -> điểm trung tính, không được thưởng tối đa.
+    if (studentBudget <= 0 || tutorRate <= 0) return 22.0;
+    double r = static_cast<double>(tutorRate) / static_cast<double>(studentBudget);
     if (r <= 0.8) return 45.0;
     if (r <= 1.0) return 40.0;
     if (r <= 1.2) return 30.0;
@@ -130,10 +212,9 @@ double MatchingService::calculatePriceScore(long long tutorRate, long long stude
 }
 
 double MatchingService::calculateScheduleScore(string studentSchedule, string tutorAvailability) {
-    int matched = countMatchingScheduleItems(studentSchedule, tutorAvailability);
-    if (matched >= 4) return 20.0;
-    if (matched == 3) return 15.0;
-    if (matched == 2) return 10.0;
-    if (matched == 1) return 5.0;
-    return 0.0;
+    Vector<string> s = unique(TextUtils::splitNormalized(studentSchedule, ','));
+    Vector<string> t = TextUtils::splitNormalized(tutorAvailability, ',');
+    if (s.empty()) return 10.0;  // học sinh chưa nêu lịch -> trung tính
+    double ratio = static_cast<double>(countScheduleOverlap(s, t)) / static_cast<double>(s.size());
+    return round1(20.0 * ratio);
 }

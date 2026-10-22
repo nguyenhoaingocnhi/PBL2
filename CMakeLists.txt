@@ -15,6 +15,8 @@ set(CMAKE_AUTORCC ON)
 option(BUILD_QT_APP "Build Qt widgets application" ON)
 
 set(CORE_SOURCES
+    src/utils/TextUtils.cpp
+    src/utils/Sha256.cpp
     src/entities/Person.cpp
     src/entities/Student.cpp
     src/entities/Tutor.cpp
@@ -35,10 +37,14 @@ target_include_directories(tutorfinder_core
         ${CMAKE_SOURCE_DIR}/src/structures
         ${CMAKE_SOURCE_DIR}/src/services
         ${CMAKE_SOURCE_DIR}/src/repositories
+        ${CMAKE_SOURCE_DIR}/src/utils
 )
 
+# Kiểm thử backend: chạy bằng `ctest --test-dir build --output-on-failure`
+enable_testing()
 add_executable(backend_tests tests/backend_test.cpp)
 target_link_libraries(backend_tests PRIVATE tutorfinder_core)
+add_test(NAME backend_tests COMMAND backend_tests)
 
 if(BUILD_QT_APP)
     find_package(Qt6 QUIET COMPONENTS Widgets)

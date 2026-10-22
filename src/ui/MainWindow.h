@@ -16,6 +16,7 @@
 #include <QComboBox>
 #include <QLabel>
 #include <QPushButton>
+#include <QVector>
 
 using namespace std;
 
@@ -98,6 +99,28 @@ private:
     QLabel* contractSumPending = nullptr;
     QLabel* contractSumCompleted = nullptr;
 
+    // Biểu đồ (kiểu cụ thể nằm trong MainWindow.cpp)
+    QWidget* dashChartTutorSubject = nullptr;
+    QWidget* statChartMatch = nullptr;
+    QWidget* statChartClass = nullptr;
+    QWidget* statChartGrade = nullptr;
+    QWidget* statChartSubject = nullptr;
+    QWidget* statChartMonthly = nullptr;
+
+    // Student / Registration summary tiles
+    QLabel* stuSumTotal = nullptr;
+    QLabel* stuSumMatched = nullptr;
+    QLabel* stuSumUnmatched = nullptr;
+    QLabel* stuSumAvgBudget = nullptr;
+    QLabel* regSumTotal = nullptr;
+    QLabel* regSumPending = nullptr;
+    QLabel* regSumApproved = nullptr;
+    QLabel* regSumMatched = nullptr;
+
+    // Thanh chào mừng và tab trạng thái
+    QVector<QLabel*> welcomeLabels;
+    QVector<QPushButton*> stuTabs, tutorTabs, classTabs, contractTabs, regTabs;
+
     // Matching UI references
     QComboBox* matchStudentCombo = nullptr;
     QLabel* matchReqSubject = nullptr;
@@ -153,6 +176,9 @@ private:
     void refreshTutorSummary();
     void refreshClassSummary();
     void refreshContractSummary();
+    void refreshStudentSummary();
+    void refreshRegistrationSummary();
+    void refreshOverviewWidgets();
     void refreshAll();
 
     // Matching methods

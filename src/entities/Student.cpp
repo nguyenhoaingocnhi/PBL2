@@ -1,5 +1,7 @@
 #include "Student.h"
 
+#include "TextUtils.h"
+
 #include <iostream>
 #include <sstream>
 
@@ -32,18 +34,24 @@ void Student::displayInfo() {
 }
 
 string Student::toString() {
+    // Thứ tự cột phải khớp với FileManager::loadStudents (15 cột).
     ostringstream oss;
-    oss << getPersonID() << "|" << getFullName() << "|" << getPhone() << "|" << getEmail() << "|"
-        << getAddress() << "|" << getGender() << "|" << getDateOfBirth() << "|";
+    oss << TextUtils::cleanField(getPersonID()) << "|" << TextUtils::cleanField(getFullName()) << "|"
+        << TextUtils::cleanField(getPhone()) << "|" << TextUtils::cleanField(getEmail()) << "|"
+        << TextUtils::cleanField(getAddress()) << "|" << TextUtils::cleanField(getGender()) << "|"
+        << TextUtils::cleanField(getDateOfBirth()) << "|"
+        << TextUtils::cleanField(profile_.grade) << "|";
 
     for (size_t i = 0; i < profile_.needSubjects.size(); ++i) {
         if (i > 0) oss << ",";
-        oss << profile_.needSubjects[i];
+        oss << TextUtils::cleanField(profile_.needSubjects[i]);
     }
 
-    oss << "|" << profile_.availableSchedule << "|" << profile_.learningLevel << "|"
-        << profile_.preferredTutorGender << "|" << profile_.budgetPerHour << "|"
-        << profile_.notes << "|" << (profile_.isMatched ? "true" : "false");
+    oss << "|" << TextUtils::cleanField(profile_.availableSchedule) << "|"
+        << TextUtils::cleanField(profile_.learningLevel) << "|"
+        << TextUtils::cleanField(profile_.preferredTutorGender) << "|"
+        << TextUtils::cleanField(profile_.budgetPerHour) << "|"
+        << TextUtils::cleanField(profile_.notes) << "|" << (profile_.isMatched ? "true" : "false");
     return oss.str();
 }
 

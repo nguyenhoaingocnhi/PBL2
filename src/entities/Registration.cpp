@@ -1,4 +1,5 @@
 #include "Registration.h"
+#include "TextUtils.h"
 
 #include <iostream>
 #include <sstream>
@@ -135,12 +136,12 @@ void Registration::displayInfo() {
 
 string Registration::toString() {
     ostringstream oss;
-    oss << registrationID_ << "|"
-        << studentID_ << "|"
-        << studentName_ << "|"
-        << getSubjectsSummary() << "|"
-        << registrationDate_ << "|"
-        << status_ << "|"
-        << notes_;
+    oss << TextUtils::cleanField(registrationID_) << "|"
+        << TextUtils::cleanField(studentID_) << "|"
+        << TextUtils::cleanField(studentName_) << "|"
+        << TextUtils::cleanField(getSubjectsSummary()) << "|"
+        << TextUtils::cleanField(registrationDate_) << "|"
+        << TextUtils::cleanField(status_) << "|"
+        << TextUtils::cleanField(notes_);
     return oss.str();
 }
