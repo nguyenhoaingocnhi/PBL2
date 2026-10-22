@@ -1,5 +1,5 @@
-D:/New\ folder/ki3/PBL2/build/PBL2App_autogen/YPKJ5OE7LN/moc_LoginWindow.cpp: D:/New\ folder/ki3/PBL2/src/ui/LoginWindow.h \
-  D:/New\ folder/ki3/PBL2/build/PBL2App_autogen/moc_predefs.h \
+D:/Downloads/PBL2_ui_updated\ (3)/PBL2/build/PBL2App_autogen/YPKJ5OE7LN/moc_LoginWindow.cpp: D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/ui/LoginWindow.h \
+  D:/Downloads/PBL2_ui_updated\ (3)/PBL2/build/PBL2App_autogen/moc_predefs.h \
   C:/msys64/ucrt64/include/_mingw.h \
   C:/msys64/ucrt64/include/_mingw_locale.h \
   C:/msys64/ucrt64/include/_mingw_mac.h \

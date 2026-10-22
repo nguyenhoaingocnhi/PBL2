@@ -1,5 +1,5 @@
-D:/New\ folder/ki3/PBL2/build/PBL2App_autogen/YPKJ5OE7LN/moc_MainWindow.cpp: D:/New\ folder/ki3/PBL2/src/ui/MainWindow.h \
-  D:/New\ folder/ki3/PBL2/build/PBL2App_autogen/moc_predefs.h \
+D:/Downloads/PBL2_ui_updated\ (3)/PBL2/build/PBL2App_autogen/YPKJ5OE7LN/moc_MainWindow.cpp: D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/ui/MainWindow.h \
+  D:/Downloads/PBL2_ui_updated\ (3)/PBL2/build/PBL2App_autogen/moc_predefs.h \
   C:/msys64/ucrt64/include/_mingw.h \
   C:/msys64/ucrt64/include/_mingw_locale.h \
   C:/msys64/ucrt64/include/_mingw_mac.h \
@@ -220,6 +220,7 @@ D:/New\ folder/ki3/PBL2/build/PBL2App_autogen/YPKJ5OE7LN/moc_MainWindow.cpp: D:/
   C:/msys64/ucrt64/include/pthread_signal.h \
   C:/msys64/ucrt64/include/pthread_time.h \
   C:/msys64/ucrt64/include/pthread_unistd.h \
+  C:/msys64/ucrt64/include/qt6/QtCore/QVector \
   C:/msys64/ucrt64/include/qt6/QtCore/q17memory.h \
   C:/msys64/ucrt64/include/qt6/QtCore/q20bit.h \
   C:/msys64/ucrt64/include/qt6/QtCore/q20functional.h \
@@ -272,6 +273,7 @@ D:/New\ folder/ki3/PBL2/build/PBL2App_autogen/YPKJ5OE7LN/moc_MainWindow.cpp: D:/
   C:/msys64/ucrt64/include/qt6/QtCore/qglobalstatic.h \
   C:/msys64/ucrt64/include/qt6/QtCore/qhash.h \
   C:/msys64/ucrt64/include/qt6/QtCore/qhashfunctions.h \
+  C:/msys64/ucrt64/include/qt6/QtCore/qiodevice.h \
   C:/msys64/ucrt64/include/qt6/QtCore/qiodevicebase.h \
   C:/msys64/ucrt64/include/qt6/QtCore/qitemselectionmodel.h \
   C:/msys64/ucrt64/include/qt6/QtCore/qiterable.h \
@@ -346,9 +348,11 @@ D:/New\ folder/ki3/PBL2/build/PBL2App_autogen/YPKJ5OE7LN/moc_MainWindow.cpp: D:/
   C:/msys64/ucrt64/include/qt6/QtCore/qtversionchecks.h \
   C:/msys64/ucrt64/include/qt6/QtCore/qtypeinfo.h \
   C:/msys64/ucrt64/include/qt6/QtCore/qtypes.h \
+  C:/msys64/ucrt64/include/qt6/QtCore/qurl.h \
   C:/msys64/ucrt64/include/qt6/QtCore/qutf8stringview.h \
   C:/msys64/ucrt64/include/qt6/QtCore/qvariant.h \
   C:/msys64/ucrt64/include/qt6/QtCore/qvarlengtharray.h \
+  C:/msys64/ucrt64/include/qt6/QtCore/qvector.h \
   C:/msys64/ucrt64/include/qt6/QtCore/qversiontagging.h \
   C:/msys64/ucrt64/include/qt6/QtCore/qxptype_traits.h \
   C:/msys64/ucrt64/include/qt6/QtCore/qyieldcpu.h \
@@ -366,12 +370,18 @@ D:/New\ folder/ki3/PBL2/build/PBL2App_autogen/YPKJ5OE7LN/moc_MainWindow.cpp: D:/
   C:/msys64/ucrt64/include/qt6/QtGui/qkeysequence.h \
   C:/msys64/ucrt64/include/qt6/QtGui/qpaintdevice.h \
   C:/msys64/ucrt64/include/qt6/QtGui/qpalette.h \
+  C:/msys64/ucrt64/include/qt6/QtGui/qpen.h \
+  C:/msys64/ucrt64/include/qt6/QtGui/qpicture.h \
   C:/msys64/ucrt64/include/qt6/QtGui/qpixelformat.h \
   C:/msys64/ucrt64/include/qt6/QtGui/qpixmap.h \
   C:/msys64/ucrt64/include/qt6/QtGui/qpolygon.h \
   C:/msys64/ucrt64/include/qt6/QtGui/qregion.h \
   C:/msys64/ucrt64/include/qt6/QtGui/qrgb.h \
   C:/msys64/ucrt64/include/qt6/QtGui/qrgba64.h \
+  C:/msys64/ucrt64/include/qt6/QtGui/qtextcursor.h \
+  C:/msys64/ucrt64/include/qt6/QtGui/qtextdocument.h \
+  C:/msys64/ucrt64/include/qt6/QtGui/qtextformat.h \
+  C:/msys64/ucrt64/include/qt6/QtGui/qtextoption.h \
   C:/msys64/ucrt64/include/qt6/QtGui/qtgui-config.h \
   C:/msys64/ucrt64/include/qt6/QtGui/qtguiexports.h \
   C:/msys64/ucrt64/include/qt6/QtGui/qtguiglobal.h \
@@ -379,16 +389,25 @@ D:/New\ folder/ki3/PBL2/build/PBL2App_autogen/YPKJ5OE7LN/moc_MainWindow.cpp: D:/
   C:/msys64/ucrt64/include/qt6/QtGui/qvalidator.h \
   C:/msys64/ucrt64/include/qt6/QtGui/qwindowdefs.h \
   C:/msys64/ucrt64/include/qt6/QtGui/qwindowdefs_win.h \
+  C:/msys64/ucrt64/include/qt6/QtWidgets/QComboBox \
+  C:/msys64/ucrt64/include/qt6/QtWidgets/QLabel \
+  C:/msys64/ucrt64/include/qt6/QtWidgets/QLineEdit \
   C:/msys64/ucrt64/include/qt6/QtWidgets/QMainWindow \
+  C:/msys64/ucrt64/include/qt6/QtWidgets/QPushButton \
   C:/msys64/ucrt64/include/qt6/QtWidgets/QStackedWidget \
   C:/msys64/ucrt64/include/qt6/QtWidgets/QTableWidget \
+  C:/msys64/ucrt64/include/qt6/QtWidgets/qabstractbutton.h \
   C:/msys64/ucrt64/include/qt6/QtWidgets/qabstractitemdelegate.h \
   C:/msys64/ucrt64/include/qt6/QtWidgets/qabstractitemview.h \
   C:/msys64/ucrt64/include/qt6/QtWidgets/qabstractscrollarea.h \
   C:/msys64/ucrt64/include/qt6/QtWidgets/qabstractslider.h \
   C:/msys64/ucrt64/include/qt6/QtWidgets/qabstractspinbox.h \
+  C:/msys64/ucrt64/include/qt6/QtWidgets/qcombobox.h \
   C:/msys64/ucrt64/include/qt6/QtWidgets/qframe.h \
+  C:/msys64/ucrt64/include/qt6/QtWidgets/qlabel.h \
+  C:/msys64/ucrt64/include/qt6/QtWidgets/qlineedit.h \
   C:/msys64/ucrt64/include/qt6/QtWidgets/qmainwindow.h \
+  C:/msys64/ucrt64/include/qt6/QtWidgets/qpushbutton.h \
   C:/msys64/ucrt64/include/qt6/QtWidgets/qrubberband.h \
   C:/msys64/ucrt64/include/qt6/QtWidgets/qsizepolicy.h \
   C:/msys64/ucrt64/include/qt6/QtWidgets/qslider.h \
@@ -426,11 +445,12 @@ D:/New\ folder/ki3/PBL2/build/PBL2App_autogen/YPKJ5OE7LN/moc_MainWindow.cpp: D:/
   C:/msys64/ucrt64/include/wctype.h \
   C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/16.2.0/include/mm_malloc.h \
   C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/16.2.0/include/stdbool.h \
-  D:/New\ folder/ki3/PBL2/src/entities/Contract.h \
-  D:/New\ folder/ki3/PBL2/src/entities/Person.h \
-  D:/New\ folder/ki3/PBL2/src/entities/Registration.h \
-  D:/New\ folder/ki3/PBL2/src/entities/Student.h \
-  D:/New\ folder/ki3/PBL2/src/entities/Tutor.h \
-  D:/New\ folder/ki3/PBL2/src/entities/TutoringClass.h \
-  D:/New\ folder/ki3/PBL2/src/repositories/FileManager.h \
-  D:/New\ folder/ki3/PBL2/src/structures/Vector.h
+  D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/entities/Contract.h \
+  D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/entities/Person.h \
+  D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/entities/Registration.h \
+  D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/entities/Student.h \
+  D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/entities/Tutor.h \
+  D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/entities/TutoringClass.h \
+  D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/repositories/FileManager.h \
+  D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/services/MatchingService.h \
+  D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/structures/Vector.h

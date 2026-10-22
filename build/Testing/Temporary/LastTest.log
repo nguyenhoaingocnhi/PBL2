@@ -1,0 +1,32 @@
+Start testing: Oct 22 15:29 SE Asia Standard Time
+----------------------------------------------------------
+1/1 Testing: backend_tests
+1/1 Test: backend_tests
+Command: "D:/Downloads/PBL2_ui_updated (3)/PBL2/build/backend_tests.exe"
+Directory: D:/Downloads/PBL2_ui_updated (3)/PBL2/build
+"backend_tests" start time: Oct 22 15:29 SE Asia Standard Time
+Output:
+----------------------------------------------------------
+=== Backend tests ===
+- Vector
+- HashMap
+- mergeSort
+- TextUtils
+- Validator
+- IdGenerator
+- SHA-256 / mật khẩu
+- MatchingService
+- FileManager: lưu rồi đọc lại
+- Đăng nhập admin (băm mật khẩu)
+
+114/114 kiem tra dat
+TAT CA DEU DAT
+<end of output>
+Test time =   0.51 sec
+----------------------------------------------------------
+Test Passed.
+"backend_tests" end time: Oct 22 15:29 SE Asia Standard Time
+"backend_tests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Oct 22 15:29 SE Asia Standard Time

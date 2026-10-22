@@ -80,7 +80,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = C:\msys64\ucrt64\bin\cmake.exe --regenerate-during-build -S"D:\New folder\ki3\PBL2" -B"D:\New folder\ki3\PBL2\build"
+  command = C:\msys64\ucrt64\bin\cmake.exe --regenerate-during-build -S"D:\Downloads\PBL2_ui_updated (3)\PBL2" -B"D:\Downloads\PBL2_ui_updated (3)\PBL2\build"
   description = Re-running CMake...
   generator = 1
 

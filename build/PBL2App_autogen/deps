@@ -219,6 +219,7 @@ PBL2App_autogen/timestamp: \
 	C:/msys64/ucrt64/include/pthread_signal.h \
 	C:/msys64/ucrt64/include/pthread_time.h \
 	C:/msys64/ucrt64/include/pthread_unistd.h \
+	C:/msys64/ucrt64/include/qt6/QtCore/QVector \
 	C:/msys64/ucrt64/include/qt6/QtCore/q17memory.h \
 	C:/msys64/ucrt64/include/qt6/QtCore/q20bit.h \
 	C:/msys64/ucrt64/include/qt6/QtCore/q20functional.h \
@@ -271,6 +272,7 @@ PBL2App_autogen/timestamp: \
 	C:/msys64/ucrt64/include/qt6/QtCore/qglobalstatic.h \
 	C:/msys64/ucrt64/include/qt6/QtCore/qhash.h \
 	C:/msys64/ucrt64/include/qt6/QtCore/qhashfunctions.h \
+	C:/msys64/ucrt64/include/qt6/QtCore/qiodevice.h \
 	C:/msys64/ucrt64/include/qt6/QtCore/qiodevicebase.h \
 	C:/msys64/ucrt64/include/qt6/QtCore/qitemselectionmodel.h \
 	C:/msys64/ucrt64/include/qt6/QtCore/qiterable.h \
@@ -349,6 +351,7 @@ PBL2App_autogen/timestamp: \
 	C:/msys64/ucrt64/include/qt6/QtCore/qutf8stringview.h \
 	C:/msys64/ucrt64/include/qt6/QtCore/qvariant.h \
 	C:/msys64/ucrt64/include/qt6/QtCore/qvarlengtharray.h \
+	C:/msys64/ucrt64/include/qt6/QtCore/qvector.h \
 	C:/msys64/ucrt64/include/qt6/QtCore/qversiontagging.h \
 	C:/msys64/ucrt64/include/qt6/QtCore/qxptype_traits.h \
 	C:/msys64/ucrt64/include/qt6/QtCore/qyieldcpu.h \
@@ -367,6 +370,7 @@ PBL2App_autogen/timestamp: \
 	C:/msys64/ucrt64/include/qt6/QtGui/qpaintdevice.h \
 	C:/msys64/ucrt64/include/qt6/QtGui/qpalette.h \
 	C:/msys64/ucrt64/include/qt6/QtGui/qpen.h \
+	C:/msys64/ucrt64/include/qt6/QtGui/qpicture.h \
 	C:/msys64/ucrt64/include/qt6/QtGui/qpixelformat.h \
 	C:/msys64/ucrt64/include/qt6/QtGui/qpixmap.h \
 	C:/msys64/ucrt64/include/qt6/QtGui/qpolygon.h \
@@ -385,8 +389,11 @@ PBL2App_autogen/timestamp: \
 	C:/msys64/ucrt64/include/qt6/QtGui/qwindowdefs.h \
 	C:/msys64/ucrt64/include/qt6/QtGui/qwindowdefs_win.h \
 	C:/msys64/ucrt64/include/qt6/QtWidgets/QCheckBox \
+	C:/msys64/ucrt64/include/qt6/QtWidgets/QComboBox \
+	C:/msys64/ucrt64/include/qt6/QtWidgets/QLabel \
 	C:/msys64/ucrt64/include/qt6/QtWidgets/QLineEdit \
 	C:/msys64/ucrt64/include/qt6/QtWidgets/QMainWindow \
+	C:/msys64/ucrt64/include/qt6/QtWidgets/QPushButton \
 	C:/msys64/ucrt64/include/qt6/QtWidgets/QStackedWidget \
 	C:/msys64/ucrt64/include/qt6/QtWidgets/QTableWidget \
 	C:/msys64/ucrt64/include/qt6/QtWidgets/QWidget \
@@ -397,9 +404,12 @@ PBL2App_autogen/timestamp: \
 	C:/msys64/ucrt64/include/qt6/QtWidgets/qabstractslider.h \
 	C:/msys64/ucrt64/include/qt6/QtWidgets/qabstractspinbox.h \
 	C:/msys64/ucrt64/include/qt6/QtWidgets/qcheckbox.h \
+	C:/msys64/ucrt64/include/qt6/QtWidgets/qcombobox.h \
 	C:/msys64/ucrt64/include/qt6/QtWidgets/qframe.h \
+	C:/msys64/ucrt64/include/qt6/QtWidgets/qlabel.h \
 	C:/msys64/ucrt64/include/qt6/QtWidgets/qlineedit.h \
 	C:/msys64/ucrt64/include/qt6/QtWidgets/qmainwindow.h \
+	C:/msys64/ucrt64/include/qt6/QtWidgets/qpushbutton.h \
 	C:/msys64/ucrt64/include/qt6/QtWidgets/qrubberband.h \
 	C:/msys64/ucrt64/include/qt6/QtWidgets/qsizepolicy.h \
 	C:/msys64/ucrt64/include/qt6/QtWidgets/qslider.h \
@@ -452,12 +462,14 @@ PBL2App_autogen/timestamp: \
 	C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicAppleHelpers.cmake \
 	C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicCMakeEarlyPolicyHelpers.cmake \
 	C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicCMakeHelpers.cmake \
+	C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicCMakeIncludeGuardHelpers.cmake \
 	C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicCMakeVersionHelpers.cmake \
 	C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake \
 	C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicExternalProjectHelpers.cmake \
 	C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicFinalizerHelpers.cmake \
 	C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicFindPackageHelpers.cmake \
 	C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicGitHelpers.cmake \
+	C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicJsonHelpers.cmake \
 	C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicPluginHelpers.cmake \
 	C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicPluginHelpers_v2.cmake \
 	C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicSbomAttributionHelpers.cmake \
@@ -599,23 +611,87 @@ PBL2App_autogen/timestamp: \
 	C:/msys64/ucrt64/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsVersionlessTargets.cmake \
 	C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/16.2.0/include/mm_malloc.h \
 	C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/16.2.0/include/stdbool.h \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeCXXCompiler.cmake.in \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeCXXCompilerABI.cpp \
 	C:/msys64/ucrt64/share/cmake/Modules/CMakeCXXInformation.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/CMakeCommonLanguageInclude.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeCompilerIdDetection.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeDetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeDetermineCompilerABI.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeDetermineCompilerId.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeDetermineCompilerSupport.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeDetermineRCCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeDetermineSystem.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeFindBinUtils.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/CMakeFindDependencyMacro.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/CMakeGenericSystem.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/CMakeInitializeConfigs.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/CMakeLanguageInformation.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeNinjaFindMake.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeParseImplicitIncludeInfo.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeParseImplicitLinkInfo.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeParseLibraryArchitecture.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeRCCompiler.cmake.in \
 	C:/msys64/ucrt64/share/cmake/Modules/CMakeRCInformation.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeSystem.cmake.in \
 	C:/msys64/ucrt64/share/cmake/Modules/CMakeSystemSpecificInformation.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeTestCXXCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeTestCompilerCommon.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/CMakeTestRCCompiler.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/CheckCXXCompilerFlag.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/CheckCXXSourceCompiles.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/CheckIncludeFileCXX.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/CheckLibraryExists.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/ADSP-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/ARMCC-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/ARMClang-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/AppleClang-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/Borland-DetermineCompiler.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/Clang-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/Clang-DetermineCompilerInternal.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/Cray-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/CrayClang-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/Diab-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/Embarcadero-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/Fujitsu-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/GHS-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/GNU-CXX-CXXImportStd.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/Compiler/GNU-CXX.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/GNU-FindBinUtils.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/Compiler/GNU.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/HP-CXX-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/IAR-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/IBMClang-CXX-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/Intel-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/IntelLLVM-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/LCC-CXX-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/MSVC-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/NVHPC-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/NVIDIA-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/OrangeC-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/PGI-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/PathScale-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/PellesC-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/Renesas-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/SCO-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/TI-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/TIClang-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/Tasking-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/Watcom-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/XL-CXX-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/FindPackageHandleStandardArgs.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/FindPackageMessage.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/FindThreads.cmake \
@@ -623,15 +699,19 @@ PBL2App_autogen/timestamp: \
 	C:/msys64/ucrt64/share/cmake/Modules/GNUInstallDirs.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/Internal/CMakeCXXLinkerInformation.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/Internal/CMakeCommonLinkerInformation.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Internal/CMakeDetermineLinkerId.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Internal/CMakeInspectCXXLinker.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/Internal/CheckCommon.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/Internal/CheckCompilerFlag.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/Internal/CheckFlagCommonConfig.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/Internal/CheckSourceCompiles.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Internal/FeatureTesting.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/Linker/GNU-CXX.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/Linker/GNU.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/Platform/Linker/GNU.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/Platform/Linker/Windows-GNU-CXX.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/Platform/Linker/Windows-GNU.cmake \
+	C:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-Determine-CXX.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-GNU-CXX-ABI.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-GNU-CXX.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-GNU.cmake \
@@ -639,22 +719,23 @@ PBL2App_autogen/timestamp: \
 	C:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-windres.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/Platform/Windows.cmake \
 	C:/msys64/ucrt64/share/cmake/Modules/Platform/WindowsPaths.cmake \
-	D:/New\ folder/ki3/PBL2/CMakeLists.txt \
-	D:/New\ folder/ki3/PBL2/build/CMakeFiles/4.4.2/CMakeCXXCompiler.cmake \
-	D:/New\ folder/ki3/PBL2/build/CMakeFiles/4.4.2/CMakeRCCompiler.cmake \
-	D:/New\ folder/ki3/PBL2/build/CMakeFiles/4.4.2/CMakeSystem.cmake \
-	D:/New\ folder/ki3/PBL2/build/PBL2App_autogen/moc_predefs.h \
-	D:/New\ folder/ki3/PBL2/src/entities/Contract.h \
-	D:/New\ folder/ki3/PBL2/src/entities/Person.h \
-	D:/New\ folder/ki3/PBL2/src/entities/Registration.h \
-	D:/New\ folder/ki3/PBL2/src/entities/Student.h \
-	D:/New\ folder/ki3/PBL2/src/entities/Tutor.h \
-	D:/New\ folder/ki3/PBL2/src/entities/TutoringClass.h \
-	D:/New\ folder/ki3/PBL2/src/main.cpp \
-	D:/New\ folder/ki3/PBL2/src/repositories/FileManager.h \
-	D:/New\ folder/ki3/PBL2/src/structures/Vector.h \
-	D:/New\ folder/ki3/PBL2/src/ui/LoginWindow.cpp \
-	D:/New\ folder/ki3/PBL2/src/ui/LoginWindow.h \
-	D:/New\ folder/ki3/PBL2/src/ui/MainWindow.cpp \
-	D:/New\ folder/ki3/PBL2/src/ui/MainWindow.h \
+	D:/Downloads/PBL2_ui_updated\ (3)/PBL2/CMakeLists.txt \
+	D:/Downloads/PBL2_ui_updated\ (3)/PBL2/build/CMakeFiles/4.4.2/CMakeCXXCompiler.cmake \
+	D:/Downloads/PBL2_ui_updated\ (3)/PBL2/build/CMakeFiles/4.4.2/CMakeRCCompiler.cmake \
+	D:/Downloads/PBL2_ui_updated\ (3)/PBL2/build/CMakeFiles/4.4.2/CMakeSystem.cmake \
+	D:/Downloads/PBL2_ui_updated\ (3)/PBL2/build/PBL2App_autogen/moc_predefs.h \
+	D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/entities/Contract.h \
+	D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/entities/Person.h \
+	D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/entities/Registration.h \
+	D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/entities/Student.h \
+	D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/entities/Tutor.h \
+	D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/entities/TutoringClass.h \
+	D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/main.cpp \
+	D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/repositories/FileManager.h \
+	D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/services/MatchingService.h \
+	D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/structures/Vector.h \
+	D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/ui/LoginWindow.cpp \
+	D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/ui/LoginWindow.h \
+	D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/ui/MainWindow.cpp \
+	D:/Downloads/PBL2_ui_updated\ (3)/PBL2/src/ui/MainWindow.h \
 	C:/msys64/ucrt64/bin/cmake.exe

@@ -1,69 +1,38 @@
 # ninja log v7
-642	2539	8109165269673155	CMakeFiles/tutorfinder_core.dir/src/structures/Vector.cpp.obj	d142280af4c60791
-386	1387	8109167851933188	CMakeFiles/tutorfinder_core.dir/src/entities/Contract.cpp.obj	ee45af186d97e1a1
-349	1368	8109167851568678	CMakeFiles/tutorfinder_core.dir/src/entities/Person.cpp.obj	f2cca6bf6fea980e
-376	1377	8109167851835266	CMakeFiles/tutorfinder_core.dir/src/entities/TutoringClass.cpp.obj	ed13c02ea6e1ed7d
-7608	14899	8093766975807620	CMakeFiles/PBL2App.dir/src/main.cpp.obj	ceeefd2125ea3c5a
-366	1865	8109167851730278	CMakeFiles/tutorfinder_core.dir/src/entities/Tutor.cpp.obj	fe3e88254136765d
-357	1843	8109167851643001	CMakeFiles/tutorfinder_core.dir/src/entities/Student.cpp.obj	d8c49d5aa0fd7f90
-657	3538	8109165269830978	CMakeFiles/tutorfinder_core.dir/src/services/MatchingService.cpp.obj	303c0b6c108e1ca3
-4916	6424	8109165312415993	CMakeFiles/backend_tests.dir/tests/backend_test.cpp.obj	cfe8a2bc161465c5
-6485	12659	8109165328112817	CMakeFiles/PBL2App.dir/src/ui/LoginWindow.cpp.obj	f2352d5155bfd45a
-262	3328	8111591286028146	CMakeFiles/PBL2App.dir/src/ui/MainWindow.cpp.obj	c8ff3268afd67384
-317	4574	8111578035581078	CMakeFiles/tutorfinder_core.dir/src/repositories/FileManager.cpp.obj	932ebd97ec0747cf
-4574	5290	8111578078152233	libtutorfinder_core.a	95dcd39ff63f777d
-5290	6356	8111578085316899	backend_tests.exe	1a3e27148908da21
-13	316	8111578032540960	tutorfinder_core_autogen/timestamp	53eb526b53c96ba6
-13	316	8111578032540960	tutorfinder_core_autogen/mocs_compilation.cpp	53eb526b53c96ba6
-13	316	8111578032540960	D:/New folder/ki3/PBL2/build/tutorfinder_core_autogen/timestamp	53eb526b53c96ba6
-13	316	8111578032540960	D:/New folder/ki3/PBL2/build/tutorfinder_core_autogen/mocs_compilation.cpp	53eb526b53c96ba6
-421	2131	8093720228626723	CMakeFiles/tutorfinder_core.dir/tutorfinder_core_autogen/mocs_compilation.cpp.obj	897c0ae7b8989c10
-4590	4916	8109165309170139	backend_tests_autogen/timestamp	12b15ab579225a4f
-4590	4916	8109165309170139	backend_tests_autogen/mocs_compilation.cpp	12b15ab579225a4f
-4590	4916	8109165309170139	D:/New folder/ki3/PBL2/build/backend_tests_autogen/timestamp	12b15ab579225a4f
-4590	4916	8109165309170139	D:/New folder/ki3/PBL2/build/backend_tests_autogen/mocs_compilation.cpp	12b15ab579225a4f
-5835	6086	8093720282754561	CMakeFiles/backend_tests.dir/backend_tests_autogen/mocs_compilation.cpp.obj	f5c5c03e16c35611
-52	261	8111591283928680	PBL2App_autogen/timestamp	b0af653a36ad13a9
-52	261	8111591283928680	PBL2App_autogen/mocs_compilation.cpp	b0af653a36ad13a9
-52	261	8111591283928680	D:/New folder/ki3/PBL2/build/PBL2App_autogen/timestamp	b0af653a36ad13a9
-52	261	8111591283928680	D:/New folder/ki3/PBL2/build/PBL2App_autogen/mocs_compilation.cpp	b0af653a36ad13a9
-6475	11753	8109165328015672	CMakeFiles/PBL2App.dir/PBL2App_autogen/mocs_compilation.cpp.obj	49137c2911f5ee19
-3329	3716	8111591316695920	PBL2App.exe	42f1778166e2bad3
-3	28	8093766054855311	clean	7cad43144eea5c8
-9	865	8117547967867922	build.ninja	afc67a502b18237d
-9	865	8117547967867922	D:/New folder/ki3/PBL2/build/cmake_install.cmake	afc67a502b18237d
-50	440	8117547969540288	tutorfinder_core_autogen/timestamp	53eb526b53c96ba6
-50	440	8117547969540288	tutorfinder_core_autogen/mocs_compilation.cpp	53eb526b53c96ba6
-50	440	8117547969540288	D:/New folder/ki3/PBL2/build/tutorfinder_core_autogen/timestamp	53eb526b53c96ba6
-50	440	8117547969540288	D:/New folder/ki3/PBL2/build/tutorfinder_core_autogen/mocs_compilation.cpp	53eb526b53c96ba6
-441	6164	8117547973450346	CMakeFiles/tutorfinder_core.dir/src/entities/Person.cpp.obj	f2cca6bf6fea980e
-479	6165	8117547973823141	CMakeFiles/tutorfinder_core.dir/src/entities/Contract.cpp.obj	ee45af186d97e1a1
-468	6174	8117547973692662	CMakeFiles/tutorfinder_core.dir/src/entities/TutoringClass.cpp.obj	ed13c02ea6e1ed7d
-456	6866	8117547973564239	CMakeFiles/tutorfinder_core.dir/src/entities/Tutor.cpp.obj	fe3e88254136765d
-492	6885	8117547973959182	CMakeFiles/tutorfinder_core.dir/src/entities/Registration.cpp.obj	f2e674b2ba1821b9
-446	6899	8117547973506921	CMakeFiles/tutorfinder_core.dir/src/entities/Student.cpp.obj	d8c49d5aa0fd7f90
-508	6921	8117547974107055	CMakeFiles/tutorfinder_core.dir/src/services/MatchingService.cpp.obj	303c0b6c108e1ca3
-516	7501	8117547974190564	CMakeFiles/tutorfinder_core.dir/src/repositories/FileManager.cpp.obj	932ebd97ec0747cf
-7501	8032	8117548044056344	libtutorfinder_core.a	7f6141f110422c94
-8032	8281	8117548049369045	backend_tests_autogen/timestamp	12b15ab579225a4f
-8032	8281	8117548049369045	backend_tests_autogen/mocs_compilation.cpp	12b15ab579225a4f
-8032	8281	8117548049369045	D:/New folder/ki3/PBL2/build/backend_tests_autogen/timestamp	12b15ab579225a4f
-8032	8281	8117548049369045	D:/New folder/ki3/PBL2/build/backend_tests_autogen/mocs_compilation.cpp	12b15ab579225a4f
-8282	9081	8117548051864860	CMakeFiles/backend_tests.dir/tests/backend_test.cpp.obj	cfe8a2bc161465c5
-9081	9697	8117548059856542	backend_tests.exe	1a3e27148908da21
-8040	14471	8117548112742540	PBL2App_autogen/timestamp	b0af653a36ad13a9
-8040	14471	8117548112742540	PBL2App_autogen/mocs_compilation.cpp	b0af653a36ad13a9
-8040	14471	8117548112742540	D:/New folder/ki3/PBL2/build/PBL2App_autogen/timestamp	b0af653a36ad13a9
-8040	14471	8117548112742540	D:/New folder/ki3/PBL2/build/PBL2App_autogen/mocs_compilation.cpp	b0af653a36ad13a9
-14471	17432	8117548113760499	CMakeFiles/PBL2App.dir/PBL2App_autogen/mocs_compilation.cpp.obj	49137c2911f5ee19
-14476	17692	8117548113808308	CMakeFiles/PBL2App.dir/src/ui/LoginWindow.cpp.obj	f2352d5155bfd45a
-14483	18746	8117548113866633	CMakeFiles/PBL2App.dir/src/ui/MainWindow.cpp.obj	c8ff3268afd67384
-18746	19231	8117548156512954	PBL2App.exe	42f1778166e2bad3
-37	877	8117549378127539	PBL2App_autogen/timestamp	b0af653a36ad13a9
-37	877	8117549378127539	PBL2App_autogen/mocs_compilation.cpp	b0af653a36ad13a9
-37	877	8117549378127539	D:/New folder/ki3/PBL2/build/PBL2App_autogen/timestamp	b0af653a36ad13a9
-37	877	8117549378127539	D:/New folder/ki3/PBL2/build/PBL2App_autogen/mocs_compilation.cpp	b0af653a36ad13a9
-877	3524	8117549379166180	CMakeFiles/PBL2App.dir/PBL2App_autogen/mocs_compilation.cpp.obj	49137c2911f5ee19
-884	3924	8117549379239195	CMakeFiles/PBL2App.dir/src/ui/LoginWindow.cpp.obj	f2352d5155bfd45a
-893	5212	8117549379317560	CMakeFiles/PBL2App.dir/src/ui/MainWindow.cpp.obj	c8ff3268afd67384
-5213	5709	8117549422523699	PBL2App.exe	42f1778166e2bad3
+45	341	8135792289622932	tutorfinder_core_autogen/timestamp	6568809203091867
+45	341	8135792289622932	tutorfinder_core_autogen/mocs_compilation.cpp	6568809203091867
+45	341	8135792289622932	D:/Downloads/PBL2_ui_updated (3)/PBL2/build/tutorfinder_core_autogen/timestamp	6568809203091867
+45	341	8135792289622932	D:/Downloads/PBL2_ui_updated (3)/PBL2/build/tutorfinder_core_autogen/mocs_compilation.cpp	6568809203091867
+342	498	8135792290209004	CMakeFiles/tutorfinder_core.dir/tutorfinder_core_autogen/mocs_compilation.cpp.obj	f91b20bd1296394c
+357	1102	8135792290402090	CMakeFiles/tutorfinder_core.dir/src/entities/Person.cpp.obj	9996278c7bdec69c
+374	1129	8135792290577884	CMakeFiles/tutorfinder_core.dir/src/entities/TutoringClass.cpp.obj	e9f2f9c40a456d5e
+394	1132	8135792290756194	CMakeFiles/tutorfinder_core.dir/src/structures/Vector.cpp.obj	d3933e6f47ba4a69
+381	1145	8135792290646598	CMakeFiles/tutorfinder_core.dir/src/entities/Contract.cpp.obj	5bb33da72c8ce0b4
+347	1188	8135792290209004	CMakeFiles/tutorfinder_core.dir/src/utils/TextUtils.cpp.obj	41c3224f98341f5a
+369	1268	8135792290520255	CMakeFiles/tutorfinder_core.dir/src/entities/Tutor.cpp.obj	4aa3b92aa8e06e26
+387	1314	8135792290695865	CMakeFiles/tutorfinder_core.dir/src/entities/Registration.cpp.obj	6e75014fada3cb19
+363	1319	8135792290459610	CMakeFiles/tutorfinder_core.dir/src/entities/Student.cpp.obj	45c01d0e77555828
+401	1418	8135792290842921	CMakeFiles/tutorfinder_core.dir/src/services/MatchingService.cpp.obj	2117aa704f0f907d
+351	1454	8135792290332441	CMakeFiles/tutorfinder_core.dir/src/utils/Sha256.cpp.obj	7ea0c0ca0e42b2db
+407	1695	8135792290903245	CMakeFiles/tutorfinder_core.dir/src/repositories/FileManager.cpp.obj	5514c011ae8cbc76
+1695	1867	8135792303728189	libtutorfinder_core.a	70dc484148a81028
+1867	2146	8135792307541229	backend_tests_autogen/timestamp	5261f3182c27e852
+1867	2146	8135792307541229	backend_tests_autogen/mocs_compilation.cpp	5261f3182c27e852
+1867	2146	8135792307541229	D:/Downloads/PBL2_ui_updated (3)/PBL2/build/backend_tests_autogen/timestamp	5261f3182c27e852
+1867	2146	8135792307541229	D:/Downloads/PBL2_ui_updated (3)/PBL2/build/backend_tests_autogen/mocs_compilation.cpp	5261f3182c27e852
+2147	2256	8135792308297517	CMakeFiles/backend_tests.dir/backend_tests_autogen/mocs_compilation.cpp.obj	88ea8617eabdfab1
+1875	2779	8135792313891399	PBL2App_autogen/timestamp	52188c23a7ecdc89
+1875	2779	8135792313891399	PBL2App_autogen/mocs_compilation.cpp	52188c23a7ecdc89
+1875	2779	8135792313891399	D:/Downloads/PBL2_ui_updated (3)/PBL2/build/PBL2App_autogen/timestamp	52188c23a7ecdc89
+1875	2779	8135792313891399	D:/Downloads/PBL2_ui_updated (3)/PBL2/build/PBL2App_autogen/mocs_compilation.cpp	52188c23a7ecdc89
+2153	3760	8135792308307630	CMakeFiles/backend_tests.dir/tests/backend_test.cpp.obj	b768671a68fb90cd
+3761	4050	8135792324434238	backend_tests.exe	1a3e27148908da21
+2786	5536	8135792314642256	CMakeFiles/PBL2App.dir/src/main.cpp.obj	be1061e84ea4dd5c
+2780	5735	8135792314631518	CMakeFiles/PBL2App.dir/PBL2App_autogen/mocs_compilation.cpp.obj	4ddd5c07736bd7f
+2791	6002	8135792314724684	CMakeFiles/PBL2App.dir/src/ui/LoginWindow.cpp.obj	e4d8a46a10b592f5
+51	288	8135792659959922	PBL2App_autogen/timestamp	52188c23a7ecdc89
+51	288	8135792659959922	PBL2App_autogen/mocs_compilation.cpp	52188c23a7ecdc89
+51	288	8135792659959922	D:/Downloads/PBL2_ui_updated (3)/PBL2/build/PBL2App_autogen/timestamp	52188c23a7ecdc89
+51	288	8135792659959922	D:/Downloads/PBL2_ui_updated (3)/PBL2/build/PBL2App_autogen/mocs_compilation.cpp	52188c23a7ecdc89
+288	4837	8135792662381194	CMakeFiles/PBL2App.dir/src/ui/MainWindow.cpp.obj	f27fdf7e656a9e2b
+4837	5093	8135792707880462	PBL2App.exe	42f1778166e2bad3

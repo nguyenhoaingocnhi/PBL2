@@ -1,17 +1,73 @@
 {
 	"AUTOGEN_COMMAND_LINE_LENGTH_MAX" : 32000,
-	"BUILD_DIR" : "D:/New folder/ki3/PBL2/build/tutorfinder_core_autogen",
-	"CMAKE_BINARY_DIR" : "D:/New folder/ki3/PBL2/build",
-	"CMAKE_CURRENT_BINARY_DIR" : "D:/New folder/ki3/PBL2/build",
-	"CMAKE_CURRENT_SOURCE_DIR" : "D:/New folder/ki3/PBL2",
+	"BUILD_DIR" : "D:/Downloads/PBL2_ui_updated (3)/PBL2/build/tutorfinder_core_autogen",
+	"CMAKE_BINARY_DIR" : "D:/Downloads/PBL2_ui_updated (3)/PBL2/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "D:/Downloads/PBL2_ui_updated (3)/PBL2/build",
+	"CMAKE_CURRENT_SOURCE_DIR" : "D:/Downloads/PBL2_ui_updated (3)/PBL2",
 	"CMAKE_EXECUTABLE" : "C:/msys64/ucrt64/bin/cmake.exe",
 	"CMAKE_LIST_FILES" : 
 	[
-		"D:/New folder/ki3/PBL2/CMakeLists.txt",
-		"D:/New folder/ki3/PBL2/build/CMakeFiles/4.4.2/CMakeSystem.cmake",
+		"D:/Downloads/PBL2_ui_updated (3)/PBL2/CMakeLists.txt",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeDetermineSystem.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeSystem.cmake.in",
+		"D:/Downloads/PBL2_ui_updated (3)/PBL2/build/CMakeFiles/4.4.2/CMakeSystem.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeNinjaFindMake.cmake",
 		"C:/msys64/ucrt64/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake",
 		"C:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-Initialize.cmake",
-		"D:/New folder/ki3/PBL2/build/CMakeFiles/4.4.2/CMakeCXXCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeDetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-Determine-CXX.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeDetermineCompilerId.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeCompilerIdDetection.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/ADSP-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/ARMCC-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/ARMClang-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/AppleClang-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/Clang-DetermineCompilerInternal.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/Borland-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/Clang-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/Clang-DetermineCompilerInternal.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/Cray-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/CrayClang-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/Diab-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/Embarcadero-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/Fujitsu-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/GHS-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/HP-CXX-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/IAR-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/IBMClang-CXX-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/Intel-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/IntelLLVM-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/LCC-CXX-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/MSVC-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/NVHPC-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/NVIDIA-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/OrangeC-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/PGI-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/PathScale-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/PellesC-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/Renesas-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/SCO-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/TI-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/TIClang-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/Tasking-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/Watcom-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/XL-CXX-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeFindBinUtils.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/GNU-FindBinUtils.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeCXXCompiler.cmake.in",
+		"D:/Downloads/PBL2_ui_updated (3)/PBL2/build/CMakeFiles/4.4.2/CMakeCXXCompiler.cmake",
 		"C:/msys64/ucrt64/share/cmake/Modules/CMakeSystemSpecificInformation.cmake",
 		"C:/msys64/ucrt64/share/cmake/Modules/CMakeGenericSystem.cmake",
 		"C:/msys64/ucrt64/share/cmake/Modules/CMakeInitializeConfigs.cmake",
@@ -24,11 +80,28 @@
 		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake",
 		"C:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-GNU-CXX.cmake",
 		"C:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-GNU.cmake",
-		"D:/New folder/ki3/PBL2/build/CMakeFiles/4.4.2/CMakeRCCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeDetermineRCCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeRCCompiler.cmake.in",
+		"D:/Downloads/PBL2_ui_updated (3)/PBL2/build/CMakeFiles/4.4.2/CMakeRCCompiler.cmake",
 		"C:/msys64/ucrt64/share/cmake/Modules/CMakeRCInformation.cmake",
 		"C:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-windres.cmake",
-		"C:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-GNU-CXX-ABI.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeTestRCCompiler.cmake",
 		"C:/msys64/ucrt64/share/cmake/Modules/CMakeCommonLanguageInclude.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeTestCXXCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeTestCompilerCommon.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeDetermineCompilerABI.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Internal/CMakeDetermineLinkerId.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeParseImplicitIncludeInfo.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeParseImplicitLinkInfo.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeParseLibraryArchitecture.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeTestCompilerCommon.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeCXXCompilerABI.cpp",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeDetermineCompilerSupport.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Internal/FeatureTesting.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Compiler/GNU-CXX-CXXImportStd.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeCXXCompiler.cmake.in",
+		"D:/Downloads/PBL2_ui_updated (3)/PBL2/build/CMakeFiles/4.4.2/CMakeCXXCompiler.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Platform/Windows-GNU-CXX-ABI.cmake",
 		"C:/msys64/ucrt64/share/cmake/Modules/Internal/CMakeCXXLinkerInformation.cmake",
 		"C:/msys64/ucrt64/share/cmake/Modules/Internal/CMakeCommonLinkerInformation.cmake",
 		"C:/msys64/ucrt64/share/cmake/Modules/Linker/GNU-CXX.cmake",
@@ -36,9 +109,12 @@
 		"C:/msys64/ucrt64/share/cmake/Modules/Platform/Linker/Windows-GNU-CXX.cmake",
 		"C:/msys64/ucrt64/share/cmake/Modules/Platform/Linker/Windows-GNU.cmake",
 		"C:/msys64/ucrt64/share/cmake/Modules/Platform/Linker/GNU.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/Internal/CMakeInspectCXXLinker.cmake",
+		"C:/msys64/ucrt64/share/cmake/Modules/CMakeCXXCompiler.cmake.in",
 		"C:/msys64/ucrt64/lib/cmake/Qt6/Qt6ConfigVersion.cmake",
 		"C:/msys64/ucrt64/lib/cmake/Qt6/Qt6ConfigVersionImpl.cmake",
 		"C:/msys64/ucrt64/lib/cmake/Qt6/Qt6Config.cmake",
+		"C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicCMakeIncludeGuardHelpers.cmake",
 		"C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicCMakeEarlyPolicyHelpers.cmake",
 		"C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicCMakeHelpers.cmake",
 		"C:/msys64/ucrt64/lib/cmake/Qt6/Qt6ConfigExtras.cmake",
@@ -66,6 +142,7 @@
 		"C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicFinalizerHelpers.cmake",
 		"C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicFindPackageHelpers.cmake",
 		"C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicGitHelpers.cmake",
+		"C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicJsonHelpers.cmake",
 		"C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicPluginHelpers.cmake",
 		"C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicPluginHelpers_v2.cmake",
 		"C:/msys64/ucrt64/lib/cmake/Qt6/QtPublicSbomAttributionHelpers.cmake",
@@ -267,70 +344,82 @@
 		"C:/msys64/ucrt64/lib/cmake/Qt6Widgets/Qt6QModernWindowsStylePluginAdditionalTargetInfo.cmake",
 		"C:/msys64/ucrt64/lib/cmake/Qt6Widgets/Qt6WidgetsVersionlessAliasTargets.cmake"
 	],
-	"CMAKE_SOURCE_DIR" : "D:/New folder/ki3/PBL2",
+	"CMAKE_SOURCE_DIR" : "D:/Downloads/PBL2_ui_updated (3)/PBL2",
 	"CROSS_CONFIG" : false,
-	"DEP_FILE" : "D:/New folder/ki3/PBL2/build/tutorfinder_core_autogen/deps",
+	"DEP_FILE" : "D:/Downloads/PBL2_ui_updated (3)/PBL2/build/tutorfinder_core_autogen/deps",
 	"DEP_FILE_RULE_NAME" : "tutorfinder_core_autogen/timestamp",
 	"HEADERS" : 
 	[
 		[
-			"D:/New folder/ki3/PBL2/src/entities/Contract.h",
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/entities/Contract.h",
 			"MU",
 			"IEUNVJTDNW/moc_Contract.cpp",
 			null
 		],
 		[
-			"D:/New folder/ki3/PBL2/src/entities/Person.h",
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/entities/Person.h",
 			"MU",
 			"IEUNVJTDNW/moc_Person.cpp",
 			null
 		],
 		[
-			"D:/New folder/ki3/PBL2/src/entities/Registration.h",
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/entities/Registration.h",
 			"MU",
 			"IEUNVJTDNW/moc_Registration.cpp",
 			null
 		],
 		[
-			"D:/New folder/ki3/PBL2/src/entities/Student.h",
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/entities/Student.h",
 			"MU",
 			"IEUNVJTDNW/moc_Student.cpp",
 			null
 		],
 		[
-			"D:/New folder/ki3/PBL2/src/entities/Tutor.h",
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/entities/Tutor.h",
 			"MU",
 			"IEUNVJTDNW/moc_Tutor.cpp",
 			null
 		],
 		[
-			"D:/New folder/ki3/PBL2/src/entities/TutoringClass.h",
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/entities/TutoringClass.h",
 			"MU",
 			"IEUNVJTDNW/moc_TutoringClass.cpp",
 			null
 		],
 		[
-			"D:/New folder/ki3/PBL2/src/repositories/FileManager.h",
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/repositories/FileManager.h",
 			"MU",
 			"UEBDTUJI3I/moc_FileManager.cpp",
 			null
 		],
 		[
-			"D:/New folder/ki3/PBL2/src/services/MatchingService.h",
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/services/MatchingService.h",
 			"MU",
 			"GQ6NBGVJMG/moc_MatchingService.cpp",
 			null
 		],
 		[
-			"D:/New folder/ki3/PBL2/src/structures/Vector.h",
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/structures/Vector.h",
 			"MU",
 			"QQDY6SHKMB/moc_Vector.cpp",
+			null
+		],
+		[
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/utils/Sha256.h",
+			"MU",
+			"VSCBVMNR7M/moc_Sha256.cpp",
+			null
+		],
+		[
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/utils/TextUtils.h",
+			"MU",
+			"VSCBVMNR7M/moc_TextUtils.cpp",
 			null
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
-	"INCLUDE_DIR" : "D:/New folder/ki3/PBL2/build/tutorfinder_core_autogen/include",
-	"MOC_COMPILATION_FILE" : "D:/New folder/ki3/PBL2/build/tutorfinder_core_autogen/mocs_compilation.cpp",
+	"INCLUDE_DIR" : "D:/Downloads/PBL2_ui_updated (3)/PBL2/build/tutorfinder_core_autogen/include",
+	"MOC_COMPILATION_FILE" : "D:/Downloads/PBL2_ui_updated (3)/PBL2/build/tutorfinder_core_autogen/mocs_compilation.cpp",
 	"MOC_DEFINITIONS" : [],
 	"MOC_DEPEND_FILTERS" : 
 	[
@@ -341,11 +430,12 @@
 	],
 	"MOC_INCLUDES" : 
 	[
-		"D:/New folder/ki3/PBL2/src",
-		"D:/New folder/ki3/PBL2/src/entities",
-		"D:/New folder/ki3/PBL2/src/structures",
-		"D:/New folder/ki3/PBL2/src/services",
-		"D:/New folder/ki3/PBL2/src/repositories",
+		"D:/Downloads/PBL2_ui_updated (3)/PBL2/src",
+		"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/entities",
+		"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/structures",
+		"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/services",
+		"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/repositories",
+		"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/utils",
 		"C:/msys64/ucrt64/include/c++/16.2.0",
 		"C:/msys64/ucrt64/include/c++/16.2.0/x86_64-w64-mingw32",
 		"C:/msys64/ucrt64/include/c++/16.2.0/backward",
@@ -365,28 +455,74 @@
 		"-E",
 		"C:/msys64/ucrt64/share/cmake/Modules/CMakeCXXCompilerABI.cpp"
 	],
-	"MOC_PREDEFS_FILE" : "D:/New folder/ki3/PBL2/build/tutorfinder_core_autogen/moc_predefs.h",
+	"MOC_PREDEFS_FILE" : "D:/Downloads/PBL2_ui_updated (3)/PBL2/build/tutorfinder_core_autogen/moc_predefs.h",
 	"MOC_RELAXED_MODE" : false,
 	"MOC_SKIP" : [],
 	"MULTI_CONFIG" : false,
 	"PARALLEL" : 10,
-	"PARSE_CACHE_FILE" : "D:/New folder/ki3/PBL2/build/CMakeFiles/tutorfinder_core_autogen.dir/ParseCache.txt",
+	"PARSE_CACHE_FILE" : "D:/Downloads/PBL2_ui_updated (3)/PBL2/build/CMakeFiles/tutorfinder_core_autogen.dir/ParseCache.txt",
 	"QT_MOC_EXECUTABLE" : "C:/msys64/ucrt64/share/qt6/bin/moc.exe",
 	"QT_UIC_EXECUTABLE" : "C:/msys64/ucrt64/share/qt6/bin/uic.exe",
 	"QT_VERSION_MAJOR" : 6,
 	"QT_VERSION_MINOR" : 11,
-	"SETTINGS_FILE" : "D:/New folder/ki3/PBL2/build/CMakeFiles/tutorfinder_core_autogen.dir/AutogenUsed.txt",
+	"SETTINGS_FILE" : "D:/Downloads/PBL2_ui_updated (3)/PBL2/build/CMakeFiles/tutorfinder_core_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
-		[ "D:/New folder/ki3/PBL2/src/entities/Contract.cpp", "MU", null ],
-		[ "D:/New folder/ki3/PBL2/src/entities/Person.cpp", "MU", null ],
-		[ "D:/New folder/ki3/PBL2/src/entities/Registration.cpp", "MU", null ],
-		[ "D:/New folder/ki3/PBL2/src/entities/Student.cpp", "MU", null ],
-		[ "D:/New folder/ki3/PBL2/src/entities/Tutor.cpp", "MU", null ],
-		[ "D:/New folder/ki3/PBL2/src/entities/TutoringClass.cpp", "MU", null ],
-		[ "D:/New folder/ki3/PBL2/src/repositories/FileManager.cpp", "MU", null ],
-		[ "D:/New folder/ki3/PBL2/src/services/MatchingService.cpp", "MU", null ],
-		[ "D:/New folder/ki3/PBL2/src/structures/Vector.cpp", "MU", null ]
+		[
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/entities/Contract.cpp",
+			"MU",
+			null
+		],
+		[
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/entities/Person.cpp",
+			"MU",
+			null
+		],
+		[
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/entities/Registration.cpp",
+			"MU",
+			null
+		],
+		[
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/entities/Student.cpp",
+			"MU",
+			null
+		],
+		[
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/entities/Tutor.cpp",
+			"MU",
+			null
+		],
+		[
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/entities/TutoringClass.cpp",
+			"MU",
+			null
+		],
+		[
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/repositories/FileManager.cpp",
+			"MU",
+			null
+		],
+		[
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/services/MatchingService.cpp",
+			"MU",
+			null
+		],
+		[
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/structures/Vector.cpp",
+			"MU",
+			null
+		],
+		[
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/utils/Sha256.cpp",
+			"MU",
+			null
+		],
+		[
+			"D:/Downloads/PBL2_ui_updated (3)/PBL2/src/utils/TextUtils.cpp",
+			"MU",
+			null
+		]
 	],
 	"UIC_OPTIONS" : [],
 	"UIC_SEARCH_PATHS" : [],
