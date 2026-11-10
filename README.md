@@ -41,7 +41,7 @@ Chạy kiểm thử backend (không cần Qt):
 ctest --test-dir build --output-on-failure
 ```
 
-**Tài khoản mặc định:** `admin` / `123456` (hãy đổi sau lần đăng nhập đầu; file `data/admin.txt` chỉ lưu bản băm).
+**Tài khoản demo trên GitHub:** `demo` / `TutorFlow-Demo-Only`. Đây là thông tin công khai chỉ để chạy dữ liệu minh họa; hãy đổi mật khẩu trước khi sử dụng dữ liệu riêng. Không dùng tài khoản này cho môi trường thật.
 
 ## Thuật toán ghép gia sư
 **Bước 1 — lọc bắt buộc:** gia sư phải còn nhận học sinh, đang dạy dưới 8 học sinh khác nhau, dạy **toàn bộ môn đang tìm**, có lịch rảnh trùng (khi học sinh đã khai lịch), và học phí không vượt ngân sách nếu có. Học sinh đăng ký nhiều môn có thể chọn tìm theo **từng môn** để ghép nhiều gia sư khác nhau.

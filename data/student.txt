@@ -1,0 +1,20 @@
+SV001|Demo Student 001|0900000000|Demo Address|Nam|01/01/2010|10|Toan,Ly|T2,T4,T6|Trung Binh|Khong|200000|Sample profile|true
+SV002|Demo Student 002|0900000000|Demo Address|Nu|01/01/2010|11|Ly,Hoa|T3,T5|Gioi|Khong|250000|Sample profile|true
+SV003|Demo Student 003|0900000000|Demo Address|Nu|01/01/2010|12|Toan,Van|T2,T5,T7|Trung Binh|Co|300000|Sample profile|false
+SV004|Demo Student 004|0900000000|Demo Address|Nu|01/01/2010|10|Toan,Anh|T2,T4|Kha|Khong|220000|Sample profile|true
+SV005|Demo Student 005|0900000000|Demo Address|Nam|01/01/2010|11|Ly,Hoa|T3,T5,T7|Trung Binh|Khong|230000|Sample profile|true
+SV006|Demo Student 006|0900000000|Demo Address|Nu|01/01/2010|12|Toan,Van|T2,T6|Gioi|Khong|300000|Sample profile|true
+SV007|Demo Student 007|0900000000|Demo Address|Nam|01/01/2010|9|Toan,Ly|T2,T4,T6|Trung Binh|Co|180000|Sample profile|false
+SV008|Demo Student 008|0900000000|Demo Address|Nu|01/01/2010|10|Van,Anh|T3,T5|Kha|Khong|200000|Sample profile|true
+SV009|Demo Student 009|0900000000|Demo Address|Nam|01/01/2010|11|Toan,Ly,Hoa|T2,T5,T7|Gioi|Khong|280000|Sample profile|true
+SV010|Demo Student 010|0900000000|Demo Address|Nu|01/01/2010|8|Toan,Anh|T4,T6|Trung Binh|Khong|160000|Sample profile|false
+SV011|Demo Student 011|0900000000|Demo Address|Nam|01/01/2010|12|Toan,Ly,Hoa|T3,T5,T7|Kha|Khong|320000|Sample profile|true
+SV012|Demo Student 012|0900000000|Demo Address|Nu|01/01/2010|9|Toan,Van,Anh|T2,T5|Gioi|Khong|190000|Sample profile|true
+SV013|Demo Student 013|0900000000|Demo Address|Nam|01/01/2010|7|Toan,Anh|T3,T7|Trung Binh|Co|150000|Sample profile|false
+SV014|Demo Student 014|0900000000|Demo Address|Nu|01/01/2010|11|Hoa,Sinh|T2,T4,T6|Kha|Khong|240000|Sample profile|true
+SV015|Demo Student 015|0900000000|Demo Address|Nam|01/01/2010|10|Toan,Ly|T4,T6,T7|Yeu|Khong|170000|Sample profile|false
+SV016|Demo Student 016|0900000000|Demo Address|Nu|01/01/2010|10|Anh,Van|T2,T6|Gioi|Khong|210000|Sample profile|true
+SV017|Demo Student 017|0900000000|Demo Address|Nam|01/01/2010|12|Toan,Anh|T3,T5,T7|Kha|Khong|290000|Sample profile|false
+SV018|Demo Student 018|0900000000|Demo Address|Nu|01/01/2010|8|Van,Anh|T2,T4|Trung Binh|Khong|155000|Sample profile|false
+SV019|Demo Student 019|0900000000|Demo Address|Nam|01/01/2010|6|Toan,Anh|T5,T7|Kha|Khong|140000|Sample profile|true
+SV020|Demo Student 020|0900000000|Demo Address|Nu|01/01/2010|10|Toan,Hoa|T3,T6|Trung Binh|Khong|200000|Sample profile|false
