@@ -5,8 +5,6 @@
 #include "Student.h"
 #include "Tutor.h"
 #include "TutoringClass.h"
-#include "Contract.h"
-#include "Registration.h"
 #include "MatchingService.h"
 
 #include <QMainWindow>
@@ -18,6 +16,9 @@
 #include <QPushButton>
 #include <QVector>
 
+class QButtonGroup;
+class ContractPage;
+
 using namespace std;
 
 class MainWindow : public QMainWindow {
@@ -28,39 +29,32 @@ public:
 
 private:
     QStackedWidget* stackedWidget = nullptr;
+    QButtonGroup* navGroup = nullptr;
+    ContractPage* contractPage = nullptr;
     Vector<Student*> students;
     Vector<Tutor*> tutors;
     Vector<TutoringClass*> classes;
-    Vector<Contract*> contracts;
-    Vector<Registration*> registrations;
-
     // Table references
     QTableWidget* studentTable = nullptr;
     QTableWidget* tutorTable = nullptr;
     QTableWidget* classTable = nullptr;
-    QTableWidget* contractTable = nullptr;
-    QTableWidget* registrationTable = nullptr;
     QTableWidget* dashboardRecentTable = nullptr;
 
-    // Filter controls references
-    QLineEdit* studentSearchEdit = nullptr;
-    QComboBox* studentGradeCombo = nullptr;
+    // Bộ lọc theo từng cột; nút Tìm kiếm áp dụng, nút Xóa khôi phục.
+    QComboBox* studentIdCombo = nullptr;
+    QLineEdit *studentNameEdit = nullptr, *studentPhoneEdit = nullptr;
+    QLineEdit *studentSubjectEdit = nullptr, *studentAddressEdit = nullptr;
     QComboBox* studentStatusCombo = nullptr;
 
-    QLineEdit* tutorSearchEdit = nullptr;
-    QComboBox* tutorSubjectCombo = nullptr;
-    QComboBox* tutorAreaCombo = nullptr;
-    QComboBox* tutorStatusCombo = nullptr;
+    QComboBox* tutorIdCombo = nullptr;
+    QLineEdit *tutorNameEdit = nullptr, *tutorPhoneEdit = nullptr;
+    QLineEdit *tutorSubjectEdit = nullptr, *tutorAddressEdit = nullptr;
+    QComboBox *tutorExperienceCombo = nullptr, *tutorStatusCombo = nullptr;
 
-    QLineEdit* classSearchEdit = nullptr;
-    QComboBox* classSubjectCombo = nullptr;
+    QComboBox* classIdCombo = nullptr;
+    QLineEdit *classStudentEdit = nullptr, *classTutorEdit = nullptr;
+    QLineEdit *classSubjectEdit = nullptr, *classScheduleEdit = nullptr;
     QComboBox* classStatusCombo = nullptr;
-
-    QLineEdit* contractSearchEdit = nullptr;
-    QComboBox* contractStatusCombo = nullptr;
-
-    QLineEdit* regSearchEdit = nullptr;
-    QComboBox* regStatusCombo = nullptr;
 
     // Dashboard Metric / Status labels
     QLabel* dashTotalStudentsLabel = nullptr;
@@ -73,6 +67,10 @@ private:
     QLabel* dashBusyTutorsLabel = nullptr;
 
     // Statistics Metric labels
+    QLabel* statContractsCount = nullptr;
+    QLabel* statMonthlyRevenue = nullptr;
+    QWidget* statChartRevenue = nullptr;
+    QWidget* statChartStudentSubject = nullptr;
     QLabel* statTotalStudents = nullptr;
     QLabel* statTotalTutors = nullptr;
     QLabel* statAvailTutors = nullptr;
@@ -93,12 +91,6 @@ private:
     QLabel* classSumPending = nullptr;
     QLabel* classSumNeedTutor = nullptr;
 
-    // Contract Page summary tiles
-    QLabel* contractSumTotal = nullptr;
-    QLabel* contractSumActive = nullptr;
-    QLabel* contractSumPending = nullptr;
-    QLabel* contractSumCompleted = nullptr;
-
     // Biểu đồ (kiểu cụ thể nằm trong MainWindow.cpp)
     QWidget* dashChartTutorSubject = nullptr;
     QWidget* statChartMatch = nullptr;
@@ -107,22 +99,21 @@ private:
     QWidget* statChartSubject = nullptr;
     QWidget* statChartMonthly = nullptr;
 
-    // Student / Registration summary tiles
+    // Student summary tiles
     QLabel* stuSumTotal = nullptr;
     QLabel* stuSumMatched = nullptr;
     QLabel* stuSumUnmatched = nullptr;
     QLabel* stuSumAvgBudget = nullptr;
-    QLabel* regSumTotal = nullptr;
-    QLabel* regSumPending = nullptr;
-    QLabel* regSumApproved = nullptr;
-    QLabel* regSumMatched = nullptr;
-
     // Thanh chào mừng và tab trạng thái
     QVector<QLabel*> welcomeLabels;
-    QVector<QPushButton*> stuTabs, tutorTabs, classTabs, contractTabs, regTabs;
+    QVector<QPushButton*> stuTabs, tutorTabs, classTabs;
 
     // Matching UI references
     QComboBox* matchStudentCombo = nullptr;
+    QComboBox* matchSubjectCombo = nullptr; // all registered subjects or one subject
+    QTableWidget* matchCandidatesTable = nullptr; // all eligible tutors, score descending
+    QLabel* matchCandidatesSummary = nullptr;
+    Vector<MatchResult> matchCandidateResults;
     QLabel* matchReqSubject = nullptr;
     QLabel* matchReqGrade = nullptr;
     QLabel* matchReqArea = nullptr;
@@ -130,6 +121,7 @@ private:
     QWidget* matchReqScheduleContainer = nullptr;
 
     // Candidate card references
+    QLabel* candidateRankBadge = nullptr;
     QLabel* candidateName = nullptr;
     QLabel* candidateId = nullptr;
     QLabel* candidateDegree = nullptr;
@@ -144,6 +136,7 @@ private:
     QPushButton* btnAcceptCandidate = nullptr;
     Student* currentMatchedStudent = nullptr;
     Tutor* currentMatchedTutor = nullptr;
+    string currentMatchedSubject; // empty => all registered subjects
 
     // Page creation
     QWidget* createDashboardPage();
@@ -151,9 +144,7 @@ private:
     QWidget* createTutorPage();
     QWidget* createMatchingPage();
     QWidget* createClassPage();
-    QWidget* createContractPage();
     QWidget* createStatisticsPage();
-    QWidget* createRegistrationPage();
     QWidget* createSidebar();
 
     void switchPage(int index);
@@ -165,24 +156,27 @@ private:
     TutoringClass* findClass(const string& id);
 
     // Populate & Refresh methods
+    void resetStudentFilters();
+    void resetTutorFilters();
+    void resetClassFilters();
     void populateStudentTable();
     void populateTutorTable();
     void populateClassTable();
-    void populateContractTable();
-    void populateRegistrationTable();
     void populateDashboardRecentTable();
     void refreshDashboardMetrics();
     void refreshStatisticsMetrics();
     void refreshTutorSummary();
     void refreshClassSummary();
-    void refreshContractSummary();
     void refreshStudentSummary();
-    void refreshRegistrationSummary();
     void refreshOverviewWidgets();
     void refreshAll();
+    // Chuyển sang trang quản lý tương ứng, bỏ bộ lọc và chọn/cuộn tới bản ghi vừa thêm.
+    void focusNewRecord(int pageIndex, QTableWidget* table, const QString& id);
 
     // Matching methods
     void updateMatchingStudentReqs(int studentIndex);
+    void clearMatchingCandidates();
+    void selectMatchingCandidate(int row);
     void runSmartMatching();
     void acceptCandidateMatch();
 
@@ -201,13 +195,6 @@ private:
     void onEditClass(TutoringClass* c);
     void onDeleteClass(TutoringClass* c);
 
-    void onAddContract();
-    void onEditContract(Contract* c);
-    void onDeleteContract(Contract* c);
-
-    void onAddRegistration();
-    void onEditRegistration(Registration* r);
-    void onDeleteRegistration(Registration* r);
 };
 
 #endif

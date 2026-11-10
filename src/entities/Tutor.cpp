@@ -12,7 +12,6 @@ Tutor::Tutor() = default;
 Tutor::Tutor(string personID,
              string fullName,
              string phone,
-             string email,
              string address,
              string gender,
              string dateOfBirth,
@@ -27,7 +26,7 @@ Tutor::Tutor(string personID,
              Vector<string> teachingClasses,
              Vector<string> teachingAreas,
              string achievements)
-    : Person(personID, fullName, phone, email, address, gender, dateOfBirth),
+    : Person(personID, fullName, phone, address, gender, dateOfBirth),
       profile_{subjects, degrees, yearsOfExperience, experienceDetails, ratePerHour,
                availability, isAvailable, currentStudents, teachingClasses, teachingAreas,
                achievements} {}
@@ -37,10 +36,10 @@ void Tutor::displayInfo() {
 }
 
 string Tutor::toString() {
-    // Thứ tự cột phải khớp với FileManager::loadTutors (16 cột).
+    // Thứ tự cột phải khớp với FileManager::loadTutors.
     ostringstream oss;
     oss << TextUtils::cleanField(getPersonID()) << "|" << TextUtils::cleanField(getFullName()) << "|"
-        << TextUtils::cleanField(getPhone()) << "|" << TextUtils::cleanField(getEmail()) << "|"
+        << TextUtils::cleanField(getPhone()) << "|"
         << TextUtils::cleanField(getAddress()) << "|" << TextUtils::cleanField(getGender()) << "|"
         << TextUtils::cleanField(getDateOfBirth()) << "|";
 
@@ -103,6 +102,22 @@ Vector<string>& Tutor::getTeachingAreas() {
 
 string Tutor::getAchievements() {
     return profile_.achievements;
+}
+
+string Tutor::getPhoneNumber() {
+    return getPhone();
+}
+
+string Tutor::getUniversityOrDegree() {
+    return getDegrees();
+}
+
+void Tutor::setPhoneNumber(string value) {
+    setPhone(value);
+}
+
+void Tutor::setUniversityOrDegree(string value) {
+    setDegrees(value);
 }
 
 void Tutor::setSubjects(Vector<string> value) {

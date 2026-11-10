@@ -8,9 +8,6 @@ endif()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTORCC ON)
 
 option(BUILD_QT_APP "Build Qt widgets application" ON)
 
@@ -21,10 +18,10 @@ set(CORE_SOURCES
     src/entities/Student.cpp
     src/entities/Tutor.cpp
     src/entities/TutoringClass.cpp
-    src/entities/Contract.cpp
-    src/entities/Registration.cpp
     src/structures/Vector.cpp
     src/services/MatchingService.cpp
+    src/services/ClassService.cpp
+    src/services/ContractService.cpp
     src/repositories/FileManager.cpp
 )
 
@@ -49,7 +46,8 @@ add_test(NAME backend_tests COMMAND backend_tests)
 if(BUILD_QT_APP)
     find_package(Qt6 QUIET COMPONENTS Widgets)
     if(Qt6_FOUND)
-        add_executable(PBL2App src/main.cpp src/ui/LoginWindow.cpp src/ui/MainWindow.cpp)
+        add_executable(PBL2App src/main.cpp src/ui/LoginWindow.cpp src/ui/MainWindow.cpp src/ui/ContractPage.cpp)
+        set_target_properties(PBL2App PROPERTIES AUTOMOC ON AUTOUIC ON AUTORCC ON)
         target_include_directories(PBL2App PRIVATE ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/src/ui)
         target_link_libraries(PBL2App PRIVATE tutorfinder_core Qt6::Widgets)
     else()

@@ -24,7 +24,6 @@ public:
     Student(string personID,
             string fullName,
             string phone,
-            string email,
             string address,
             string gender,
             string dateOfBirth,
@@ -50,6 +49,12 @@ public:
     string getNotes();
     bool getIsMatched();
     Vector<string>& getEnrolledClasses();
+
+    // Backward-compatible aliases used by the Qt UI.
+    string getPhoneNumber();
+    string getAcademicPerformance();
+    void setPhoneNumber(string value);
+    void setAcademicPerformance(string value);
 
     void setGrade(string value);
     void setNeedSubjects(Vector<string> value);

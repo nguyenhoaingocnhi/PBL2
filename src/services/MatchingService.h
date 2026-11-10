@@ -28,6 +28,9 @@ public:
     // Số học sinh tối đa một gia sư nhận; đủ số này gia sư không còn xuất hiện trong kết quả.
     static constexpr int kMaxStudentsPerTutor = 8;
 
+    // Required constraints for a new automatic assignment (not a similarity score).
+    static bool meetsMandatoryRequirements(Student& student, Tutor& tutor);
+
     // Trả về danh sách gia sư phù hợp, sắp xếp điểm giảm dần (merge sort, O(n log n)).
     static Vector<MatchResult> matchStudentsToTutors(Student& student, Vector<Tutor*>& tutors);
 

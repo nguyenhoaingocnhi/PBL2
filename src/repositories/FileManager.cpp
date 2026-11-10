@@ -1,19 +1,37 @@
+#ifdef _WIN32
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <windows.h>
+#endif
+
 #include "FileManager.h"
 
 #include "Sha256.h"
 #include "TextUtils.h"
+#include "Validator.h"
+#include "ScheduleUtils.h"
 
+#include <array>
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
 #include <sstream>
+#include <set>
 
 using namespace std;
 
 namespace {
 
 string g_dataDir;       // thư mục dữ liệu do người dùng đặt (rỗng = tự dò)
-int g_skippedLines = 0;  // số dòng sai định dạng ở lần đọc gần nhất
+int g_skippedLines = 0;
+string g_recoveryError;
+string g_storageError; // refuse subsequent writes after an incomplete/invalid load
+
+void refuseUnsafeData(const string& message) {
+    if (g_storageError.empty()) g_storageError = message;
+    ++g_skippedLines;
+}
 
 // Bỏ BOM UTF-8 nếu file được lưu bằng Notepad.
 string stripBom(const string& s) {
@@ -40,17 +58,92 @@ bool constantTimeEquals(const string& a, const string& b) {
     return diff == 0;
 }
 
+// Journal v1: a marker exists only after every .backup and .stage was prepared.
+// PENDING + absent COMMITTED => restore originals; COMMITTED => keep new files.
+// This provides startup recovery for an interrupted commit (not physical disk
+// flush guarantees, which require platform-specific fsync/FlushFileBuffers).
+bool recoverDirectory(const filesystem::path& dir) {
+    namespace fs = filesystem;
+    const fs::path pending = dir / ".tutorflow_pending";
+    const fs::path committed = dir / ".tutorflow_committed";
+    error_code ec;
+    if (!fs::exists(pending)) {
+        if (fs::exists(committed)) fs::remove(committed, ec);
+        return true;
+    }
+    ifstream input(pending, ios::binary);
+    string flags;
+    getline(input, flags);
+    input.close();
+    if (!flags.empty() && flags.back() == '\r') flags.pop_back();
+    if (flags.size() != 5 || flags.substr(0, 2) != "v1" ||
+        flags.find_first_not_of("01", 2) != string::npos) {
+        g_recoveryError = "Nhật ký giao dịch không hợp lệ. Hãy sao lưu thư mục data và kiểm tra .tutorflow_pending.";
+        return false;
+    }
+    const array<string, 3> names = {"student.txt", "tutor.txt", "class.txt"};
+    if (!fs::exists(committed)) {
+        // Pending = pre-commit state. Verify *all* necessary backups before
+        // changing anything, so incomplete metadata cannot delete valid data.
+        for (size_t i = 0; i < names.size(); ++i) {
+            if (flags[i + 2] == '1' && !fs::is_regular_file(dir / (names[i] + ".backup"))) {
+                g_recoveryError = "Thiếu bản sao phục hồi " + names[i] + ".backup. Dừng ghi để tránh mất dữ liệu.";
+                return false;
+            }
+        }
+        for (size_t i = 0; i < names.size(); ++i) {
+            const fs::path target = dir / names[i];
+            if (flags[i + 2] == '1')
+                fs::copy_file(dir / (names[i] + ".backup"), target,
+                              fs::copy_options::overwrite_existing, ec);
+            else fs::remove(target, ec);
+            if (ec) {
+                g_recoveryError = "Không thể phục hồi " + names[i] + ": " + ec.message();
+                return false;
+            }
+        }
+    }
+    // Remove journal last so any crash during restoration remains recoverable.
+    // COMMITTED state keeps its marker until the PENDING file is removed.
+    for (const auto& name : names) {
+        fs::remove(dir / (name + ".stage"), ec);
+        fs::remove(dir / (name + ".backup"), ec);
+    }
+    fs::remove(pending, ec);
+    if (!ec) fs::remove(committed, ec);
+    g_recoveryError.clear();
+    return !ec;
+}
+
 }  // namespace
 
-void FileManager::setDataDirectory(const string& dir) { g_dataDir = dir; }
+void FileManager::setDataDirectory(const string& dir) {
+    g_dataDir = dir;
+    g_storageError.clear();
+    g_skippedLines = 0;
+    g_recoveryError.clear();
+}
+
+string FileManager::dataPath(const string& filename) { return getDataPath(filename); }
+
+bool FileManager::saveTextFile(const string& filename, const string& content) {
+    if (!g_storageError.empty() || !recoverIfNeeded()) return false;
+    return writeFileAtomically(getDataPath(filename), content);
+}
 
 int FileManager::skippedLineCount() { return g_skippedLines; }
+string FileManager::storageError() { return g_storageError; }
+
+bool FileManager::recoverIfNeeded() {
+    return recoverDirectory(filesystem::path(getDataPath("student.txt")).parent_path());
+}
+string FileManager::recoveryError() { return g_recoveryError; }
 
 string FileManager::getDataPath(string fileName) {
     namespace fs = filesystem;
     if (!g_dataDir.empty()) return (fs::path(g_dataDir) / fileName).string();
-    if (fs::exists(fs::path("data") / fileName)) return (fs::path("data") / fileName).string();
-    if (fs::exists(fs::path("../data") / fileName)) return (fs::path("../data") / fileName).string();
+    // Select ONE directory for the whole dataset. Per-file probing can mix
+    // student.txt from ./data with tutor.txt from ../data, corrupting links.
     if (fs::is_directory("data")) return (fs::path("data") / fileName).string();
     if (fs::is_directory("../data")) return (fs::path("../data") / fileName).string();
     return (fs::path("data") / fileName).string();
@@ -67,18 +160,24 @@ bool FileManager::writeFileAtomically(const string& path, const string& content)
         out.flush();
         if (!out) return false;
     }
+    // Never delete the original before successful replacement. On Windows,
+    // std::filesystem::rename cannot reliably replace an existing destination.
+#ifdef _WIN32
+    const bool replaced = MoveFileExW(fs::path(tmp).c_str(), fs::path(path).c_str(),
+                                     MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH) != 0;
+    if (!replaced) {
+        error_code ec;
+        fs::remove(tmp, ec);
+        return false;
+    }
+#else
     error_code ec;
     fs::rename(tmp, path, ec);
     if (ec) {
-        // Một số hệ thống không cho ghi đè khi đổi tên -> xóa file đích rồi thử lại.
-        fs::remove(path, ec);
-        ec.clear();
-        fs::rename(tmp, path, ec);
-        if (ec) {
-            fs::remove(tmp, ec);
-            return false;
-        }
+        fs::remove(tmp, ec);
+        return false;
     }
+#endif
     return true;
 }
 
@@ -112,6 +211,15 @@ namespace {
 Vector<string> readLines(const string& path) {
     Vector<string> lines;
     ifstream in(path, ios::binary);
+    std::error_code ec;
+    if (!in && filesystem::exists(path, ec)) {
+        refuseUnsafeData("Không thể đọc file " + path + ". Không lưu để tránh mất dữ liệu.");
+        return lines;
+    }
+    if (ec) {
+        refuseUnsafeData("Không thể kiểm tra file " + path + ": " + ec.message());
+        return lines;
+    }
     string line;
     bool first = true;
     while (getline(in, line)) {
@@ -122,6 +230,7 @@ Vector<string> readLines(const string& path) {
         string t = TextUtils::trim(line);
         if (!t.empty()) lines.push_back(t);
     }
+    if (in.bad()) refuseUnsafeData("Lỗi đọc dữ liệu " + path + ".");
     return lines;
 }
 
@@ -129,22 +238,34 @@ Vector<string> readLines(const string& path) {
 
 Vector<Student*> FileManager::loadStudents() {
     g_skippedLines = 0;
+    if (!recoverIfNeeded()) return {};
     Vector<Student*> students;
+    std::set<string> seen;
     Vector<string> lines = readLines(getDataPath("student.txt"));
     for (size_t i = 0; i < lines.size(); ++i) {
         auto parts = splitString(lines[i], '|');
-        if (parts.size() < 15) {
-            ++g_skippedLines;
+        if ((parts.size() != 14 && parts.size() != 15) ||
+            parts[0].empty() || !seen.insert(parts[0]).second) {
+            refuseUnsafeData("student.txt: dòng " + to_string(i + 1) +
+                             " sai số cột, trống ID hoặc trùng ID. Hãy sửa file trước khi lưu.");
             continue;
         }
-        students.push_back(new Student(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6],
-                                       parts[7], splitString(parts[8], ','), parts[9], parts[10], parts[11],
-                                       parts[12], parts[13], parts[14] == "true"));
+        if (!Validator::isNonNegativeNumber(parts[11]) ||
+            !Validator::isValidDate(parts[5]) ||
+            (parts[13] != "true" && parts[13] != "false")) {
+            refuseUnsafeData("student.txt: dòng " + to_string(i + 1) +
+                             " có ngày, ngân sách hoặc trạng thái không hợp lệ.");
+        }
+        auto* student = new Student(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5],
+                                       parts[6], splitString(parts[7], ','), parts[8], parts[9], parts[10],
+                                       parts[11], parts[12], parts[13] == "true");
+        students.push_back(student);
     }
     return students;
 }
 
 void FileManager::saveStudents(Vector<Student*>& students) {
+    if (!g_storageError.empty() || !recoverIfNeeded()) return;
     string content;
     for (size_t i = 0; i < students.size(); ++i) content += students[i]->toString() + "\n";
     writeFileAtomically(getDataPath("student.txt"), content);
@@ -152,23 +273,39 @@ void FileManager::saveStudents(Vector<Student*>& students) {
 
 Vector<Tutor*> FileManager::loadTutors() {
     Vector<Tutor*> tutors;
+    if (!recoverIfNeeded()) return {};
+    std::set<string> seen;
     Vector<string> lines = readLines(getDataPath("tutor.txt"));
     for (size_t i = 0; i < lines.size(); ++i) {
         auto parts = splitString(lines[i], '|');
-        if (parts.size() < 16) {
-            ++g_skippedLines;
+        if ((parts.size() != 15 && parts.size() != 16) ||
+            parts[0].empty() || !seen.insert(parts[0]).second) {
+            refuseUnsafeData("tutor.txt: dòng " + to_string(i + 1) +
+                             " sai số cột, trống ID hoặc trùng ID. Hãy sửa file trước khi lưu.");
             continue;
         }
-        Vector<string> subjects = splitString(parts[7], ',');
-        Vector<string> areas = splitString(parts[13], ',');
-        tutors.push_back(new Tutor(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6], subjects,
-                                   parts[8], TextUtils::toInt(parts[9], 0), parts[10], parts[11], parts[12],
-                                   parts[14] == "true", TextUtils::toInt(parts[15], 0), {}, areas, ""));
+        if (!Validator::isNonNegativeNumber(parts[8]) ||
+            (TextUtils::toLongLong(parts[8], -1) < 0 || TextUtils::toLongLong(parts[8], -1) > 1000) ||
+            !Validator::isNonNegativeNumber(parts[14]) ||
+            (TextUtils::toLongLong(parts[14], -1) < 0 || TextUtils::toLongLong(parts[14], -1) > 1000000) ||
+            !Validator::isNonNegativeNumber(parts[10]) ||
+            !Validator::isValidDate(parts[5]) ||
+            (parts[13] != "true" && parts[13] != "false")) {
+            refuseUnsafeData("tutor.txt: dòng " + to_string(i + 1) +
+                             " có số, ngày hoặc trạng thái không hợp lệ.");
+        }
+        Vector<string> subjects = splitString(parts[6], ',');
+        Vector<string> areas = splitString(parts[12], ',');
+        auto* tutor = new Tutor(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], subjects,
+                                   parts[7], TextUtils::toInt(parts[8], 0), parts[9], parts[10], parts[11],
+                                   parts[13] == "true", TextUtils::toInt(parts[14], 0), {}, areas, "");
+        tutors.push_back(tutor);
     }
     return tutors;
 }
 
 void FileManager::saveTutors(Vector<Tutor*>& tutors) {
+    if (!g_storageError.empty() || !recoverIfNeeded()) return;
     string content;
     for (size_t i = 0; i < tutors.size(); ++i) content += tutors[i]->toString() + "\n";
     writeFileAtomically(getDataPath("tutor.txt"), content);
@@ -176,80 +313,142 @@ void FileManager::saveTutors(Vector<Tutor*>& tutors) {
 
 Vector<TutoringClass*> FileManager::loadClasses() {
     Vector<TutoringClass*> classes;
+    if (!recoverIfNeeded()) return {};
+    std::set<string> seen;
     Vector<string> lines = readLines(getDataPath("class.txt"));
     for (size_t i = 0; i < lines.size(); ++i) {
         auto parts = splitString(lines[i], '|');
-        if (parts.size() < 11) {
-            ++g_skippedLines;
+        // Current schema: 10 fields; legacy schema: 11 fields (column 7 was end date).
+        // Accept both formats to avoid silently losing old projects during upgrade.
+        if ((parts.size() != 10 && parts.size() != 11) ||
+            parts[0].empty() || !seen.insert(parts[0]).second) {
+            refuseUnsafeData("class.txt: dòng " + to_string(i + 1) +
+                             " sai số cột, trống ID hoặc trùng ID. Hãy sửa file trước khi lưu.");
             continue;
         }
-        classes.push_back(new TutoringClass(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6],
-                                            parts[7], parts[8], parts[9], parts[10]));
+        const size_t statusColumn = parts.size() == 11 ? 7 : 6;
+        if (!Validator::isValidDate(parts[5]) ||
+            !Validator::isNonNegativeNumber(parts[statusColumn + 1]) ||
+            !ScheduleUtils::valid(parts[4]) ||
+            (parts[statusColumn] != "Đang học" && parts[statusColumn] != "Chờ xếp lịch" &&
+             parts[statusColumn] != "Cần gia sư" && parts[statusColumn] != "Hoàn thành")) {
+            refuseUnsafeData("class.txt: dòng " + to_string(i + 1) +
+                             " có ngày, học phí, lịch hoặc trạng thái không hợp lệ.");
+        }
+        classes.push_back(new TutoringClass(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5],
+                                            parts[statusColumn], parts[statusColumn + 1],
+                                            parts[statusColumn + 2], parts[statusColumn + 3]));
     }
     return classes;
 }
 
 void FileManager::saveClasses(Vector<TutoringClass*>& classes) {
+    if (!g_storageError.empty() || !recoverIfNeeded()) return;
     ostringstream out;
     for (size_t i = 0; i < classes.size(); ++i) {
         TutoringClass* c = classes[i];
         out << TextUtils::cleanField(c->getClassID()) << "|" << TextUtils::cleanField(c->getStudentID()) << "|"
             << TextUtils::cleanField(c->getTutorID()) << "|" << TextUtils::cleanField(c->getSubject()) << "|"
             << TextUtils::cleanField(c->getSchedule()) << "|" << TextUtils::cleanField(c->getStartDate()) << "|"
-            << TextUtils::cleanField(c->getEndDate()) << "|" << TextUtils::cleanField(c->getStatus()) << "|"
+            << TextUtils::cleanField(c->getStatus()) << "|"
             << TextUtils::cleanField(c->getRatePerHour()) << "|" << TextUtils::cleanField(c->getCreatedAt()) << "|"
             << TextUtils::cleanField(c->getUpdatedAt()) << "\n";
     }
     writeFileAtomically(getDataPath("class.txt"), out.str());
 }
 
-Vector<Contract*> FileManager::loadContracts() {
-    Vector<Contract*> contracts;
-    Vector<string> lines = readLines(getDataPath("contract.txt"));
-    for (size_t i = 0; i < lines.size(); ++i) {
-        auto parts = splitString(lines[i], '|');
-        if (parts.size() < 9) {
-            ++g_skippedLines;
-            continue;
+
+// Multi-file commit: prepare three stages and three backups, record a journal,
+// replace every file, write a COMMITTED marker, then clean up. Startup recovery
+// restores the *entire* old set if power loss occurs before COMMITTED.
+bool FileManager::saveAll(Vector<Student*>& students, Vector<Tutor*>& tutors,
+                          Vector<TutoringClass*>& classes) {
+    namespace fs = filesystem;
+    const array<fs::path, 3> paths = {getDataPath("student.txt"), getDataPath("tutor.txt"),
+                                      getDataPath("class.txt")};
+    const fs::path dir = paths[0].parent_path();
+    if (!g_storageError.empty() || !recoverIfNeeded() || !fs::is_directory(dir)) return false;
+    array<string, 3> values;
+    for (size_t i = 0; i < students.size(); ++i) values[0] += students[i]->toString() + "\n";
+    for (size_t i = 0; i < tutors.size(); ++i) values[1] += tutors[i]->toString() + "\n";
+    for (size_t i = 0; i < classes.size(); ++i) {
+        TutoringClass* c = classes[i];
+        values[2] += TextUtils::cleanField(c->getClassID()) + "|" +
+                     TextUtils::cleanField(c->getStudentID()) + "|" +
+                     TextUtils::cleanField(c->getTutorID()) + "|" +
+                     TextUtils::cleanField(c->getSubject()) + "|" +
+                     TextUtils::cleanField(c->getSchedule()) + "|" +
+                     TextUtils::cleanField(c->getStartDate()) + "|" +
+                     TextUtils::cleanField(c->getStatus()) + "|" +
+                     TextUtils::cleanField(c->getRatePerHour()) + "|" +
+                     TextUtils::cleanField(c->getCreatedAt()) + "|" +
+                     TextUtils::cleanField(c->getUpdatedAt()) + "\n";
+    }
+    const fs::path pending = dir / ".tutorflow_pending";
+    const fs::path committed = dir / ".tutorflow_committed";
+    array<fs::path, 3> stage, backup;
+    string flags = "v1";
+    error_code ec;
+    for (size_t i = 0; i < paths.size(); ++i) {
+        stage[i] = paths[i].string() + ".stage";
+        backup[i] = paths[i].string() + ".backup";
+        if (fs::exists(stage[i]) || fs::exists(backup[i])) return false;
+        flags += fs::exists(paths[i]) ? '1' : '0';
+    }
+    auto cleanupUncommitted = [&]() {
+        for (size_t i = 0; i < paths.size(); ++i) {
+            fs::remove(stage[i], ec);
+            fs::remove(backup[i], ec);
         }
-        contracts.push_back(new Contract(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6],
-                                         parts[7], parts[8]));
+        fs::remove(pending, ec);
+        fs::remove(committed, ec);
+    };
+    for (size_t i = 0; i < paths.size(); ++i) {
+        ofstream output(stage[i], ios::binary | ios::trunc);
+        if (!output) { cleanupUncommitted(); return false; }
+        output.write(values[i].data(), static_cast<streamsize>(values[i].size()));
+        output.flush();
+        if (!output) { cleanupUncommitted(); return false; }
+        output.close();
+        if (!output) { cleanupUncommitted(); return false; }
     }
-    return contracts;
-}
-
-void FileManager::saveContracts(Vector<Contract*>& contracts) {
-    ostringstream out;
-    for (size_t i = 0; i < contracts.size(); ++i) {
-        Contract* c = contracts[i];
-        out << TextUtils::cleanField(c->getContractID()) << "|" << TextUtils::cleanField(c->getClassID()) << "|"
-            << TextUtils::cleanField(c->getStudentID()) << "|" << TextUtils::cleanField(c->getTutorID()) << "|"
-            << TextUtils::cleanField(c->getCreatedAt()) << "|" << TextUtils::cleanField(c->getStartDate()) << "|"
-            << TextUtils::cleanField(c->getEndDate()) << "|" << TextUtils::cleanField(c->getTotalFee()) << "|"
-            << TextUtils::cleanField(c->getStatus()) << "\n";
+    for (size_t i = 0; i < paths.size(); ++i) {
+        if (flags[i + 2] != '1') continue;
+        ec.clear();
+        fs::copy_file(paths[i], backup[i], fs::copy_options::none, ec);
+        if (ec) { cleanupUncommitted(); return false; }
     }
-    writeFileAtomically(getDataPath("contract.txt"), out.str());
-}
-
-Vector<Registration*> FileManager::loadRegistrations() {
-    Vector<Registration*> registrations;
-    Vector<string> lines = readLines(getDataPath("registration.txt"));
-    for (size_t i = 0; i < lines.size(); ++i) {
-        auto parts = splitString(lines[i], '|');
-        if (parts.size() < 7) {
-            ++g_skippedLines;
-            continue;
+    {
+        ofstream marker(pending, ios::binary | ios::trunc);
+        if (!marker) { cleanupUncommitted(); return false; }
+        marker << flags << "\n";
+        marker.flush();
+        if (!marker) { cleanupUncommitted(); return false; }
+    }
+    for (size_t i = 0; i < paths.size(); ++i) {
+        ec.clear();
+        fs::rename(stage[i], paths[i], ec);
+        if (ec) {
+            ec.clear();
+            fs::remove(paths[i], ec);
+            if (!ec) fs::rename(stage[i], paths[i], ec);
         }
-        registrations.push_back(new Registration(parts[0], parts[1], parts[2], splitString(parts[3], ','), parts[4],
-                                                 parts[5], parts[6]));
+        if (ec) return recoverIfNeeded() && false;
     }
-    return registrations;
-}
-
-void FileManager::saveRegistrations(Vector<Registration*>& registrations) {
-    string content;
-    for (size_t i = 0; i < registrations.size(); ++i) content += registrations[i]->toString() + "\n";
-    writeFileAtomically(getDataPath("registration.txt"), content);
+    {
+        ofstream marker(committed, ios::binary | ios::trunc);
+        if (!marker) return recoverIfNeeded() && false;
+        marker << "committed\n";
+        marker.flush();
+        if (!marker) {
+            marker.close();
+            fs::remove(committed, ec);
+            return recoverIfNeeded() && false;
+        }
+    }
+    // A failed cleanup is non-fatal: next startup finishes it. Data is committed.
+    recoverIfNeeded();
+    return true;
 }
 
 // ---------------------------------------------------------------------------

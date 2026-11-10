@@ -7,11 +7,10 @@ Person::Person() = default;
 Person::Person(string personID,
                string fullName,
                string phone,
-               string email,
                string address,
                string gender,
                string dateOfBirth)
-    : info_{personID, fullName, phone, email, address, gender, dateOfBirth} {}
+    : info_{personID, fullName, phone, address, gender, dateOfBirth} {}
 
 string Person::getPersonID() {
     return info_.personID;
@@ -23,10 +22,6 @@ string Person::getFullName() {
 
 string Person::getPhone() {
     return info_.phone;
-}
-
-string Person::getEmail() {
-    return info_.email;
 }
 
 string Person::getAddress() {
@@ -51,10 +46,6 @@ void Person::setFullName(string name) {
 
 void Person::setPhone(string phoneValue) {
     info_.phone = phoneValue;
-}
-
-void Person::setEmail(string emailValue) {
-    info_.email = emailValue;
 }
 
 void Person::setAddress(string addressValue) {

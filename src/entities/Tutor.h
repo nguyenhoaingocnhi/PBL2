@@ -26,7 +26,6 @@ public:
     Tutor(string personID,
           string fullName,
           string phone,
-          string email,
           string address,
           string gender,
           string dateOfBirth,
@@ -56,6 +55,12 @@ public:
     Vector<string>& getTeachingClasses();
     Vector<string>& getTeachingAreas();
     string getAchievements();
+
+    // Backward-compatible aliases used by the Qt UI.
+    string getPhoneNumber();
+    string getUniversityOrDegree();
+    void setPhoneNumber(string value);
+    void setUniversityOrDegree(string value);
 
     void setSubjects(Vector<string> value);
     void setDegrees(string value);

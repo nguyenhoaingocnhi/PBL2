@@ -2,6 +2,7 @@
 
 #include "Algorithms.h"
 #include "TextUtils.h"
+#include "SubjectUtils.h"
 
 #include <cmath>
 #include <string>
@@ -60,12 +61,12 @@ string genderPreference(Student& student) {
 int countSubjectMatches(const Vector<string>& needed, Vector<string>& tutorSubjects) {
     Vector<string> tutorNorm;
     for (size_t i = 0; i < tutorSubjects.size(); ++i) {
-        string n = TextUtils::normalize(tutorSubjects[i]);
+        string n = SubjectUtils::canonical(tutorSubjects[i]);
         if (!n.empty()) tutorNorm.push_back(n);
     }
     int matched = 0;
     for (size_t i = 0; i < needed.size(); ++i) {
-        if (containsValue(tutorNorm, needed[i])) ++matched;
+        if (containsValue(tutorNorm, SubjectUtils::canonical(needed[i]))) ++matched;
     }
     return matched;
 }
@@ -122,9 +123,9 @@ MatchResult createMatchResult(Student& student, Tutor& tutor, const Vector<strin
     }
     if (rate > 0 && budget > 0) {
         if (rate <= budget) {
-            r.reasons.push_back("Học phí " + formatMoney(rate) + "đ/buổi trong ngân sách " + formatMoney(budget) + "đ");
+            r.reasons.push_back("Học phí " + formatMoney(rate) + "đ/giờ trong ngân sách " + formatMoney(budget) + "đ/giờ");
         } else {
-            r.reasons.push_back("Học phí " + formatMoney(rate) + "đ/buổi vượt ngân sách " + formatMoney(budget) + "đ");
+            r.reasons.push_back("Học phí " + formatMoney(rate) + "đ/giờ vượt ngân sách " + formatMoney(budget) + "đ/giờ");
         }
     }
     r.reasons.push_back("Kinh nghiệm " + to_string(tutor.getYearsOfExperience()) + " năm");
@@ -135,6 +136,25 @@ MatchResult createMatchResult(Student& student, Tutor& tutor, const Vector<strin
 }
 
 }  // namespace
+
+bool MatchingService::meetsMandatoryRequirements(Student& student, Tutor& tutor) {
+    if (!tutor.getIsAvailable() || tutor.getCurrentStudents() >= kMaxStudentsPerTutor) return false;
+    Vector<string> needed;
+    Vector<string>& raw = student.getNeedSubjects();
+    for (size_t i = 0; i < raw.size(); ++i) {
+        string n = SubjectUtils::canonical(raw[i]);
+        if (!n.empty() && !containsValue(needed, n)) needed.push_back(n);
+    }
+    if (!needed.empty() && countSubjectMatches(needed, tutor.getSubjects()) != static_cast<int>(needed.size()))
+        return false;
+    Vector<string> s = unique(TextUtils::splitNormalized(student.getAvailableSchedule(), ','));
+    Vector<string> t = unique(TextUtils::splitNormalized(tutor.getAvailability(), ','));
+    if (s.empty() || t.empty() || countScheduleOverlap(s, t) == 0) return false;
+    long long budget = TextUtils::toLongLong(student.getBudgetPerHour(), 0);
+    long long rate = TextUtils::toLongLong(tutor.getRatePerHour(), 0);
+    if (budget > 0 && (rate <= 0 || rate > budget)) return false;
+    return true;
+}
 
 Vector<MatchResult> MatchingService::matchStudentsToTutors(Student& student, Vector<Tutor*>& tutors) {
     Vector<MatchResult> results;
@@ -152,12 +172,11 @@ Vector<MatchResult> MatchingService::matchStudentsToTutors(Student& student, Vec
 
     for (size_t i = 0; i < tutors.size(); ++i) {
         Tutor* tutor = tutors[i];
-        if (tutor == nullptr || !tutor->getIsAvailable()) continue;
-        if (tutor->getCurrentStudents() >= kMaxStudentsPerTutor) continue;
+        if (tutor == nullptr || !meetsMandatoryRequirements(student, *tutor)) continue;
 
         int matched = countSubjectMatches(needed, tutor->getSubjects());
         // Có yêu cầu môn học thì gia sư phải dạy được ít nhất một môn.
-        if (!needed.empty() && matched == 0) continue;
+        if (!needed.empty() && matched != static_cast<int>(needed.size())) continue;
 
         results.push_back(createMatchResult(student, *tutor, needed, matched));
     }

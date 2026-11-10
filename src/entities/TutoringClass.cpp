@@ -10,55 +10,50 @@ TutoringClass::TutoringClass(string classID,
                              string subject,
                              string schedule,
                              string startDate,
-                             string endDate,
                              string status,
                              string ratePerHour,
                              string createdAt,
                              string updatedAt)
-    : data_{classID, studentID, tutorID, subject, schedule, startDate, endDate,
+    : data_{classID, studentID, tutorID, subject, schedule, startDate,
             status, ratePerHour, createdAt, updatedAt} {}
 
-string TutoringClass::getClassID() {
+string TutoringClass::getClassID() const {
     return data_.classID;
 }
 
-string TutoringClass::getStudentID() {
+string TutoringClass::getStudentID() const {
     return data_.studentID;
 }
 
-string TutoringClass::getTutorID() {
+string TutoringClass::getTutorID() const {
     return data_.tutorID;
 }
 
-string TutoringClass::getSubject() {
+string TutoringClass::getSubject() const {
     return data_.subject;
 }
 
-string TutoringClass::getSchedule() {
+string TutoringClass::getSchedule() const {
     return data_.schedule;
 }
 
-string TutoringClass::getStartDate() {
+string TutoringClass::getStartDate() const {
     return data_.startDate;
 }
 
-string TutoringClass::getEndDate() {
-    return data_.endDate;
-}
-
-string TutoringClass::getStatus() {
+string TutoringClass::getStatus() const {
     return data_.status;
 }
 
-string TutoringClass::getRatePerHour() {
+string TutoringClass::getRatePerHour() const {
     return data_.ratePerHour;
 }
 
-string TutoringClass::getCreatedAt() {
+string TutoringClass::getCreatedAt() const {
     return data_.createdAt;
 }
 
-string TutoringClass::getUpdatedAt() {
+string TutoringClass::getUpdatedAt() const {
     return data_.updatedAt;
 }
 
@@ -84,10 +79,6 @@ void TutoringClass::setSchedule(string value) {
 
 void TutoringClass::setStartDate(string value) {
     data_.startDate = value;
-}
-
-void TutoringClass::setEndDate(string value) {
-    data_.endDate = value;
 }
 
 void TutoringClass::setStatus(string value) {

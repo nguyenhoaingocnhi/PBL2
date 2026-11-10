@@ -1,6 +1,7 @@
 #include "Student.h"
 
 #include "TextUtils.h"
+#include "SubjectUtils.h"
 
 #include <iostream>
 #include <sstream>
@@ -12,7 +13,6 @@ Student::Student() = default;
 Student::Student(string personID,
                  string fullName,
                  string phone,
-                 string email,
                  string address,
                  string gender,
                  string dateOfBirth,
@@ -25,7 +25,7 @@ Student::Student(string personID,
                  string notes,
                  bool isMatched,
                  Vector<string> enrolledClasses)
-    : Person(personID, fullName, phone, email, address, gender, dateOfBirth),
+    : Person(personID, fullName, phone, address, gender, dateOfBirth),
       profile_{grade, needSubjects, availableSchedule, learningLevel,
                preferredTutorGender, budgetPerHour, notes, isMatched, enrolledClasses} {}
 
@@ -34,10 +34,10 @@ void Student::displayInfo() {
 }
 
 string Student::toString() {
-    // Thứ tự cột phải khớp với FileManager::loadStudents (15 cột).
+    // Thứ tự cột phải khớp với FileManager::loadStudents.
     ostringstream oss;
     oss << TextUtils::cleanField(getPersonID()) << "|" << TextUtils::cleanField(getFullName()) << "|"
-        << TextUtils::cleanField(getPhone()) << "|" << TextUtils::cleanField(getEmail()) << "|"
+        << TextUtils::cleanField(getPhone()) << "|"
         << TextUtils::cleanField(getAddress()) << "|" << TextUtils::cleanField(getGender()) << "|"
         << TextUtils::cleanField(getDateOfBirth()) << "|"
         << TextUtils::cleanField(profile_.grade) << "|";
@@ -91,12 +91,29 @@ Vector<string>& Student::getEnrolledClasses() {
     return profile_.enrolledClasses;
 }
 
+string Student::getPhoneNumber() {
+    return getPhone();
+}
+
+string Student::getAcademicPerformance() {
+    return getLearningLevel();
+}
+
+void Student::setPhoneNumber(string value) {
+    setPhone(value);
+}
+
+void Student::setAcademicPerformance(string value) {
+    setLearningLevel(value);
+}
+
 void Student::setGrade(string value) {
     profile_.grade = value;
 }
 
 void Student::setNeedSubjects(Vector<string> value) {
-    profile_.needSubjects = value;
+    profile_.needSubjects.clear();
+    registerMultipleSubjects(value);  // remove duplicates across case / Vietnamese accents
 }
 
 void Student::setAvailableSchedule(string value) {
@@ -129,11 +146,11 @@ void Student::setEnrolledClasses(Vector<string> value) {
 
 // 1 sinh viên có thể đăng ký thêm môn học
 void Student::registerSubject(string subject) {
-    if (subject.empty()) return;
+    subject = TextUtils::trim(subject);
+    const string normalized = SubjectUtils::canonical(subject);
+    if (normalized.empty()) return;
     for (size_t i = 0; i < profile_.needSubjects.size(); ++i) {
-        if (profile_.needSubjects[i] == subject) {
-            return;
-        }
+        if (SubjectUtils::canonical(profile_.needSubjects[i]) == normalized) return;
     }
     profile_.needSubjects.push_back(subject);
 }
@@ -147,8 +164,9 @@ void Student::registerMultipleSubjects(Vector<string> subjects) {
 
 // Hủy đăng ký môn học
 bool Student::unregisterSubject(string subject) {
+    const string normalized = SubjectUtils::canonical(subject);
     for (size_t i = 0; i < profile_.needSubjects.size(); ++i) {
-        if (profile_.needSubjects[i] == subject) {
+        if (SubjectUtils::canonical(profile_.needSubjects[i]) == normalized) {
             profile_.needSubjects.erase(i);
             return true;
         }

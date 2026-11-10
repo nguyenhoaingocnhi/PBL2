@@ -46,16 +46,6 @@ inline bool isValidPhone(const string& s) {
     return digits.size() >= 9 && digits.size() <= 11 && digits[0] == '0';
 }
 
-// Email đơn giản: có đúng 1 '@', phần trước và sau không rỗng, phần sau có dấu '.'.
-inline bool isValidEmail(const string& s) {
-    if (s.empty()) return true;  // email không bắt buộc
-    size_t at = s.find('@');
-    if (at == string::npos || at == 0 || s.find('@', at + 1) != string::npos) return false;
-    size_t dot = s.find('.', at + 1);
-    if (dot == string::npos || dot == at + 1 || dot + 1 >= s.size()) return false;
-    return s.find(' ') == string::npos;
-}
-
 // Số nguyên không âm (học phí, ngân sách...). Rỗng không hợp lệ.
 inline bool isNonNegativeNumber(const string& s) {
     if (s.empty() || s.size() > 12) return false;

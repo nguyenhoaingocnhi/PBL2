@@ -8,7 +8,6 @@ struct PersonInfo {
     string personID;
     string fullName;
     string phone;
-    string email;
     string address;
     string gender;
     string dateOfBirth;
@@ -20,7 +19,6 @@ public:
     Person(string personID,
            string fullName,
            string phone,
-           string email,
            string address,
            string gender,
            string dateOfBirth);
@@ -33,7 +31,6 @@ public:
     string getPersonID();
     string getFullName();
     string getPhone();
-    string getEmail();
     string getAddress();
     string getGender();
     string getDateOfBirth();
@@ -41,7 +38,6 @@ public:
     void setPersonID(string id);
     void setFullName(string name);
     void setPhone(string phone);
-    void setEmail(string email);
     void setAddress(string address);
     void setGender(string gender);
     void setDateOfBirth(string dob);

@@ -11,7 +11,6 @@ struct TutoringClassData {
     string subject;
     string schedule;
     string startDate;
-    string endDate;
     string status;
     string ratePerHour;
     string createdAt;
@@ -27,23 +26,21 @@ public:
                   string subject,
                   string schedule,
                   string startDate,
-                  string endDate,
                   string status,
                   string ratePerHour,
                   string createdAt,
                   string updatedAt);
 
-    string getClassID();
-    string getStudentID();
-    string getTutorID();
-    string getSubject();
-    string getSchedule();
-    string getStartDate();
-    string getEndDate();
-    string getStatus();
-    string getRatePerHour();
-    string getCreatedAt();
-    string getUpdatedAt();
+    string getClassID() const;
+    string getStudentID() const;
+    string getTutorID() const;
+    string getSubject() const;
+    string getSchedule() const;
+    string getStartDate() const;
+    string getStatus() const;
+    string getRatePerHour() const;
+    string getCreatedAt() const;
+    string getUpdatedAt() const;
 
     void setClassID(string value);
     void setStudentID(string value);
@@ -51,7 +48,6 @@ public:
     void setSubject(string value);
     void setSchedule(string value);
     void setStartDate(string value);
-    void setEndDate(string value);
     void setStatus(string value);
     void setRatePerHour(string value);
     void setCreatedAt(string value);

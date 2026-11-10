@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
     }
 
     LoginWindow loginWindow;
-    loginWindow.resize(420, 520);
+    loginWindow.resize(1100, 694);
     loginWindow.show();
 
     return app.exec();

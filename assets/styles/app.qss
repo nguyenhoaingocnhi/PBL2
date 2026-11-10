@@ -3,25 +3,25 @@
 }
 
 QMainWindow {
-    background-color: #F8FAFC;
+    background-color: #EAF1FF;
 }
 
 QScrollBar:vertical {
     border: none;
-    background: #F1F5F9;
+    background: #EEF2FC;
     width: 8px;
     border-radius: 4px;
     margin: 0px 0px 0px 0px;
 }
 
 QScrollBar::handle:vertical {
-    background: #CBD5E1;
+    background: #C9D8FF;
     min-height: 25px;
     border-radius: 4px;
 }
 
 QScrollBar::handle:vertical:hover {
-    background: #94A3B8;
+    background: #8AA9FF;
 }
 
 QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
@@ -30,21 +30,71 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
 
 QScrollBar:horizontal {
     border: none;
-    background: #F1F5F9;
+    background: #EEF2FC;
     height: 8px;
     border-radius: 4px;
 }
 
 QScrollBar::handle:horizontal {
-    background: #CBD5E1;
+    background: #C9D8FF;
     min-width: 25px;
     border-radius: 4px;
 }
 
 QScrollBar::handle:horizontal:hover {
-    background: #94A3B8;
+    background: #8AA9FF;
 }
 
 QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
     width: 0px;
+}
+
+/* ---- TutorHub style additions ---- */
+QLabel {
+    background: transparent;
+}
+
+QToolTip {
+    background-color: #0A2380;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+}
+
+QMessageBox, QDialog {
+    background-color: #EAF1FF;
+}
+
+QMessageBox QLabel {
+    color: #0F1E4A;
+    font-size: 13px;
+}
+
+QMessageBox QPushButton, QDialogButtonBox QPushButton {
+    min-width: 84px;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    color: #FFFFFF;
+    background-color: qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #1FC8FF,stop:1 #2F6BFF);
+}
+
+QMessageBox QPushButton:hover, QDialogButtonBox QPushButton:hover {
+    background-color: qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #12B4EE,stop:1 #2459F0);
+}
+
+QComboBox QAbstractItemView {
+    background: #FFFFFF;
+    border: 1px solid #D9E1F6;
+    selection-background-color: #E6EEFF;
+    selection-color: #0F1E4A;
+    outline: none;
+}
+
+QCheckBox::indicator:checked {
+    background-color: #8AA9FF;
+    border: 1px solid #8AA9FF;
+    border-radius: 3px;
 }
